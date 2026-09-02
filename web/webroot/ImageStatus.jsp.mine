@@ -1,0 +1,584 @@
+<%@page import="de.hybris.jalo.jalo.*"%>
+<%@page import="de.hybris.platform.jalo.product.*"%>
+<%@page language="java" import="java.util.*"%>
+<%@page import="java.io.*"%>
+<%@page import="com.computationaldesign.wera.jalo.*"%>
+<%@page import="com.computationaldesign.wera.jalo.WeraManager"%>
+<%@page import="com.computationaldesign.wera.jalo.WeraKatalog"%>
+<%@page import="com.computationaldesign.wera.jalo.DataCorrector"%>
+<%@page import="de.hybris.platform.jalo.JaloSession"%>
+<%@page import="de.hybris.platform.util.WebSessionFunctions"%>
+<%@page import="de.hybris.platform.category.jalo.Category"%>
+<%@page	import="de.hybris.platform.catalog.jalo.classification.ClassificationSystemVersion"%>
+<%@page	import="de.hybris.platform.catalog.jalo.classification.ClassificationSystem"%>
+<%@page import="de.hybris.platform.catalog.jalo.classification.ClassificationAttribute"%>
+<%@page import="de.hybris.platform.jalo.type.AttributeDescriptor"%>
+<%@page import="de.hybris.platform.jalo.type.ComposedType"%>
+<%@page import="de.hybris.platform.jalo.user.User"%>
+<%@page import="de.hybris.platform.jalo.user.UserManager"%>
+<%@page import="de.hybris.platform.jalo.user.Customer"%>
+<%@page import="de.hybris.platform.jalo.user.Employee"%>
+<%@page import="de.hybris.platform.jalo.extension.ExtensionManager"%>
+<%@page import="de.hybris.platform.category.jalo.CategoryManager"%>
+<%@page import="de.hybris.platform.catalog.jalo.CatalogManager"%>
+<%@page import="de.hybris.platform.jalo.security.JaloSecurityException"%>
+<%@page import="de.hybris.platform.jalo.c2l.C2LManager"%>
+<%@page import="de.hybris.platform.jalo.c2l.Language"%>
+<%@page import="de.hybris.platform.catalog.jalo.CatalogVersion"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<%
+		String path = request.getContextPath();
+		String basePath = request.getScheme() + "://" + request.getServerName()
+				+ ":" + request.getServerPort() + path + "/";
+				
+        // --- Initialize
+		JaloSession jaloSession = WebSessionFunctions.getSession(request);
+		WebSiteXml oWebSiteExport = new WebSiteXml();
+		WeraManager wm = WeraManager.getInstance();
+		
+        // --- Initialize
+		boolean bExportReady = false;
+        String strTemp = ""; 
+        String strExportResult = ""; 
+
+
+        // --- LOGIN ------------------------------------------------------------------------------
+			UserManager userMg = jaloSession.getUserManager();
+			String loginname = "";
+			String password = "";
+			try {
+				// --- Get adminuser
+				Employee customer = userMg.getAdminEmployee();
+
+				// --- Initialize Logindata
+				loginname = customer.getLogin();
+				password = customer.getPassword();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			// set the new user to the jaloSession
+			Properties prop = new Properties();
+			prop.setProperty("user.principal", loginname);
+			prop.setProperty("user.credentials", password);
+			// the user is a customer
+			prop.setProperty("session.type", "employee");
+
+			try {
+				// transfers the jaloSession to a different login
+				jaloSession.transfer(prop);
+			} catch (JaloSecurityException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        // --- LOGIN ------------------------------------------------------------------------------
+
+        
+%>
+<base href="<%=basePath%>">
+
+
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="This is my page">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META HTTP-EQUIV="Language" CONTENT="de">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+<style type="text/css">
+	body {
+		font-family: Arial, helvetica;
+	}
+	table#replacement th {
+		color:#BDD9FF;
+		text-align:left;
+		font-weight: bold;
+		background-color: #0B50F3;
+		font-size:11px;
+		padding:3px;
+	}
+	table#replacement td {
+		color:#0B50F3;
+		text-align:left;
+		font-weight: normal;
+		background-color: #FFFFFF;
+		vertical-align: top;
+		font-size:11px;
+		padding:3px;
+	}
+	.tooltip {
+	  position: absolute;
+	  display: none;
+	  background-color: #dddddd;
+	  color: black;
+	  border: 1px solid black;
+	  padding: 5px;
+	  font-family: Arial, helvetica;
+	  font-weight: normal;
+	}
+	a {
+		text-decoration:none;
+		color:#BDD9FF;
+	}
+</style>
+<script type="text/javascript">
+<!--
+wmtt = null;
+document.onmousemove = updateWMTT;
+function updateWMTT(e) {
+  if (wmtt != null) {
+    x = (document.all) ? window.event.x + wmtt.offsetParent.scrollLeft : e.pageX;
+    y = (document.all) ? window.event.y + wmtt.offsetParent.scrollTop  : e.pageY;
+    wmtt.style.left = (x + 20) + "px";
+    wmtt.style.top   = (y + 0) + "px";
+  }
+}
+function showWMTT(id) {
+  wmtt = document.getElementById(id);
+  wmtt.style.display = "block"
+}
+function hideWMTT() {
+  wmtt.style.display = "none";
+}
+// -->
+</script>
+</head>
+
+<body marginheight="0" marginwidth="0" leftmargin="0" topmargin="0" bgcolor="#ffffff" text="#BDD9FF" width="100%">
+<div style="height: 120px; vertical-align: middle; margin:0px; padding:0;border:0px;background-color:#0B50F3; text-align:right;font-size:24px; font-weight:bold; color:#ffffff;">
+<div style="vertical-align: bottom; align: left; float: left; margin:20px;padding:0;border:0;background-color:#0B50F3; text-align:right;font-size:24px; font-weight:bold; color:#ffffff;">WERA Product image status</div>
+<div style="align: right; margin:20px;padding:0;border:0;background-color:#0B50F3; text-align:right;font-size:24px; font-weight:bold; color:#ffffff;"><img src="images/e-business_platform.gif" /><br/>WERA - Edition</div></div>
+<div style="margin:0px;padding:0px;border:0px;background-color:#ffffff; text-align:left;font-size:12px; font-weight:bold; color:#0B50F3;">
+
+
+<br/>
+
+<div id="1" class="tooltip">The product code as defined in the hybris platform.</div> 
+<div id="2" class="tooltip">The <strong>expected EPS filename</strong> is the filename the WeraLive expects when determining availability of medias for this product. It is directly derived from the current product code.<br/>The <strong>assigned EPS filename</strong> in hybris should always match the expected EPS filename.<br/>If both filenames do not match, the erranous assigned name will be displayed.
+<br/><br/>For technical reference, the derivation rules for determining the expected EPS filename are as follows:<br/>
+<ul>
+<li>Any occurrence of SPACE,'/','#' or '+' is replaced by an underscore "_".</li>
+<li>Any occurrence of a Registered trademark sign is ignored.</li>
+<li>'&ouml;','&auml;','&uuml;' and '&szlig;' are replaced by "oe", "ae", "ue" and "ss", respectively.</li>
+<li>All other characters are taken as is.</li>
+</ul>
+</div>
+<div id="3" class="tooltip">Shows, if the physical EPS file is really found on the hard disk for the expected EPS filename.<br/>If the expected and assigned names do not match, it shows if the assigned EPS file exists.</div>
+<div id="4" class="tooltip">Shows, if the physical 300dpi JPG file is really found on the hard disk.<br/>If not (but the expected EPS file exists), it will be auto-generated whenever the product detail page is viewed.</div>
+<div id="5" class="tooltip">Shows, if the physical 300dpi TIF file is really found on the hard disk.<br/>If not (but the expected EPS file exists), it will be auto-generated whenever the product's PDF file is requested.</div>
+<div id="6" class="tooltip">If checked, the list will only show products with problems related to missing expected EPS files.</div>
+<div id="7" class="tooltip">Try to generate the 300dpi JPG image in case it is missing but the EPS is correctly assigned. At most 10 JPGs can be generated per run.</div>
+
+<%
+	HashMap productMap = new HashMap();
+
+	String epsDir = "/home/hybris/imagepool/pictures/";
+	String NexMartDir = "/home/hybris/nexmart/imagepool/";
+	String jpg300dpiDir = "/home/hybris/imagepool/pictures/jpg/";
+	String tif300dpiDir = "/home/hybris/imagepool/pictures/tif/";
+	
+	String checkIcon = "images/Check-icon.png";
+	String deleteIcon = "images/Delete-icon.png";
+	
+	String COLORSPACE_300DPI_JPG = "cmyk";
+	int MAX_AUTOREGENERATED_JPGS = 10;
+	ArrayList listOfAutoregeneratedProducts = new ArrayList();
+	
+	String mode = new String("all");
+
+	String userCatalogVersion = ( request.getParameter("catalogversion") != null ) ? request.getParameter("catalogversion") : "print/print_2011";
+	boolean bProblemsOnly = ( request.getParameter("problemsonly") != null ) && ( request.getParameter("problemsonly").equals("on") );
+	boolean bNexMartOnly = ( request.getParameter("nexmartonly") != null ) && ( request.getParameter("nexmartonly").equals("on") );
+	boolean bAutoregenJPG = ( request.getParameter("autoregenJPG") != null ) && ( request.getParameter("autoregenJPG").equals("on") );
+	int iAutoregeneratedJPGs = 0;
+	
+	String userSuppliedProductCode = ( request.getParameter("usersuppliedproduct") != null ) ? request.getParameter("usersuppliedproduct") : "";
+	
+	
+	
+	out.println("<form name=\"weraproductform\" action=\"./ImageStatus.jsp\" method=\"POST\">");
+	
+	// --- Katalogversion auswählen
+	out.println("Katalogversion:&nbsp;<select name='catalogversion'>");
+	Set versions = (Set) CatalogManager.getInstance().getAllCatalogVersions();
+	for ( Iterator it1 = versions.iterator(); it1.hasNext(); ) {
+		CatalogVersion cv = (CatalogVersion) it1.next();
+		String strCatalogValue      = cv.getCatalog().getId() + "/" + cv.getVersion();
+		
+		if ( strCatalogValue.equals(userCatalogVersion) ) 
+			out.println("<option selected value='" + strCatalogValue + "'>" + strCatalogValue + "</option>" );
+		else
+			out.println("<option value='"  + strCatalogValue + "'>"  + strCatalogValue + "</option>" );
+	}
+	out.println("</select>");
+	
+	
+	out.println("<input type=\"text\" name=\"usersuppliedproduct\" value=\""+userSuppliedProductCode+"\" /> Request image name for product code.<br/>");
+	if ( userSuppliedProductCode != "" ) {
+		out.println ("The product with code <span style=\"color:red;\"> "+userSuppliedProductCode+"</span> translates to image name: <span style=\"color:red;\">"+WeraProduct.s_normalizeFilenameForImageLookup(userSuppliedProductCode) +".eps</span><br/><br/>" );
+	}
+	out.println("<input type=\"checkbox\" name=\"problemsonly\" value=\"on\" " + ( bProblemsOnly ? " checked=\"checked\" " : "" ) + "/> Show only problem cases related to WeraLive. <a onmouseover=\"showWMTT('6')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a>");
+	out.println("<input type=\"checkbox\" name=\"nexmartonly\" value=\"on\" " + ( bNexMartOnly ? " checked=\"checked\" " : "" ) + "/> Check only NexMart. <a onmouseover=\"showWMTT('6')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a>");
+	out.println("<input type=\"checkbox\" name=\"autoregenJPG\" value=\"on\" " + ( bAutoregenJPG ? " checked=\"checked\" " : "" ) + "/> Auto-Regenerate 300dpi JPG. <a onmouseover=\"showWMTT('7')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a>");	
+	out.println("<input type=\"submit\" value=\"Update\" />");
+
+
+	out.println("</form>");
+	
+	
+	
+	out.println("<table id='replacement' border='1' cellpadding='0' cellspacing='0' width='70%'>");	
+	out.println("<tr>\n");
+	out.println("<th>No.</th>");
+	out.println("<th>Product Code <a onmouseover=\"showWMTT('1')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+	out.println("<th>EPS Name <a onmouseover=\"showWMTT('2')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a><br/><small>expected / <span style='color:red;'>(assigned)</small></span></th>");
+	out.println("<th>EPS exists <a onmouseover=\"showWMTT('3')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a><br/><small>expected / <span style='color:red;'>(assigned)</small></span></th>");
+	out.println("<th>Produktbild ( 2 - N ) <a onmouseover=\"showWMTT('4')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+	out.println("<th>JPG (300dpi) exists <a onmouseover=\"showWMTT('5')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+	// out.println("<th>TIF (300dpi) exists <a onmouseover=\"showWMTT('6')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+	if ( bNexMartOnly ) {
+		out.println("<th>NexMart (Thumb) exists <a onmouseover=\"showWMTT('6')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+		out.println("<th>NexMart (Normal) exists <a onmouseover=\"showWMTT('6')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+		out.println("<th>NexMart (Zoom) exists <a onmouseover=\"showWMTT('6')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+	} else {
+		out.println("<th>Web (100px) exists <a onmouseover=\"showWMTT('6')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+		out.println("<th>Web (260px) exists <a onmouseover=\"showWMTT('6')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+		out.println("<th>Web (380px) exists <a onmouseover=\"showWMTT('6')\" onmouseout=\"hideWMTT()\" href=\"#\"><img src=\"images/Help-icon.png\" border=\"0\"></a></th>");
+	}
+	out.println("</tr>\n");
+	
+	// --- Holen der Produkte
+	Collection products = wm.getProducts();
+	// Collection products = (Collection) WeraProduct.getAllInstances();
+	WeraKatalog oWerakatalog = new WeraKatalog();
+	String[] aCatalogVersion = userCatalogVersion.split("/");
+	System.out.println(aCatalogVersion[0]);
+	System.out.println(aCatalogVersion[1]);
+	Collection colProductData = oWerakatalog.getProductsFromCatalogVersion ( aCatalogVersion[0], aCatalogVersion[1], 1  );
+	Collection productsWithoutMedia = new ArrayList();
+	
+	// --- Schleife über alle Daten (Produkt)
+	int iCnt = 0;
+	int iCntShown = 0;
+	//for ( Iterator it1 = products.iterator(); it1.hasNext(); ) {
+	for ( Iterator it1 = colProductData.iterator(); it1.hasNext(); ) {
+		HashMap hashData = (HashMap) it1.next();
+		Product p = (Product) hashData.get("product");
+		if ( p instanceof WeraProduct ) {
+			iCnt++;
+			WeraProduct weraproduct = (WeraProduct) p;
+			String normalizedFilename = weraproduct.normalizeFilenameForImageLookup();
+			
+			String NexMartThumb      = normalizedFilename + "_thumb.jpg";
+			String NexMartNormal     = normalizedFilename + "_normal.jpg";
+			String NexMartZoom       = normalizedFilename + "_zoom.jpg";
+			String epsFilename       = normalizedFilename + ".eps";
+			String jpg300dpiFilename = normalizedFilename + "_cmyk_300dpi.jpg";
+			String tif300dpiFilename = normalizedFilename + "_rgb_300dpi.tif";
+			
+			boolean doDisplay = true;
+			boolean bEPSExists = true;
+			boolean bEPSAssignedExists = true;
+			boolean bJPGExists = true;
+			boolean bTIFExists = true;
+			boolean b100pxExists = true;
+			boolean b260pxExists = true;
+			boolean b380pxExists = true;
+			boolean bImageCheckResult = true;
+			
+			// --- NexMart
+			File fNexMartThumb  = new File (NexMartDir + NexMartThumb);
+			File fNexMartNormal = new File (NexMartDir + NexMartNormal);
+			File fNexMartZoom   = new File (NexMartDir + NexMartZoom);
+			boolean bNexMartThumbExists  = ( fNexMartThumb.isFile() ) ;
+			boolean bNexMartNormalExists = ( fNexMartNormal.isFile() ) ;
+			boolean bNexMartZoomExists   = ( fNexMartZoom.isFile() ) ;
+			
+			// --- EPS und Print-Images
+			File fEPS = new File (epsDir + epsFilename);
+			File fJPG = new File (jpg300dpiDir + jpg300dpiFilename);
+			/* File fTIF = new File (tif300dpiDir + tif300dpiFilename); */
+			boolean bProductAutoregenerated = false;
+			
+			if ( ! fEPS.isFile() ) {
+				bEPSExists = false;
+			}
+			if ( ! fJPG.isFile() ) {
+				bJPGExists = false;
+				
+				if ( true == bAutoregenJPG && true == bEPSExists && iAutoregeneratedJPGs < MAX_AUTOREGENERATED_JPGS ) {
+					Collection pictures = (Collection) ((WeraProduct)weraproduct).getAttribute("pictures1");
+					WeraMedia wmPic = null;
+					if ( pictures.iterator().hasNext() ) {
+						wmPic = (WeraMedia) pictures.iterator().next();				
+						wmPic.createExternalVariant("jpg", "", COLORSPACE_300DPI_JPG, "300");
+						bJPGExists = wmPic.checkIfExistsExternalVariant("jpg", "", COLORSPACE_300DPI_JPG, "300");
+						if ( bJPGExists ) {
+							iAutoregeneratedJPGs++;
+							listOfAutoregeneratedProducts.add(weraproduct.getCode());
+							bProductAutoregenerated = true;
+						}
+					}
+				}
+			}
+			/*
+			if ( ! fTIF.isFile() ) {
+				bTIFExists = false;
+			}
+			*/
+			if ( true == doDisplay ) {
+				Collection pictures 				= (Collection) ((WeraProduct)weraproduct).getAttribute("pictures1");
+				Collection<WeraMedia> pictures_other_product	= (Collection) ((WeraProduct)weraproduct).getAttribute("others_productpictures");
+				Collection pictures_web100			= (Collection) ((WeraProduct)weraproduct).getAttribute("pictures2");
+				Collection pictures_web260			= (Collection) ((WeraProduct)weraproduct).getAttribute("pictures3");
+				Collection pictures_web380			= (Collection) ((WeraProduct)weraproduct).getAttribute("featureicons1");
+				WeraMedia wmPic = null;
+				String realFileName = "NONE";
+				String realFileName100px = "NONE";
+				String realFileName260px = "NONE";
+				String realFileName380px = "NONE";
+				String realFileNameOtherProducts = "";
+				if ( pictures != null && pictures_web100 != null && pictures_web260 != null && pictures_web380 != null ) {
+					
+					// --- EPS - Bilder ---------------------------------------------
+					// --- 1. Produktbild
+					if ( pictures.iterator().hasNext() ) {
+						wmPic = (WeraMedia) pictures.iterator().next();
+						realFileName = wmPic.getRealFileName();
+						File fEPSAssigned = new File (epsDir + realFileName);
+						if ( ! fEPSAssigned.isFile() ) {
+							bEPSAssignedExists = false;
+						}
+					} else {
+						bEPSAssignedExists = false;
+					}
+					// --- 2. - n. Produktbild
+					for ( WeraMedia wmPic1 : pictures_other_product ) {
+						//wmPic = (WeraMedia) pictures_other_product.iterator().next();
+						realFileNameOtherProducts += wmPic1.getRealFileName() + "<br>";
+					}
+					// --- EPS - Bilder ---------------------------------------------
+					
+					// --- Web 100px    ---------------------------------------------
+					if ( pictures_web100.iterator().hasNext() ) {
+						b100pxExists = true;
+						wmPic = (WeraMedia) pictures_web100.iterator().next();
+						realFileName100px = wmPic.getRealFileName();
+					} else {
+						b100pxExists = false;
+					}
+					// --- Web 100px    ---------------------------------------------
+					
+					// --- Web 260px    ---------------------------------------------
+					if ( pictures_web260.iterator().hasNext() ) {
+						b260pxExists = true;
+						wmPic = (WeraMedia) pictures_web260.iterator().next();
+						realFileName260px = wmPic.getRealFileName();
+					} else {
+						b260pxExists = false;
+					}
+					// --- Web 260px    ---------------------------------------------
+					
+					// --- Web 380px    ---------------------------------------------
+					if ( pictures_web380.iterator().hasNext() ) {
+						b380pxExists = true;
+						wmPic = (WeraMedia) pictures_web380.iterator().next();
+						realFileName380px = wmPic.getRealFileName();
+					} else {
+						b380pxExists = false;
+					}
+					// --- Web 380px    ---------------------------------------------
+					
+					if ( bNexMartOnly ) 
+						bImageCheckResult = bEPSExists == false || bNexMartThumbExists == false || bNexMartNormalExists == false || bNexMartZoomExists == false;
+					else
+						bImageCheckResult = bEPSExists == false || b100pxExists == false || b260pxExists == false || b380pxExists == false;
+					if ( ! bProblemsOnly || bImageCheckResult ) {
+						iCntShown++;
+						out.println("<tr>");
+						out.println("<td>##"+iCntShown+"</td>" );
+						out.println("<td>"+weraproduct.getCode()+"<br>"+weraproduct.getPK()+"</td>" );
+						boolean bEPSCorrect = realFileName.equals(epsFilename);
+						if ( bEPSCorrect ) {
+							out.println("<td>"+epsFilename+"</td>");
+						} else {
+							out.println("<td>"+epsFilename + " <span style='color:red;'><br/>(assigned: " + realFileName + ")</span></td>");
+						}
+							
+						out.print("<td><img src='"+ ( bEPSExists ? checkIcon : deleteIcon)+"' border='0' />");
+						if ( ! bEPSCorrect ) {
+							out.print("<br/><span style='color:red;'>(<img src='"+ ( bEPSAssignedExists ? checkIcon : deleteIcon)+"' border='0' />)</span>");
+						}
+						out.println("</td>");
+						
+						// --- 2. - n. Produktbild (später anzeige/ auswertung/ prüfung optimieren)
+						out.println("<td>" + realFileNameOtherProducts + "</td>");
+						
+						if ( true == bProductAutoregenerated ) {
+							out.println("<td><img src='"+ ( bJPGExists ? checkIcon : deleteIcon)+"' border='0' /> (R)</td>");
+						} else {
+							out.println("<td><img src='"+ ( bJPGExists ? checkIcon : deleteIcon)+"' border='0' /></td>");
+						}
+						// out.println("<td><img src='"+ ( bTIFExists ? checkIcon : deleteIcon)+"' border='0' /></td>");
+						if ( bNexMartOnly ) {
+							if ( bNexMartThumbExists )  {
+								out.println("<td><div id='"+NexMartThumb
+										+ "' style='border:2px solid black;padding:2px;position:relative;left:0px;top:0px;display:none;background-color:white;'><img src='images/nexmart/"+ NexMartThumb 
+										+ "' border='0' /></div><img onmouseover=\"document.getElementById('"+NexMartThumb+"').style.display='block'\" onmouseout=\"document.getElementById('"+NexMartThumb+"').style.display='none'\" src='"+ checkIcon + "' border='0' />&nbsp;" 
+										+ NexMartThumb +  "&nbsp;</td>");
+							} else {
+								out.println("<td><img src='"+ deleteIcon  + "' border='0' />&nbsp;" + NexMartThumb +  "&nbsp;</td>");
+							}
+							if ( bNexMartNormalExists )  {
+								out.println("<td><div id='"+NexMartNormal
+										+ "' style='border:2px solid black;padding:2px;position:absolute;left:0px;display:none;background-color:white;'><img src='images/nexmart/"+ NexMartNormal 
+										+ "' border='0' /></div><img onmouseover=\"document.getElementById('"+NexMartNormal+"').style.display='block'\" onmouseout=\"document.getElementById('"+NexMartNormal+"').style.display='none'\" src='"+ checkIcon + "' border='0' />&nbsp;" 
+										+ NexMartNormal +  "&nbsp;</td>");
+							} else {
+								out.println("<td><img src='"+ deleteIcon  + "' border='0' />&nbsp;" + NexMartNormal +  "&nbsp;</td>");
+							}
+							if ( bNexMartZoomExists )  {
+								out.println("<td><div id='"+NexMartZoom
+										+ "' style='border:2px solid black;padding:2px;position:absolute;left:0px;display:none;background-color:white;'><img src='images/nexmart/"+ NexMartZoom 
+										+ "' border='0' /></div><img onmouseover=\"document.getElementById('"+NexMartZoom+"').style.display='block'\" onmouseout=\"document.getElementById('"+NexMartZoom+"').style.display='none'\" src='"+ checkIcon + "' border='0' />&nbsp;" 
+										+ NexMartZoom +  "&nbsp;</td>");
+							} else {
+								out.println("<td><img src='"+ deleteIcon  + "' border='0' />&nbsp;" + NexMartZoom +  "&nbsp;</td>");
+							}
+						}
+						else {
+							if ( b100pxExists )  {
+								out.println("<td><img src='"+ checkIcon + "' border='0' />&nbsp;" + realFileName100px +  "&nbsp;</td>");
+							} else {
+								out.println("<td><img src='"+ deleteIcon  + "' border='0' /></td>");
+							}
+							if ( b260pxExists )  {
+								out.println("<td><img src='"+ checkIcon + "' border='0' />&nbsp;" + realFileName260px +  "&nbsp;</td>");
+							} else {
+								out.println("<td><img src='"+ deleteIcon  + "' border='0' /></td>");
+							}
+							if ( b380pxExists )  {
+								out.println("<td><img src='"+ checkIcon + "' border='0' />&nbsp;" + realFileName380px +  "&nbsp;</td>");
+							} else {
+								out.println("<td><img src='"+ deleteIcon  + "' border='0' /></td>");
+							}
+						}
+							
+						out.println("</tr>");
+					}
+				}
+			}
+		}
+
+	}
+	out.println("</table>");
+	
+	if ( listOfAutoregeneratedProducts.size() > 0 ) {
+		out.println( "<br><br>Auto-Regenerated JPGs for:<br>");
+		for ( Iterator itauto = listOfAutoregeneratedProducts.iterator(); itauto.hasNext(); ) {
+			String sCodeAuto = (String) itauto.next();
+			out.println(sCodeAuto + "<br>");
+		}
+	}
+	
+/*
+// --- Anlegen der Media-Objekte (Produkte) ---------------------------
+        FileWriter hScript = new FileWriter(srcImgPath + "/create_webimages_result.txt" );
+   	    //WeraMedia webWeraMedia = null;
+   	    //WeraMedia tmpWeraMedia = null;
+   	    Collection categories = null;
+        //Collection colMediaCollection = null;
+	    for ( Iterator it1 = allProducts.iterator(); it1.hasNext(); ) {
+   	        weraproduct = (WeraProduct)it1.next();
+     		String jpgFilename = weraproduct.normalizeFilenameForImageLookup()+".jpg";
+            
+   	            hScript.write(weraproduct.getCode() + "\t" + weraproduct.getName() + "\t"+ jpgFilename + "\t");
+   	           
+   	            // --- 100px => pictures2
+      		    File fJPG = new File (srcImgPath + "/100/" + jpgFilename);
+ 		        if ( fJPG.isFile() ) {
+//--		        
+  	               webWeraMedia = wm.createWebMedia ( srcImgPath + "wera_web_pictures/100_50px/" + jpgFilename, "web100_" + jpgFilename, "webimage" );
+  	               colMediaCollection = (Collection)weraproduct.getAttribute("pictures2");
+	               if ( colMediaCollection != null ) {
+  	                  for ( Iterator itMedia1 = colMediaCollection.iterator(); itMedia1.hasNext(); ) {
+  	                     tmpWeraMedia = (WeraMedia)itMedia1.next();
+  	                     System.out.println("lösche " + tmpWeraMedia.getFileName());
+  	                     tmpWeraMedia.remove();
+  	                  }
+	               }
+                   colMediaCollection = new ArrayList();
+	               colMediaCollection.add(webWeraMedia);
+  	               weraproduct.setAttribute( "pictures2", colMediaCollection );
+				   
+   	               hScript.write("OK\t");
+
+ 		        } // --- if ( fEPS.isFile() ) {
+ 		        else
+   	               hScript.write("FEHLT\t");
+
+
+   	            // --- 260px => pictures3
+      		    fJPG = new File (srcImgPath + "/260/" + jpgFilename);
+ 		        if ( fJPG.isFile() ) {
+// -- 		        
+  	               webWeraMedia = wm.createWebMedia ( srcImgPath + "wera_web_pictures/260_130px/" + jpgFilename, "web260_" + jpgFilename, "webimage" );
+  	               colMediaCollection = (Collection)weraproduct.getAttribute("pictures3");
+	               if ( colMediaCollection != null ) {
+  	                  for ( Iterator itMedia1 = colMediaCollection.iterator(); itMedia1.hasNext(); ) {
+  	                     tmpWeraMedia = (WeraMedia)itMedia1.next();
+  	                     System.out.println("lösche " + tmpWeraMedia.getFileName());
+  	                     tmpWeraMedia.remove();
+  	                  }
+	               }
+                   colMediaCollection = new ArrayList();
+	               colMediaCollection.add(webWeraMedia);
+  	               weraproduct.setAttribute( "pictures3", colMediaCollection );
+// --				   
+   	               hScript.write("OK\t");
+
+ 		        } // --- if ( fEPS.isFile() ) {
+ 		        else
+   	               hScript.write("FEHLT\t");
+
+   	            // --- 380px => featureicons1
+      		    fJPG = new File (srcImgPath + "/380/" + jpgFilename);
+ 		        if ( fJPG.isFile() ) {
+//-- 		        
+  	               webWeraMedia = wm.createWebMedia ( srcImgPath + "/380/" + jpgFilename, "web380_" + jpgFilename, "webimage" );
+  	               colMediaCollection = (Collection)weraproduct.getAttribute("featureicons1");
+	               if ( colMediaCollection != null ) {
+  	                  for ( Iterator itMedia1 = colMediaCollection.iterator(); itMedia1.hasNext(); ) {
+  	                     tmpWeraMedia = (WeraMedia)itMedia1.next();
+  	                     System.out.println("lösche " + tmpWeraMedia.getFileName());
+  	                     tmpWeraMedia.remove();
+  	                  }
+	               }
+                   colMediaCollection = new ArrayList();
+	               colMediaCollection.add(webWeraMedia);
+  	               weraproduct.setAttribute( "featureicons1", colMediaCollection );
+//--			   
+   	               hScript.write("OK");
+
+ 		        } // --- if ( fEPS.isFile() ) {
+ 		        else
+   	               hScript.write("FEHLT");
+
+            hScript.write("\r\n");
+	    
+        }
+        hScript.close();
+        System.out.println("Anzahl=" + iCnt );
+// --- Anlegen der Media-Objekte (Produkte) ---------------------------
+*/
+
+%>
+
+</div>
+
+<!-- ************************************* STEP 4 ************************************* -->
+</body>
+</html>

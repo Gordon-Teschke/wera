@@ -1,0 +1,3420 @@
+package com.computationaldesign.wera.jalo;
+
+import de.hybris.platform.catalog.constants.GeneratedCatalogConstants;
+import de.hybris.platform.catalog.jalo.CatalogVersion;
+import de.hybris.platform.catalog.jalo.ProductFeature;
+import de.hybris.platform.catalog.jalo.ProductReference;
+import de.hybris.platform.catalog.jalo.classification.ClassAttributeAssignment;
+import de.hybris.platform.catalog.jalo.classification.ClassificationAttribute;
+import de.hybris.platform.catalog.jalo.classification.ClassificationAttributeUnit;
+import de.hybris.platform.catalog.jalo.classification.ClassificationAttributeValue;
+import de.hybris.platform.catalog.jalo.classification.ClassificationClass;
+import de.hybris.platform.catalog.jalo.classification.util.Feature;
+import de.hybris.platform.catalog.jalo.classification.util.FeatureValue;
+import de.hybris.platform.catalog.jalo.classification.util.TypedFeature;
+import de.hybris.platform.category.jalo.Category;
+import de.hybris.platform.jalo.ConsistencyCheckException;
+import de.hybris.platform.jalo.Item;
+import de.hybris.platform.jalo.JaloBusinessException;
+import de.hybris.platform.jalo.JaloInvalidParameterException;
+import de.hybris.platform.jalo.JaloSession;
+import de.hybris.platform.jalo.SearchResult;
+import de.hybris.platform.jalo.SessionContext;
+import de.hybris.platform.jalo.c2l.C2LManager;
+import de.hybris.platform.jalo.c2l.Language;
+import de.hybris.platform.jalo.enumeration.EnumerationManager;
+import de.hybris.platform.jalo.enumeration.EnumerationType;
+import de.hybris.platform.jalo.enumeration.EnumerationValue;
+import de.hybris.platform.jalo.flexiblesearch.FlexibleSearchException;
+import de.hybris.platform.jalo.product.Product;
+import de.hybris.platform.jalo.product.Unit;
+import de.hybris.platform.jalo.security.JaloSecurityException;
+import de.hybris.platform.jalo.type.AttributeDescriptor;
+import de.hybris.platform.jalo.type.ComposedType;
+import de.hybris.platform.jalo.type.TypeManager;
+import de.hybris.platform.util.Config;
+import de.hybris.platform.variants.jalo.VariantProduct;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+
+class FieldComparatorString implements Comparator {
+
+	String m_strCompareField = "code";
+
+	public void setCompareField(final String strField) {
+		if (strField != null && strField.length() > 0) {
+			m_strCompareField = strField;
+		}
+	}
+
+	private String _CutRight(String strValue, final String strChar) {
+
+		final int iPos = strValue.indexOf(strChar);
+		if (iPos > 0) {
+			strValue = strValue.substring(0, iPos);
+		}
+		return strValue;
+	}
+
+	public int compare(final Object o1, final Object o2) /* descending order */ {
+
+		// --- Initialize
+		String strValue1 = "";
+		String strValue2 = "";
+		final int iResult = 0;
+		try {
+
+			// --- Hole Values I
+			if (o1 != null) {
+				strValue1 = (String) ((Item) o1).getAttribute(m_strCompareField);
+				if (strValue1 != null && strValue1.length() > 0) {
+					final char cFirst = strValue1.charAt(0);
+					if (48 <= cFirst && cFirst <= 59) {
+						strValue1 = WeraProduct.s_normalizeFilenameForImageLookup(strValue1);
+						strValue1 = _CutRight(strValue1, "_");
+						strValue1 = _CutRight(strValue1, "-");
+						final String newValue1 = "00" + strValue1;
+						strValue1 = newValue1.substring(newValue1.length() - 4);
+					}
+				}
+			} else {
+				strValue1 = "";
+			}
+
+			// --- Hole Values II
+			if (o2 != null) {
+				strValue2 = (String) ((Item) o2).getAttribute(m_strCompareField);
+				if (strValue2 != null && strValue2.length() > 0) {
+					final char cFirst = strValue2.charAt(0);
+					if (48 <= cFirst && cFirst <= 59) {
+						strValue2 = WeraProduct.s_normalizeFilenameForImageLookup(strValue2);
+						strValue2 = _CutRight(strValue2, "_");
+						strValue2 = _CutRight(strValue2, "-");
+						final String newValue2 = "00" + strValue2;
+						strValue2 = newValue2.substring(newValue2.length() - 4);
+					}
+				}
+			} else {
+				strValue2 = "";
+			}
+
+		} catch (final JaloInvalidParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (strValue1 == null || strValue2 == null) {
+			return 0;
+		} else {
+			return strValue1.compareTo(strValue2);
+		}
+	}
+}
+
+class FieldComparatorLong implements Comparator {
+
+	String m_strCompareField = "code";
+
+	public void setCompareField(final String strField) {
+		m_strCompareField = strField;
+	}
+
+	public int compare(final Object o1, final Object o2) /* descending order */ {
+
+		// --- Initialize
+		Long oValue1 = null;
+		Long oValue2 = null;
+		final int iResult = 0;
+
+		try {
+			// --- Hole Values I
+			if (o1 != null) {
+				oValue1 = (Long) ((Item) o1).getAttribute(m_strCompareField);
+			}
+
+			// --- Hole Values II
+			if (o2 != null) {
+				oValue2 = (Long) ((Item) o2).getAttribute(m_strCompareField);
+			}
+
+		} catch (final JaloInvalidParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (oValue1 == null || oValue2 == null) {
+			System.out.print("!! FieldComparatorLong (values=null");
+			return 0;
+		} else {
+			if (oValue1.intValue() == oValue2.intValue()) {
+				return 0;
+			}
+			if (oValue1.intValue() > oValue2.intValue()) {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+	}
+}
+
+class FieldComparatorInt implements Comparator {
+
+	String m_strCompareField = "orderPL";
+
+	public void setCompareField(final String strField) {
+		m_strCompareField = strField;
+	}
+
+	public int compare(final Object o1, final Object o2) /* descending order */ {
+
+		// --- Initialize
+		Integer oValue1 = null;
+		Integer oValue2 = null;
+		final int iResult = 0;
+
+		try {
+			// --- Hole Values I
+			if (o1 != null) {
+				oValue1 = (Integer) ((Item) o1).getAttribute(m_strCompareField);
+			} else {
+//				LOG.info("compare O1==null");
+				oValue1 = new Integer(0);
+			}
+			;
+
+			// --- Hole Values II
+			if (o2 != null) {
+				oValue2 = (Integer) ((Item) o2).getAttribute(m_strCompareField);
+			} else {
+//				LOG.info("compare O2==null");
+				oValue2 = new Integer(0);
+			}
+
+		} catch (final JaloInvalidParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (oValue1 == null) {
+			oValue1 = new Integer(0);
+		}
+		if (oValue2 == null) {
+			oValue2 = new Integer(0);
+		}
+
+		if (oValue1 == null) {
+//			LOG.info("compare oValue1==null " + o1);
+			return 0;
+		}
+		if (oValue2 == null) {
+//			LOG.info("compare oValue2==null " + o2);
+			return 0;
+		}
+
+		if (oValue1.intValue() == oValue2.intValue()) {
+			return 0;
+		}
+		if (oValue1.intValue() > oValue2.intValue()) {
+			return 1;
+		} else {
+			return -1;
+		}
+
+	}
+}
+
+class OrderComparatorInt implements Comparator {
+
+	public int compare(final Object o1, final Object o2) /* descending order */ {
+
+		// --- Initialize
+		Integer iValue1 = new Integer(0);
+		Integer iValue2 = new Integer(0);
+
+		try {
+			// --- Hole Values
+			iValue1 = (Integer) ((Item) o1).getAttribute("order");
+			iValue2 = (Integer) ((Item) o2).getAttribute("order");
+		} catch (final JaloInvalidParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (iValue1 == null || iValue2 == null) {
+//			LOG.info("!! OrderComparatorInt (values=null");
+			return 0;
+		} else {
+			if (iValue1.intValue() == iValue2.intValue()) {
+				return 0;
+			}
+			if (iValue1.intValue() > iValue2.intValue()) {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+	}
+}
+
+class OrderComparator implements Comparator {
+
+	public int compare(final Object o1, final Object o2) /* descending order */ {
+
+		// --- Initialize
+		Integer iValue1 = new Integer(0);
+		Integer iValue2 = new Integer(0);
+		final int iResult = 0;
+
+		try {
+			// --- Hole Values
+			iValue1 = (Integer) ((Item) o1).getAttribute("order");
+			iValue2 = (Integer) ((Item) o2).getAttribute("order");
+		} catch (final JaloInvalidParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (iValue1 == null || iValue2 == null) {
+			return 0;
+		} else {
+			return iValue1.compareTo(iValue2);
+		}
+	}
+}
+
+class ProductfeatureByCaaPositionComparator implements Comparator {
+
+	public int compare(final Object o1, final Object o2) /* descending order */ {
+
+		// --- Initialize
+		Integer iValue1 = new Integer(0);
+		Integer iValue2 = new Integer(0);
+		final int iResult = 0;
+
+		try {
+			// --- Hole Values
+			ClassAttributeAssignment caa1 = ((ProductFeature) o1).getClassificationAttributeAssignment();
+			if (caa1 != null) {
+				iValue1 = caa1.getPosition();
+			}
+			ClassAttributeAssignment caa2 = ((ProductFeature) o2).getClassificationAttributeAssignment();
+			if (caa2 != null) {
+				iValue2 = caa2.getPosition();
+			}
+		} catch (final Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (iValue1 == null || iValue2 == null) {
+			return 0;
+		} else {
+			return iValue1.compareTo(iValue2);
+		}
+	}
+}
+
+class WeraProductByCategoryOrderComparator implements Comparator {
+
+	HashMap hashCategory2ProductExt = new HashMap();
+
+	public int compare(final Object o1, final Object o2) /* descending order */ {
+
+		// --- Initialize
+		Integer iValue1 = null;
+		Integer iValue2 = null;
+
+		// --- Hole Values Product I
+		if (o1 != null && o1 instanceof WeraProduct) {
+			// --- Hole die Order aus dem vorbereitenten Tashtabelle
+			iValue1 = (Integer) hashCategory2ProductExt.get(((Item) o1).getPK().toString());
+
+		} // --- if ( o1 != null && o1 instanceof WeraProduct ) {
+
+		// --- Hole Values Product II
+		if (o2 != null && o2 instanceof WeraProduct) {
+			// --- Hole die Order aus dem vorbereitenten Tashtabelle
+			iValue2 = (Integer) hashCategory2ProductExt.get(((Item) o2).getPK().toString());
+
+		} // --- if ( o1 != null && o1 instanceof WeraProduct ) {
+
+		// --- compare it
+		if (iValue1 == null || iValue2 == null) {
+			return 0;
+		} else {
+			return iValue1.compareTo(iValue2);
+		}
+	}
+}
+
+/**
+ *
+ * @author teschke
+ */
+@SuppressWarnings("PMD")
+public class WeraProduct extends GeneratedWeraProduct {
+
+	/**
+	 * Used logger instance.
+	 */
+	private static final Log LOG = LogFactory.getLog(WeraProduct.class);
+
+	private static Logger log = Logger.getLogger(WeraProduct.class.getName());
+	private boolean m_bCheckForActivation = true; // --- Default: get only active items
+	CatalogVersion m_catalogversion = null;
+
+	protected ArrayList m_colWeraProductSetData = null;
+	private ArrayList m_colWeraProductSetFootnotes = null;
+
+	final static private String[] m_aryHalterCodes
+			= {"8000 A", "8000 B", "8000 C", "3816 R", "895/4/1 K", "819/1 Vario", "98/4/1", "889/4/1 K", "3888/4/1 K", "392", "797 A/4/1",
+				"797 B/4/1", "810/1 ESD", "810/1 Vario", "810/2", "811/1 ESD", "811/1 Vario", "812/1 Vario", "813 R", "813 R ESD",
+				"815/4/1", "816 R", "816 R ESD", "816/4/1", "817 R", "817 VDE", "829/4/1 Vario", "887/4 RR", "888/4/1 K", "889/4 R",
+				"889/4/1", "890/00/0", "890/3/1", "890/4/1", "890/5/1", "890/6/1", "890/7/1", "890/7/2", "890/8/1", "891/3/1",
+				"891/4/1", "891/5/1", "891/6/1", "891/7/1", "891/7/2", "891/8/1", "892/3/1", "892/4/1", "892/7/2", "892/8/1",
+				"893/4/1 K", "894/14/1", "894/3/1", "894/4/1", "894/4/1 K", "894/5/1", "894/8/1", "895/14/1", "895/3/1", "895/4 B",
+				"895/4/1", "895/5/1", "895/8/1", "897/4 B", "897/4 R", "899/14/1", "899/3/1", "899/4/1", "899/4/1 4", "899/4/1 6",
+				"899/4/1 K", "899/5/1", "899/8/1", "899/8/1 K"};
+
+	final static HashSet m_setHalterCodes = new HashSet(Arrays.asList(m_aryHalterCodes));
+
+	/**
+	 *
+	 */
+	public WeraProduct() {
+		// empty
+	}
+
+	/**
+	 *
+	 * @param ctx
+	 * @param type
+	 * @param allAttributes
+	 * @return
+	 * @throws JaloBusinessException
+	 */
+	@Override
+	protected Item createItem(final SessionContext ctx, final ComposedType type, final ItemAttributeMap allAttributes)
+			throws JaloBusinessException {
+		// business code placed here will be executed before the item is created
+		// then create the item
+		final Item item = super.createItem(ctx, type, allAttributes);
+		// business code placed here will be executed after the item was created
+		// and return the item
+		return item;
+	}
+
+	/**
+	 * remove the item. you can delete this method if you don't want to
+	 * intercept the removal of this item
+	 */
+	@Override
+	public void remove(final SessionContext ctx) throws ConsistencyCheckException {
+		// ## business code placed here will be executed before the item is removed
+		try {
+			log.info("WeraProduct::remove() => delete Produktfeatures...");
+			// Produktfeatures löschen
+			/*
+			 * !!! ACHTUNG Collection colProductFeatures = (Collection) getAttribute("features"); ProductFeature
+			 * productFeature = null; for (Iterator it1 = colProductFeatures.iterator(); it1.hasNext();) { // --- N�chstes
+			 * ProductFeature productFeature = (ProductFeature) it1.next(); productFeature.remove(); } log.info
+			 * ("WeraProduct::remove() => delete Produktfeatures done.");
+			 */
+
+			log.info("WeraProduct::remove() => delete Outputcontrols...");
+			// --- Outputcontrols löschen
+			final Collection colOutputcontrols = (Collection) getAttribute("outputcontrols");
+			Outputcontrol oc = null;
+			if (colOutputcontrols != null) {
+				for (final Iterator it2 = colOutputcontrols.iterator(); it2.hasNext();) {
+					oc = (Outputcontrol) it2.next();
+					oc.remove();
+				}
+			}
+			log.info("WeraProduct::remove() => delete Outputcontrols done.");
+
+			// then create the item
+			super.remove(ctx);
+
+		} catch (final Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// ## business code placed here will be executed after the item was removed
+	}
+
+	// --------------------------------------------------------------------------------------------------------------------------------	
+	// --- Hilfsfunktionen
+	// --------------------------------------------------------------------------------------------------------------------------------	
+	/**
+	 *
+	 * @param values
+	 */
+	public void beforeSave(final Map values) {
+		log.info("+++beforeSave.weraprocuct - (START) - code = " + getCode());
+
+		log.info("+++beforeSave.weraprocuct - (ENDE) - code = " + getCode());
+	}
+
+	/**
+	 *
+	 * @param values
+	 */
+	public void afterSave(final Map values) {
+		log.info("+++afterSave.weraprocuct - (START) - code = " + getCode());
+
+		// --- preset
+		final WeraManager wm	= WeraManager.getInstance();
+
+		try {
+			// --- Anlegen der Outputcontrols
+			wm.createOutputcontrolByProduct(this);
+
+			// --- Product / Category Zusatzinformationen
+			wm.createCategory2ProductExt(this, Config.getParameter("wera.mastercatalogversion"));
+
+		} catch (final JaloInvalidParameterException e) {
+			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (final JaloBusinessException e) {
+			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// --- Gebe lokalisierte Produktnamen an Varianten weiter
+		updateVariantNames();
+
+		// --- Prüfen des Hauptbilds
+		checkMedia(values);
+
+		// --- Setze in allen Varianten leere Pflichtfelder von Klassifikationsattributen auf die Belegung des Basisprodukts.
+		// --- im Moment nur ProfiClass
+		updateVariantMandatoryFeatures();
+
+		// --- Index Alphanum. (START) ------------------------------------------------------------------------------------------------
+		//
+		updateArtikelNrIndex();
+
+		
+		log.info("+++afterSave.weraprocuct - (ENDE) - code = " + getCode());
+	}
+
+	/**
+	 * Update Index Alphanum
+	 */
+	public void updateArtikelNrIndex() {
+
+		// --- preset
+		final WeraManager wm	= WeraManager.getInstance();
+		
+		// --- Index Alphanum. (START) ------------------------------------------------------------------------------------------------
+		//
+		// --- preset
+		String strArtNr			= (String) wm.getAttribute( (Item)this, "code" );
+		
+		// --- hole sprachen
+		Language currentSessionLanguage = JaloSession.getCurrentSession().getSessionContext().getLanguage();
+		final Collection colLang = C2LManager.getInstance().getAllLanguages();
+
+		// --- schleife �ber alle Sprachen
+		for (final Iterator it1 = colLang.iterator(); it1.hasNext();) {
+			
+			final Language lang1 = (Language) it1.next();
+			final String currentLanguage = lang1.getIsoCode();
+			wm.SetLanguage(currentLanguage);
+			
+			// --- hole die Artikelnummer
+			String artikelnr_index	= (String) wm.getAttribute( (Item)this, "artikelnr_index" );
+			
+			if ( artikelnr_index == null || artikelnr_index.equals("") ) {
+
+				// --- artikelnummer setzen
+				wm.setAttribute( (Item)this, "artikelnr_index", strArtNr );
+			}
+		}
+		wm.SetLanguage( currentSessionLanguage.getIsoCode() );
+		// --- Index Alphanum. (ENDE) ------------------------------------------------------------------------------------------------
+		
+	}
+
+	/**
+	 * Hole alle Index Alphanum
+	 */
+	public TreeMap getAllArtikelNrIndex () {
+
+		// --- preset
+		final WeraManager wm						= WeraManager.getInstance();
+		//HashMap<String,String> artikelNumbers		= new HashMap();
+		TreeMap<String,String> artikelNumbers		= new TreeMap();
+		
+		// --- Index Alphanum. (START) ------------------------------------------------------------------------------------------------
+		//
+		// --- preset
+		String strArtNr			= (String) wm.getAttribute( (Item)this, "code" );
+
+		// --- schl�ssen die zuerst gesetzt werden sollen
+
+		// --- hole sprachen
+		Language currentSessionLanguage = JaloSession.getCurrentSession().getSessionContext().getLanguage();
+		final Collection colLang = C2LManager.getInstance().getAllLanguages();
+		
+		// --- schleife �ber alle Sprachen
+		for (final Iterator it1 = colLang.iterator(); it1.hasNext();) {
+			
+			final Language lang1 = (Language) it1.next();
+			final String currentLanguage = lang1.getIsoCode();
+			wm.SetLanguage(currentLanguage);
+			
+			// --- hole die Artikelnummer
+			String artikelnr_index	= (String) wm.getAttribute( (Item)this, "artikelnr_index" );
+			if ( artikelnr_index == null || artikelnr_index.equals("") ) {
+
+				// --- artikelnummer (Basis) setzen
+				artikelNumbers.put ( currentLanguage, strArtNr );
+				
+			} else {
+
+				artikelNumbers.put ( currentLanguage, artikelnr_index );
+			}
+		}
+		wm.SetLanguage( currentSessionLanguage.getIsoCode() );
+		// --- Index Alphanum. (ENDE) ------------------------------------------------------------------------------------------------
+		
+		return artikelNumbers;
+	}
+	
+	/**
+	 *
+	 * @param values
+	 */
+	public void hookDimensionImport(final Map values) {
+		log.info("+++hookDimensionImport.weraprocuct- (START) " + getCode());
+
+		try {
+			// --- Anlegen der Outputcontrols
+			WeraManager.getInstance().createOutputcontrolByProduct(this);
+
+			// --- Product / Category Zusatzinformationen
+			WeraManager.getInstance().createCategory2ProductExt(this, Config.getParameter("wera.mastercatalogversion"));
+
+		} catch (final JaloInvalidParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloBusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		log.info("+++hookDimensionImport.weraprocuct- ENDE -code" + getCode());
+	}
+
+	/**
+	 *
+	 * @param strOrgFileName
+	 * @param strNewFileName
+	 * @return
+	 */
+	private boolean _RenameFile(final String strOrgFileName, final String strNewFileName) {
+
+		// --- Initialize
+		boolean bRenameResult = false;
+
+		// --- Dateien umbenennen
+		try {
+			if (new File(strOrgFileName).exists()) {
+				// --- Datei umbenennen
+				bRenameResult = new File(strOrgFileName).renameTo(new File(strNewFileName));
+				log.info("Datei wird umbenannt alt=" + strOrgFileName + " / neu=" + strNewFileName);
+			} else {
+				log.warn("Datei " + strOrgFileName + " existiert nicht.");
+			}
+
+		} catch (final Exception e) {
+			log.error("Fehler beim umbenennen alt=" + strOrgFileName + " / neu=" + strNewFileName);
+			e.printStackTrace();
+		}
+
+		return bRenameResult;
+	}
+
+	/**
+	 * Vergleichen der Code - Nummer mit Hauptbild
+	 *
+	 * @returns 0, if image filename is incorrect, returns 1 if image filename matches lagacy EPS format, or 2 if image filename matches JPG format
+	 */
+	private int _checkCode2Picture() {
+		log.info("_checkCode2Picture(): start");
+		// --- Initalize
+		final WeraManager wm = WeraManager.getInstance();
+		int iResult = 0;
+		final String strDestEPSFileName = normalizeFilenameForImageLookup() + ".eps";
+		final String strDestJPGFileName = normalizeFilenameForImageLookup() + ".jpg";
+
+		// --- Hole der Produktbild
+		final Collection pictures = (Collection) wm.getAttribute(this, "pictures1");
+		if (pictures != null && pictures.size() > 0) {
+
+			// --- Hole das 1. Bild
+			final WeraMedia oPicture1 = (WeraMedia) pictures.iterator().next();
+			final String strRealName = (String) wm.getAttribute(oPicture1, "realfilename");
+
+			// --- Vergleiche, ob der Code noch übereinstimmt...
+			if (oPicture1.getCode().equals(strDestEPSFileName) && strRealName.equals(strDestEPSFileName)) {
+				// --- Bild passt auf Legacy EPS Format, ok
+				iResult = 1;
+				log.info("_checkCode2Picture(): assigned product image is LEGACY EPS");
+			} else {
+			    if (oPicture1.getCode().equals(strDestJPGFileName) && strRealName.equals(strDestJPGFileName)) {
+				    // --- Bild passt auf JPG Format, ok
+				    iResult = 2;
+				    log.info("_checkCode2Picture(): assigned product image is JPG");
+			    } else {
+				    log.info("_checkCode2Picture(): assigned product image has wrong name!");		    
+			    }
+			}
+
+		} else {
+		    log.info("_checkCode2Picture(): no assigned product image!");		    
+		}
+		
+		return iResult;
+	}
+
+	/**
+	 * Prüfen des Hauptbilds
+	 *
+	 * @param values
+	 */
+	public void checkMedia(final Map values) {
+		log.info("checkMedia(): start");
+		// --- Initialize
+		final WeraManager wm = WeraManager.getInstance();
+		final String strPicturePath = Config.getParameter("wera.homepath") + "/imagepool/pictures/";
+		final String strNormalizedFileName = normalizeFilenameForImageLookup();
+		final String strDestEPSFileName = strNormalizedFileName + ".eps";
+		final String strDestJPGFileName = strNormalizedFileName + ".jpg";
+		final String strDestTifFileName = strNormalizedFileName + ".tif";
+		// final String strDestJPGFileName = strNormalizedFileName + "_rgb_300dpi.jpg";
+		final String strDestJPGCMYKFileName = strNormalizedFileName + "_cmyk_300dpi.jpg";
+
+		// --- Alte Version 2.2
+		// WeraManager.getInstance().checkMedia(this, values);
+		// --- Pr�fe ob der Name Picture 1 Bilder mit dem Code des Produkt übereinstimmt ---------------------------------------
+		final Collection pictures = (Collection) wm.getAttribute(this, "pictures1");
+		if (pictures != null && pictures.size() > 0) {
+			// --- Hole das 1. Bild
+			final WeraMedia oPicture1 = (WeraMedia) pictures.iterator().next();
+			final String strRealName = (String) wm.getAttribute(oPicture1, "realfilename");
+			boolean isEPS = ( strRealName != null && strRealName.endsWith(".eps"));
+			boolean isJPG = ( strRealName != null && strRealName.endsWith(".jpg"));
+			
+			// --- Vergleiche, ob der Code noch übereinstimmt...
+			int iPictureCheck = _checkCode2Picture();
+			if ( iPictureCheck == 0 ) {
+				// --- Debug Info
+				log.info("checkMedia(): product image needs renaming for product "+getCode());
+
+				boolean bRenameResult = false;
+				String sImageExtention = isEPS ? ".eps" : ".jpg";
+				String strRealNameWithoutExtension = strRealName.replace( sImageExtention , "" );
+
+				// --- Dateien umbenennen
+				if ( isEPS ) {
+				    bRenameResult = _RenameFile(strPicturePath + strRealName, strPicturePath + strDestEPSFileName);
+				}
+
+				// --- Dateien umbenennen (JPG)
+				final String strSrcJpgName = strRealName.replace(sImageExtention, "_cmyk_300dpi.jpg");
+				bRenameResult = _RenameFile(strPicturePath + "jpg/" + strSrcJpgName, strPicturePath + "jpg/" + strDestJPGCMYKFileName);
+
+				// --- Dateien umbenennen (TIF)
+				final String strSrcTifName = strRealName.replace(sImageExtention, ".tif");
+				bRenameResult = _RenameFile(strPicturePath + "tif/" + strSrcTifName, strPicturePath + "tif/" + strDestTifFileName);
+				
+
+				// --- Code und Realname anpassen
+				if ( isJPG ) {
+				    log.info("checkMedia(): since media object is JPG, set new code: "+strDestJPGFileName);
+				    wm.setAttribute(oPicture1, "code", strDestJPGFileName);
+				    wm.setAttribute(oPicture1, "realfilename", strDestJPGFileName);
+				}
+				if ( isEPS ) {
+				    log.info("checkMedia(): since media object is legacy EPS, set new code: "+strDestEPSFileName);
+				    wm.setAttribute(oPicture1, "code", strDestEPSFileName);
+				    wm.setAttribute(oPicture1, "realfilename", strDestEPSFileName);
+				}
+
+				
+				// --- Email benachrichtigung
+				String m_strConfigVersion = Config.getParameter("wera.version");
+				final String strSubject = "HYBRIS - Bildaenderung - ACHTUNG - Wera Version: " + m_strConfigVersion;
+				final String strMailTo = Config.getParameter("wera.mailto.design");
+				/*
+				final String strBody = "Verteiler: " + strMailTo + "\n\n" + "Folgendes Produkt wurde geaendert.\n\n" + "Produkt = "
+						+ getName() + " (" + getCode() + ")\n" + "Bild alt = " + strRealName + "\n" + "Bild neu = "
+						+ strNormalizedFileName + ".jpg\n\n" + "Bitte den Bildnamen in allen Verzeichnissen anpassen.\n";
+				*/
+
+				
+				// Redirect;950_pkls_9_sm_sb.html;950_9_hex-plus_4.html
+				// Rename;950_pkls_9_sm_sb.jpg;950_9_hex-plus_4.jpg
+				
+				
+				final String strBody = String.format(
+					"Verteiler: %s\n\nFolgendes Produkt wurde geaendert.\n\n" + 
+					"Produkt = %s (%s)\n" +
+					"Bild alt = %s\n" +
+					"Bild neu = %s.jpg\n\n" + 
+					"Bitte den Bildnamen in allen Verzeichnissen anpassen.\n\n" +
+					"Technischer Hinweis:\n" +
+					"Redirect;%s.html;%s.html\n" +
+					"Rename;%s.jpg;%s.jpg",
+					strMailTo, getName(), getCode(), strRealName, strNormalizedFileName,
+					strRealNameWithoutExtension, strNormalizedFileName, strRealNameWithoutExtension, strNormalizedFileName );
+
+				wm.SendMail(strSubject, strMailTo, strBody);
+			}
+		}
+		// --- Pr�fe ob der Name Picture 1 Bilder mit dem Code des Produkt übereinstimmt ---------------------------------------
+
+	}
+	
+	
+	/**
+	 *
+	 */
+	private void updateVariantMandatoryFeatures() {
+		LOG.info("updateVariantMandatoryFeatures(): START");
+		LOG.info("updateVariantMandatoryFeatures(): Checking for eligible CAAs for value propagation ...");
+		Collection<WeraVariante> colVariants = null;
+		// --- Hole alle Produkte
+		try {
+			colVariants = (Collection) getAttribute("variants");
+		} catch (final JaloInvalidParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (colVariants != null) {
+			// if there are any variants we have to get the base products set of mandatory proficlass attributes,
+			// which are visible in the base product only.
+			Collection<ClassificationClass> colClasses = null;
+			try {
+				colClasses = (Collection<ClassificationClass>) getAttribute("classificationClasses");
+			} catch (final JaloInvalidParameterException e1) {
+				// YTODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (final JaloSecurityException e1) {
+				// YTODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			// prepare visibility constant for comparison
+			final EnumerationManager em = EnumerationManager.getInstance();
+			final EnumerationType et = em.getEnumerationType("ClassificationAttributeVisibilityEnum");
+			final EnumerationValue evVISIBLE_IN_VARIANT = em.getEnumerationValue(et, "VISIBLE_IN_VARIANT");
+
+			for (final ClassificationClass oClass : colClasses) {
+				{
+
+					// Nur für ProfiClass 3.0 prüfen - alles andere zu langsam
+					if (oClass.getSystemVersion().getVersion().equals("3.0")) {
+						final Collection<ClassAttributeAssignment> colCAA = oClass.getClassificationAttributeAssignments();
+						for (final ClassAttributeAssignment caa : colCAA) {
+							Boolean oMandatory = null;
+							try {
+								oMandatory = caa.isMandatory();
+							} catch (final JaloInvalidParameterException e) {
+								// YTODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+							if (oMandatory != null && oMandatory.booleanValue()) {
+								final EnumerationValue ev = caa.getVisibility();
+								final EnumerationValue caType = caa.getAttributeType();
+
+								if (ev != null && !ev.equals(evVISIBLE_IN_VARIANT)) {
+									// this class attribute assignment is mandatory and not visible in variant,
+									LOG.info("updateVMF(): CAA (" + oClass.getCode() + " - " + oClass.getName() + " / "
+											+ caa.getClassificationAttribute().getCode() + " - "
+											+ caa.getClassificationAttribute().getName() + ") is mandatory and invisible for variants");
+									for (final WeraVariante wv : colVariants) {
+
+										if (caType.getCode().equals(
+												GeneratedCatalogConstants.Enumerations.ClassificationAttributeTypeEnum.BOOLEAN)) {
+											final TypedFeature<Boolean> featureVariant = Feature.loadTyped(wv, caa);
+											if (featureVariant == null || featureVariant.isEmpty()) {
+												// get BOOLEAN feature from product
+												final TypedFeature<Boolean> featureBase = Feature.loadTyped(this, caa);
+												Boolean oBooleanValue = null;
+												if (featureBase != null && !featureBase.isEmpty()) {
+													final FeatureValue<Boolean> featurevalueBase = featureBase.getValue(0);
+													oBooleanValue = featurevalueBase.getValue();
+													LOG.info("updateVMF(): propagating base product >" + this.getCode()
+															+ "<'s BOOLEAN value >" + oBooleanValue.toString() + "< to variant >" + wv.getCode()
+															+ "<");
+												} else {
+													oBooleanValue = new Boolean(false);
+													LOG.info("updateVMF(): initializing variant >" + wv.getCode() + "<'s BOOLEAN value to >"
+															+ oBooleanValue.toString() + "< because " + this.getCode()
+															+ "< has no appropriate feature.");
+
+												}
+												featureVariant.clearAll();
+												featureVariant.createValue(oBooleanValue);
+												try {
+													featureVariant.getParent().store();
+													LOG.info("updateVMF(): BOOLEAN value stored successfully.");
+												} catch (final ConsistencyCheckException e) {
+													e.printStackTrace();
+												}
+												continue;
+											}
+										}
+										if (caType.getCode().equals(
+												GeneratedCatalogConstants.Enumerations.ClassificationAttributeTypeEnum.STRING)) {
+											final TypedFeature<String> featureVariant = Feature.loadTyped(wv, caa);
+											if (featureVariant == null || featureVariant.isEmpty()) {
+												// get STRING feature from product
+												final TypedFeature<String> featureBase = Feature.loadTyped(this, caa);
+												String oStringValue = null;
+												if (featureBase != null && !featureBase.isEmpty()) {
+													final FeatureValue<String> featurevalueBase = featureBase.getValue(0);
+													oStringValue = featurevalueBase.getValue();
+													LOG.info("updateVMF(): propagating base product >" + this.getCode() + "<'s STRING value >"
+															+ oStringValue + "< to variant >" + wv.getCode() + "<");
+												} else {
+													oStringValue = "0";
+													LOG.info("updateVMF(): initializing variant >" + wv.getCode() + "<'s STRING value to >"
+															+ oStringValue + "< because " + this.getCode() + "< has no appropriate feature.");
+												}
+												featureVariant.clearAll();
+												featureVariant.createValue(oStringValue);
+												try {
+													featureVariant.getParent().store();
+													LOG.info("updateVMF(): STRING value stored successfully.");
+												} catch (final ConsistencyCheckException e) {
+													e.printStackTrace();
+												}
+												continue;
+											}
+										}
+										if (caType.getCode().equals(
+												GeneratedCatalogConstants.Enumerations.ClassificationAttributeTypeEnum.NUMBER)) {
+											final TypedFeature<Number> featureVariant = Feature.loadTyped(wv, caa);
+											if (featureVariant == null || featureVariant.isEmpty()) {
+												// get NUMBER feature from product
+												final TypedFeature<Number> featureBase = Feature.loadTyped(this, caa);
+												Double oDoubleValue = null;
+												if (featureBase != null && !featureBase.isEmpty()) {
+													final FeatureValue<Number> featurevalueBase = featureBase.getValue(0);
+													oDoubleValue = (Double) featurevalueBase.getValue();
+													LOG.info("updateVMF(): propagating base product >" + this.getCode() + "<'s DOUBLE value >"
+															+ oDoubleValue.toString() + "< to variant >" + wv.getCode() + "<");
+												} else {
+													oDoubleValue = new Double(0);
+													LOG.info("updateVMF(): initializing variant >" + wv.getCode() + "<'s DOUBLE value  to >"
+															+ oDoubleValue.toString() + "< because" + this.getCode()
+															+ "< has no appropriate feature.");
+												}
+												featureVariant.clearAll();
+												featureVariant.createValue(oDoubleValue);
+												try {
+													featureVariant.getParent().store();
+													LOG.info("updateVMF(): DOUBLE value stored successfully.");
+												} catch (final ConsistencyCheckException e) {
+													e.printStackTrace();
+												}
+												continue;
+											}
+										}
+
+									}
+
+								}
+							}
+						}
+					}
+
+				}
+
+			}
+		}
+		LOG.info("updateVariantMandatoryFeatures(): END");
+	}
+
+	/**
+	 *
+	 * @param strOutput
+	 */
+	private void _debug(final String strOutput) {
+		if (getCode().equals("3335")) {
+			log.info("3335=>" + strOutput);
+		}
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public HashMap getFeatureIconsByBooleanProperties() {
+
+		//_debug( "OC = getFeatureIconsByBooleanProperties");
+		//LOG.info("WeraProduct.getFeatureIconsByBooleanProperties");
+		// --- generates HashMap with mapping
+		HashMap hashMediaList = new HashMap();
+		final HashMap ca2mediaMap = new HashMap();
+		ca2mediaMap.put("calist", new ArrayList());
+		ca2mediaMap.put("iconlist", new ArrayList());
+
+		final WeraManager wm = WeraManager.getInstance();
+		final Outputcontrol outputcontrol = null;
+		final EnumerationManager em = EnumerationManager.getInstance();
+
+		final EnumerationType et = em.getEnumerationType("ClassificationAttributeVisibilityEnum");
+		final EnumerationValue evVISIBLE = em.getEnumerationValue(et, "VISIBLE");
+		final EnumerationValue evVISIBLE_IN_BASE = em.getEnumerationValue(et, "VISIBLE_IN_BASE");
+
+		try {
+			final Collection outputcontrols = (Collection) getAttribute("outputcontrols");
+			if (outputcontrols != null && outputcontrols.size() > 0) {
+				Collections.sort((List) outputcontrols, new OrderComparator());
+			}
+
+			//final Collection colCategories = wm.getCategoriesByProduct(this, "de");
+			final Collection colCategories = (Collection) wm.getAttribute(this, "classificationClasses");
+
+			final Collection colAllCA = new ArrayList();
+
+			// --- Erst Alle CA's aller Produktkategorien sammeln, dann sortieren
+			final Collection colCA = null;
+			for (final Iterator it = colCategories.iterator(); it.hasNext();) {
+				final ClassificationClass classificationclass = (ClassificationClass) it.next();
+				if (classificationclass.getCode().endsWith("_ZUSATZ") || classificationclass.getCode().startsWith("FEATURES_")) {
+					//log.info( "add merkmale von Klasse=" + classificationclass.getCode());
+					colAllCA.addAll(wm.getClassattributeAssignments(classificationclass));
+				}
+			}
+
+			// --- Sortiere nach Order
+			if (colAllCA != null && colAllCA.size() > 0) {
+				Collections.sort((List) colAllCA, new OrderComparator());
+			}
+
+			final HashSet setOfUniqueCAs = new HashSet();
+			final HashSet setOfUniqueMediaName = new HashSet();
+			Collection colProductFeatures = (Collection) getAttribute("features");
+			final Collection colSortedProductFeatures = new ArrayList();
+			colSortedProductFeatures.addAll(colProductFeatures);
+			Collections.sort((List) colSortedProductFeatures, new ProductfeatureByCaaPositionComparator());
+			ProductFeature productFeature = null;
+			for (final Iterator it3 = colSortedProductFeatures.iterator(); it3.hasNext();) {
+				productFeature = (ProductFeature) it3.next();
+
+				final ClassAttributeAssignment caa = productFeature.getClassificationAttributeAssignment();
+				EnumerationValue caType = null;
+				ClassificationAttribute ca = null;
+				if (caa != null) {
+					ca = caa.getClassificationAttribute();
+					if (ca != null) {
+						caType = caa.getAttributeType();
+					}
+				}
+				if (caType != null && caType.getCode().equals("boolean")) {
+					//log.info("position=" + caa.getPosition());
+					//_debug( "productFeature.getQualifier().toString() =" + productFeature.getQualifier().toString());
+					//log.info("productFeature.getQualifier().toString() =" + productFeature.getQualifier().toString());
+
+					try {
+						final Collection icons = (Collection) caa.getAttribute("icons");
+						//log.info  ( "caas.icons =" + icons);
+						if (icons != null && icons.size() > 0) {
+							//_debug( "found =" + ca.getCode());
+							//log.info  ( getCode()+ ", "+ca.getCode()+"/"+ca.getName()+": "+caType.getCode() + " Feature: " + productFeature.getQualifier() + ", " + (String)productFeature.getAttribute("stringValue")  );
+							final WeraMedia icon = (WeraMedia) icons.iterator().next();
+							if (!setOfUniqueCAs.contains(ca.getCode()) && !setOfUniqueMediaName.contains(icon.getCode())) {
+								// --- remember it
+								setOfUniqueCAs.add(ca.getCode());
+								setOfUniqueMediaName.add(icon.getCode());
+
+								((ArrayList) ca2mediaMap.get("calist")).add(ca);
+								//_debug( "found icon =" + icon.getCode());
+								((ArrayList) ca2mediaMap.get("iconlist")).add(icon);
+								//log.info  ( "found icon =" + icon.getCode() );
+							} else {
+								log.info("Eigenschaftsicon doppelt! - ignorieren " + ca.getCode());
+							}
+						}
+					} catch (final Exception e) {
+						e.printStackTrace();
+					}
+
+				} // --- if (caType != null && caType.getCode().equals("boolean"))
+
+			} // --- for (final Iterator it3 = colProductFeatures.iterator(); it3.hasNext();)
+
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+
+		return ca2mediaMap;
+	}
+
+	/*
+	 * depreacated - 04102012 GT // --- alt public HashMap __getFeatureIconsByBooleanProperties() {
+	 * 
+	 * //_debug( "OC = getFeatureIconsByBooleanProperties");
+	 * 
+	 * // --- generates HashMap with mapping // "calist" => collection of ClassificationAttributes with assigned feature
+	 * icons (ordered) // "iconlist" => collection of WeraMedia (ordered) final HashMap ca2mediaMap = new HashMap();
+	 * ca2mediaMap.put("calist", new ArrayList()); ca2mediaMap.put("iconlist", new ArrayList());
+	 * 
+	 * 
+	 * final WeraManager wm = WeraManager.getInstance(); Outputcontrol outputcontrol = null; final EnumerationManager em
+	 * = EnumerationManager.getInstance();
+	 * 
+	 * final EnumerationType et = em.getEnumerationType("ClassificationAttributeVisibilityEnum"); final EnumerationValue
+	 * evVISIBLE = em.getEnumerationValue(et, "VISIBLE"); final EnumerationValue evVISIBLE_IN_BASE =
+	 * em.getEnumerationValue(et, "VISIBLE_IN_BASE");
+	 * 
+	 * try { final Collection outputcontrols = (Collection) getAttribute("outputcontrols"); if (outputcontrols != null &&
+	 * outputcontrols.size() > 0) { Collections.sort((List) outputcontrols, new OrderComparator()); }
+	 * 
+	 * //final Collection colCategories = wm.getCategoriesByProduct(this, "de"); final Collection colCategories =
+	 * (Collection) wm.getAttribute(this, "classificationClasses");
+	 * 
+	 * final Collection colAllCA = new ArrayList();
+	 * 
+	 * // --- Erst Alle CA's aller Produktkategorien sammeln, dann sortieren final Collection colCA = null; for (final
+	 * Iterator it = colCategories.iterator(); it.hasNext();) { final ClassificationClass classificationclass =
+	 * (ClassificationClass) it.next(); if (classificationclass.getCode().endsWith("_ZUSATZ")) { //_debug(
+	 * "add merkmale von Klasse=" + classificationclass.getCode());
+	 * colAllCA.addAll(wm.getClassattributeAssignments(classificationclass)); } }
+	 * 
+	 * // --- Sortiere nach Order if (colAllCA != null && colAllCA.size() > 0) { Collections.sort((List) colAllCA, new
+	 * OrderComparator()); }
+	 * 
+	 * final HashSet setOfUniqueCAs = new HashSet();
+	 * 
+	 * // --- über geordnete CA Liste wandern... for (final Iterator it2 = colAllCA.iterator(); it2.hasNext();) { final
+	 * ClassAttributeAssignment caa = (ClassAttributeAssignment) it2.next(); final ClassificationAttribute ca =
+	 * caa.getClassificationAttribute();
+	 * 
+	 * //this.classattributeassignment = classificationclass.getAttributeAssignment(classificationAttribute);
+	 * 
+	 * final EnumerationValue caType = caa.getAttributeType();
+	 * 
+	 * if (caType != null && caType.getCode().equals("boolean")) { outputcontrol = (Outputcontrol)
+	 * checkContaining(outputcontrols, "code", ca.getCode().toString()); if (outputcontrol != null &&
+	 * (outputcontrol.getVisibility().equals(evVISIBLE_IN_BASE) || outputcontrol.getVisibility().equals( evVISIBLE))) {
+	 * //_debug("hole Features von =" + ca.getCode()); log.info("hole Features von =" + ca.getCode());
+	 * 
+	 * final Collection colProductFeatures = (Collection) getAttribute("features"); ProductFeature productFeature = null;
+	 * for (final Iterator it3 = colProductFeatures.iterator(); it3.hasNext();) { productFeature = (ProductFeature)
+	 * it3.next(); //_debug( "productFeature.getQualifier().toString() =" + productFeature.getQualifier().toString()); if
+	 * ( getCode().equals("8751-9/BDC") ) { log.info("productFeature.getQualifier().toString() =" +
+	 * productFeature.getQualifier().toString()); }
+	 * 
+	 * //if (ca.getCode().toString().equals(productFeature.getQualifier().toString())) if
+	 * (productFeature.getQualifier().toString().contains(ca.getCode().toString()) &&
+	 * productFeature.getQualifier().toString().contains("weraclassification/werazusatz")) { final String caValue =
+	 * (String) productFeature.getAttribute("stringValue"); //_debug( "caValue =" + caValue); log.info ( "caValue =" +
+	 * caValue); if (caValue != null && caValue.equals("true")) {
+	 * 
+	 * try { Collection icons = (Collection) outputcontrol.getAttribute("icons"); //_debug( "icons =" + icons); log.info
+	 * ( "oc.icons =" + icons); log.info ( "OC = " + outputcontrol.getAttribute("code")); if (icons == null ||
+	 * icons.size() == 0) { ClassAttributeAssignment caa_akt = productFeature.getClassificationAttributeAssignment();
+	 * icons = (Collection) caa_akt.getAttribute("icons"); log.info ( "caas.icons =" + icons); } if (icons != null &&
+	 * icons.size() > 0) { //_debug( "found =" + ca.getCode()); log.info ( getCode()+
+	 * ", "+ca.getCode()+"/"+ca.getName()+": "+caType.getCode() + " Feature: " + productFeature.getQualifier() + ", " +
+	 * (String)productFeature.getAttribute("stringValue") ); if (setOfUniqueCAs.add(ca.getCode())) { ((ArrayList)
+	 * ca2mediaMap.get("calist")).add(ca); final WeraMedia icon = (WeraMedia) icons.iterator().next(); //_debug(
+	 * "found icon =" + icon.getCode()); ((ArrayList) ca2mediaMap.get("iconlist")).add(icon); log.info ( "found icon =" +
+	 * icon.getCode() ); } else { log.info("Eigenschaftsicon doppelt! - ignorieren " + ca.getCode()); } } } catch (final
+	 * Exception e) { e.printStackTrace(); } break; }
+	 * 
+	 * } } } }
+	 * 
+	 * }
+	 * 
+	 * } catch (final Exception e) { e.printStackTrace(); }
+	 * 
+	 * 
+	 * 
+	 * return ca2mediaMap; }
+	 */
+	/**
+	 *
+	 * @param collection
+	 * @param stringField
+	 * @param stringMatch
+	 * @return
+	 */
+	public Object checkContaining(final Collection collection, final String stringField, final String stringMatch) {
+		Object oResult = null;
+		Item item = null;
+		if (collection != null) {
+			for (final Iterator it1 = collection.iterator(); it1.hasNext();) {
+
+				item = (Item) it1.next();
+				try {
+					if (item.getAttribute(stringField).equals(stringMatch)) {
+						oResult = item;
+						break;
+					}
+				} catch (final JaloInvalidParameterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (final JaloSecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return oResult;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public static Set getAllInstances() {
+
+		final ComposedType WeraProductType = TypeManager.getInstance().getComposedType(WeraProduct.class);
+
+		return WeraProductType.getAllInstances();
+
+	}
+
+	/**
+	 *
+	 * @param strCatalogVersion
+	 * @return
+	 */
+	public Collection getCategory2ProductextsByCatalogVersion(final String strCatalogVersion) {
+
+		// --- Initialize
+		Category2ProductExt category2productext = null;
+		final Category2ProductExt oResult = null;
+		String strCatalogVersionTmp = "";
+		final Collection colResult = new ArrayList();
+
+		try {
+			final Collection category2productexts = (Collection) getAttribute("category2productexts");
+			if (category2productexts != null && category2productexts.size() > 0) {
+				// --- Schleife über alle Steuerparameter
+				for (final Iterator itcategory2Poductext = category2productexts.iterator(); itcategory2Poductext.hasNext();) {
+					category2productext = (Category2ProductExt) itcategory2Poductext.next();
+
+					// --- Pr�fe, ob der Eintrag zur strCatalogVersion passt
+					strCatalogVersionTmp = (String) category2productext.getAttribute("catalogversion_desc");
+					if (strCatalogVersionTmp != null && strCatalogVersionTmp.equals(strCatalogVersion)) {
+						colResult.add(category2productext);
+					}
+				}
+			}
+
+		} catch (final Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return colResult;
+	}
+
+	/**
+	 *
+	 * @param oCategory
+	 * @return
+	 */
+	public boolean getAktivByCategory(final Category oCategory) {
+
+		// --- Aktuelle Sprache holen
+		final Language oAktLang = JaloSession.getCurrentSession().getSessionContext().getLanguage();
+
+		return getAktivByCategory(oCategory, oAktLang.getIsoCode());
+	}
+
+	/**
+	 *
+	 * @param oCategory
+	 * @param strLanguage
+	 * @return
+	 */
+	public boolean getAktivByCategory(final Category oCategory, final String strLanguage) {
+		// TODO Auto-generated method stub
+
+		// --- Initialize
+		final WeraManager wm = WeraManager.getInstance();
+		boolean bResult = false;
+		final String strPKCategory = oCategory.getPK().toString();
+		final Category oCategoryTmp = null;
+
+		// --- Sprache setzen
+		final Language currentSessionLanguage = JaloSession.getCurrentSession().getSessionContext().getLanguage();
+		wm.SetLanguage(strLanguage);
+
+		// --- Hole die Steuerparameter
+		final Collection category2Poductext;
+		try {
+			// --- Initialisiere Default, Aktiv-Flag (Produkt)
+			bResult = ((Boolean) getAttribute("aktiv")).booleanValue();
+
+			// --- Pr�fe, ob erweiterte Parameter existieren
+			final Category2ProductExt category2productext = getCategory2Productexts(oCategory.getPK().toString());
+			if (category2productext != null) {
+
+				if (category2productext.getAttribute("aktiv") != null) {
+					bResult = ((Boolean) category2productext.getAttribute("aktiv")).booleanValue();
+				}
+			}
+
+		} catch (final Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// --- Sprache wieder zur�cksetzen
+		wm.SetLanguage(currentSessionLanguage.getIsoCode());
+
+		return bResult;
+	}
+
+	/**
+	 * get the feature-icon excludelist by given category
+	 *
+	 * @param oCategory
+	 * @return String - strFeatureiconExcludeList
+	 */
+	public String getFeatureIconExcludeListByCategory(final Category oCategory) {
+		// TODO Auto-generated method stub
+
+		// --- preset default, empty exclude-list
+		String strFeatureiconExcludeList = "";
+
+		try {
+			if (oCategory != null) {
+
+				// --- Pr�fe, ob erweiterte Parameter existieren
+				final Category2ProductExt category2productext = getCategory2Productexts(oCategory.getPK().toString());
+				if (category2productext != null) {
+
+					if (category2productext.getAttribute("featureicon_exclude_list") != null) {
+						strFeatureiconExcludeList = (String) category2productext.getAttribute("featureicon_exclude_list");
+					}
+				}
+
+			} // --- if ( oCategory != null ) {
+
+		} catch (final Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		return strFeatureiconExcludeList;
+	}
+
+	/**
+	 *
+	 * @param strPKCategory
+	 * @return
+	 */
+	public Category2ProductExt getCategory2Productexts(final String strPKCategory) {
+
+		// --- Initialize
+		Category2ProductExt category2productext = null;
+		Category2ProductExt oResult = null;
+		Category oCategoryTmp = null;
+
+		try {
+			final Collection category2productexts = (Collection) getAttribute("category2productexts");
+			if (category2productexts != null && category2productexts.size() > 0) {
+				// --- Schleife über alle Steuerparameter
+				for (final Iterator itcategory2Poductext = category2productexts.iterator(); itcategory2Poductext.hasNext();) {
+					category2productext = (Category2ProductExt) itcategory2Poductext.next();
+
+					// --- Pr�fe, ob der Eintrag zur Category passt
+					oCategoryTmp = (Category) category2productext.getAttribute("category");
+					if (oCategoryTmp != null && oCategoryTmp.getPK().toString().equals(strPKCategory)) {
+						oResult = category2productext;
+						break;
+					}
+				}
+			}
+
+		} catch (final Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return oResult;
+	}
+
+	/**
+	 *
+	 * @param oCategory
+	 * @return
+	 */
+	public Integer getOrderByCategory(final Category oCategory) {
+		// TODO Auto-generated method stub
+
+		// --- Initialize 
+		Integer oIntOrder = null;
+
+		try {
+			// --- Pr�fe, ob erweiterte Parameter existieren
+			final Category2ProductExt category2productext = getCategory2Productexts(oCategory.getPK().toString());
+			//log.info ("oCategory.getPK()="+oCategory.getPK());
+			//log.info ("oCategory.getCode()="+oCategory.getCode());
+			if (category2productext != null) {
+
+				final String strPrio = category2productext.getPriority();
+				if (strPrio != null && strPrio.trim().length() > 0) {
+					oIntOrder = new Integer(Integer.parseInt(strPrio));
+				}
+			}
+			//log.info ("oIntOrder.1="+oIntOrder);
+
+			// --- Wurde ein Eintrag gefundern?
+			if (oIntOrder == null) {
+				// --- Sonst verwende default Order Product
+				oIntOrder = (Integer) getAttribute("order");
+			}
+			//log.info ("oIntOrder.2="+oIntOrder.intValue());
+			if (oIntOrder == null) {
+				// --- Sonst Default (0)
+				oIntOrder = new Integer(0);
+				//log.info ("oIntOrder.3="+oIntOrder.intValue());
+			}
+
+		} catch (final Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		//log.info ("oIntOrder.4="+oIntOrder.intValue());
+
+		/*
+		 * // --------- TO Umstellen - Reihenfolge aus der relationen Produkt / Kategorie holen // 26.10.2011 GT
+		 * 
+		 * final Collection<Link> links2 = LinkManager.getInstance().getLinks("CategoryProductRelation", oCategory, this
+		 * ); if (links2 != null && links2.iterator().hasNext()) { final Link cat2catrel = links2.iterator().next();
+		 * oIntOrder = (Integer)wm.getAttribute(cat2catrel,"sequenceNumber"); }
+		 * 
+		 * // --------- TO Umstellen - Reihenfolge aus der relationen Produkt / Kategorie holen
+		 */
+		return oIntOrder;
+	}
+
+	/**
+	 * Holt das Alternativ Product in der aktuellen Landessprache
+	 *
+	 * @param string strLanguage
+	 * @return WeraProduct
+	 */
+	public WeraProduct getAlternateProduct(final String strLanguage) {
+		// --- Initialize
+		WeraProduct wp = null;
+		Collection products = null;
+
+		// --- Sprache setzen
+		final Language aktLang = JaloSession.getCurrentSession().getSessionContext().getLanguage();
+		JaloSession.getCurrentSession().getSessionContext().setLanguage(C2LManager.getInstance().getLanguageByIsoCode(strLanguage));
+
+		// --- Hole Alternative Product
+		products = getAlternate_product();
+		if (products != null && products.size() > 0) {
+			wp = (WeraProduct) products.iterator().next();
+		}
+
+		// --- Sprache zur�cksetzen 
+		JaloSession.getCurrentSession().getSessionContext().setLanguage(aktLang);
+
+		return wp;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public boolean bHasPrices() {
+		Collection europe1prices = null;
+		try {
+			europe1prices = (Collection) getAttribute("europe1Prices");
+		} catch (final JaloInvalidParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (europe1prices != null && europe1prices.size() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Hole alle aktiven Varianten, sortiert
+	 *
+	 * @return
+	 */
+	public Collection getVarianten() {
+		// --- Debug
+		log.info("getVariants() => fuer product=" + this.getCode());
+
+		// --- Initialize
+		final List colList = new ArrayList();
+		Collection variants = new ArrayList();
+
+		// --- Hole alle Produkte
+		try {
+			variants = (Collection) getAttribute("variants");
+		} catch (final JaloInvalidParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (variants != null) {
+			// --- Schleife über alle Ergebniss
+			for (final Iterator it0 = variants.iterator(); it0.hasNext();) {
+				final WeraVariante weraproductvariant = (WeraVariante) it0.next();
+				if (weraproductvariant != null) {
+					// --- Hole Aktiv-Flag Localized
+					final Boolean bAktiv = (java.lang.Boolean) weraproductvariant.getLocalizedProperty("aktiv");
+
+					if (m_bCheckForActivation == false || (bAktiv != null && bAktiv.booleanValue())) {
+						//log.info ("getVariants() => bAktiv="+bAktiv+", Code="+weraproductvariant.getCode());
+						colList.add(weraproductvariant);
+					}
+				}
+			}
+
+			// --- Sortiere nach Order
+			if (colList != null && colList.size() > 0) {
+				Collections.sort(colList, new OrderComparator());
+			}
+		}
+
+		return colList;
+	}
+
+	/**
+	 * Hole alle aktiven Varianten der Prieisliste, sortiert
+	 *
+	 * @return List colList
+	 */
+	public Collection getPriceListVariants() throws JaloInvalidParameterException, JaloSecurityException  {
+		// --- Debug
+		//log.info ("getVariants() => für product="+ getCode());
+
+		// --- Initialize
+		WeraVariante weraproductvariant = null;
+		final List colList = new ArrayList();
+		Collection variants = new ArrayList();
+
+		// --- Hole alle Produkte
+		variants = getVarianten();
+		if (variants != null) {
+
+			// --- Schleife über alle Artikel
+			for (final Iterator it0 = variants.iterator(); it0.hasNext();) {
+				weraproductvariant = (WeraVariante) it0.next();
+				if (weraproductvariant != null) {
+					// --- Hole Aktiv-Flag Localized
+					final boolean bAktiv = weraproductvariant.bIsAkitvPriceList();
+					//log.info ("getVariants() => bAktiv="+bAktiv+", Code="+weraproductvariant.getCode());
+					if ((bAktiv)) {
+						colList.add(weraproductvariant);
+					}
+				}
+			}
+
+			// --- Sortiere nach Order
+			if (colList != null && colList.size() > 0) {
+				Collections.sort(colList, new OrderComparator());
+			}
+
+		} // --- if ( variants != null ) {
+
+		return colList;
+	}
+
+	/**
+	 * pr�fe ob eine dr Varianten die Marketingtexte ausspielen soll
+	 *
+	 * @return null - keine Ausspielung|WeraVariante - verwendete Weravariante
+	 */
+	public Item getExportmarktingtext() {
+		
+		// --- Debug
+		LOG.info ("weraproduct.getExportmarktingtext => f�r product="+ getCode());
+
+		// --- Initialize
+		final WeraManager wm = WeraManager.getInstance();
+		WeraVariante weraproductvariant	= null;
+		Item resultItem					= null;
+		Collection variants				= new ArrayList();
+
+		// --- Hole alle Produkte
+		variants = getVarianten();
+		if (variants != null) {
+
+			// --- Schleife über alle Artikel
+			for (final Iterator it0 = variants.iterator(); it0.hasNext();) {
+				
+				weraproductvariant = (WeraVariante) it0.next();
+				if (weraproductvariant != null) {
+					// --- Hole Aktiv-Flag Localized
+					final Boolean is_marketing_representative = (Boolean)wm.getAttribute(weraproductvariant, "is_marketing_representative");
+
+					if ( is_marketing_representative != null && is_marketing_representative.booleanValue() ) {
+						resultItem	= weraproductvariant;
+						break;
+					}
+				}
+			}
+
+		} // --- if ( variants != null ) {
+
+		return resultItem;
+	}
+
+	/**
+	 * Vorschau Bulletpoints aus Variante - Jalo
+	 * 
+	 * @Override
+	 * @param SessionContext ctx
+	 * @return String
+	 */
+	public String getBulletpoints_print_selection_preview(final SessionContext ctx) {
+
+		// --- preset
+		String strResult				= "";
+		final WeraManager wm			= WeraManager.getInstance();
+		Item weraproductvariant	= null;
+
+		// --- hole variante
+		weraproductvariant	= getExportbulletpoints();
+		if ( weraproductvariant != null ) {
+			
+			// --- bullets
+			Collection<Textbaustein> oBulletsTextbausteine	= (Collection)wm.getAttribute(weraproductvariant, "weravariante2bulletpoints");
+			if ( oBulletsTextbausteine != null && oBulletsTextbausteine.size() > 0 ) {
+
+				for ( Textbaustein bulletpoint : oBulletsTextbausteine ) {
+
+					// --- vorschau generieren
+					strResult	+= "\r\n" + bulletpoint.getCode() 
+											+ "\r\n" + bulletpoint.getText()
+											+ "\r\n----------------------";
+
+				}
+			}
+			
+		}
+	
+		return strResult;
+	}
+
+	/**
+	 * pr�fe ob eine dr Varianten die Marketingtexte ausspielen soll
+	 *
+	 * @return null - keine Ausspielung|WeraVariante - verwendete Weravariante
+	 */
+	public Item getExportbulletpoints() {
+		
+		// --- Debug
+		LOG.info ("weraproduct.getExportbulletpoints => f�r product="+ getCode());
+
+		// --- Initialize
+		final WeraManager wm = WeraManager.getInstance();
+		WeraVariante weraproductvariant	= null;
+		Item resultItem					= null;
+		Collection variants				= new ArrayList();
+
+		// --- Hole alle Produkte
+		variants = getVarianten();
+		if (variants != null) {
+
+			// --- Schleife über alle Artikel
+			for (final Iterator it0 = variants.iterator(); it0.hasNext();) {
+				
+				weraproductvariant = (WeraVariante) it0.next();
+				if (weraproductvariant != null) {
+					// --- Hole Aktiv-Flag Localized
+					final Boolean is_bulletpoint_representative = (Boolean)wm.getAttribute(weraproductvariant, "is_bulletpoint_representative");
+
+					if ( is_bulletpoint_representative != null && is_bulletpoint_representative.booleanValue() ) {
+						resultItem	= weraproductvariant;
+						break;
+					}
+				}
+			}
+
+		} // --- if ( variants != null ) {
+
+		return resultItem;
+	}
+
+	/**
+	 * pr�ft ob der Greattool ausgegeben werden soll und gibt den String zur�ck
+	 *
+	 * @return null - keine Ausspielung|String - verwendeter String
+	 */
+	public String[] getActiveGreattoolString() {
+		
+		// --- Debug
+		LOG.info ("weraproduct.getGreattoolString => für product="+ getCode());
+
+		// --- Initialize
+		final WeraManager wm			= WeraManager.getInstance();
+		String[] resultStringList		= null;
+
+		// --- Hole GreatTool-Flag
+		final Boolean use_for_greatools = (Boolean)wm.getAttribute(this, "use_for_greatttools");
+		if ( use_for_greatools != null && use_for_greatools.booleanValue() ) {
+			
+			// --- hole greattools string
+			String resultString = (String)wm.getAttribute(this, "great_tools_basename");
+			if ( resultString != null ) {
+				
+				resultStringList	= resultString.replace(" ", "").split(",");
+			}
+		}
+
+		return resultStringList;
+	}
+
+	/**
+	 * set flag "CheckForActivation"
+	 *
+	 * @param boolean bCheckForActivation
+	 */
+	public void set_CheckForActivation(final boolean bCheckForActivation) {
+		m_bCheckForActivation = bCheckForActivation;
+	}
+
+	/**
+	 * get flag "CheckForActivation"
+	 *
+	 * @return boolean
+	 */
+	public boolean get_CheckForActivation() {
+		return m_bCheckForActivation;
+	}
+
+	/**
+	 * initialize list off SB-Variants
+	 *
+	 * @param WeraProduct oWeraHauptProduct
+	 * @return Collection<WeraProductSetinSet> colResult
+	 */
+	public static Collection<WeraProductSetinSet> getAllSB_Variants(WeraProduct oWeraHauptProduct) {
+
+		// --- initialize
+		Collection<WeraProductSetinSet> colResult = new ArrayList<WeraProductSetinSet>();
+
+		// --- hole alle SB-Varianten die beim Produkt verf�gbar sind
+		Collection<WeraProductSetinSet> colSB_Variants = (Collection<WeraProductSetinSet>) WeraManager.getInstance().getAttribute(oWeraHauptProduct, "weraproductsetinsets_relation");
+
+		// --- build resultset
+		if (colSB_Variants != null && colSB_Variants.size() > 0) {
+
+			// --- add all sb-variants to resultset
+			colResult.addAll(colSB_Variants);
+		}
+
+		return colResult;
+	}
+
+	/**
+	 * Hole alle Produkte einer Katelogversion
+	 *
+	 * @param CatalogVersion catalogversion
+	 * @param boolean bSortIt
+	 * @param String strSortBy
+	 * @return Collection
+	 */
+	public static Collection getAllProductsFromAnyCatalog(final CatalogVersion catalogversion, final boolean bSortIt,
+			final String strSortBy) {
+
+		return _getAllProductsFromAnyCatalog(catalogversion, bSortIt, strSortBy, null, false);
+	}
+
+	/**
+	 * Hole alle Produkte einer Katelogversion
+	 *
+	 * @param CatalogVersion catalogversion
+	 * @param boolean bSortIt
+	 * @param String strSortBy
+	 * @param colFilter
+	 * @return Collection
+	 */
+	public static Collection getAllProductsFromAnyCatalog(final CatalogVersion catalogversion, final boolean bSortIt,
+			final String strSortBy, final Collection colFilter) {
+
+		return _getAllProductsFromAnyCatalog(catalogversion, bSortIt, strSortBy, colFilter, false);
+	}
+
+	/**
+	 * Hole alle Produkte einer Katelogversion (bei Bedarf inkl. SB-Varianten)
+	 *
+	 * @param CatalogVersion catalogversion
+	 * @param boolean bSortIt
+	 * @param String strSortBy
+	 * @param Collection colFilter
+	 * @param boolean bExportSBVariants
+	 * @return Collection
+	 */
+	public static Collection getAllProductsFromAnyCatalog(final CatalogVersion catalogversion, final boolean bSortIt,
+			final String strSortBy, final Collection colFilter, boolean bExportSBVariants) {
+
+		return _getAllProductsFromAnyCatalog(catalogversion, bSortIt, strSortBy, colFilter, bExportSBVariants);
+	}
+
+	/**
+	 * Hole alle Produkte einer Katelogversion
+	 *
+	 * @param CatalogVersion catalogversion
+	 * @param boolean bSortIt
+	 * @param String strSortBy
+	 * @param Collection colFilter
+	 * @return Collection
+	 */
+	private static Collection _getAllProductsFromAnyCatalog(final CatalogVersion catalogversion, final boolean bSortIt,
+			final String strSortBy, Collection colFilter /*=null*/, boolean bExportSBVariants/* false */) {
+		// --- Initialize
+		if (colFilter == null) {
+			colFilter = new ArrayList();
+			colFilter.add("VERKAUFSHILFE");
+			colFilter.add("PREISLISTENARTIKEL");
+		}
+
+		ArrayList<WeraProduct> weraproductslist = new ArrayList();
+		ArrayList<WeraProduct> productsTmp = new ArrayList();
+
+		// --- Hole alle Kategorien des Katalogs
+		final ArrayList categories = new ArrayList();
+		categories.addAll(catalogversion.getAllCategories());
+
+		// --- Schleife über alle Kategorien
+		for (final Iterator it1 = categories.iterator(); it1.hasNext();) {
+			// -- Get Category
+			final Category oCategory = (Category) it1.next();
+
+			// --- Keine klassifizieren Klassen
+			if (oCategory instanceof ClassificationClass) {
+				LOG.info("++ SKIP klassifizierte Kategorie = " + oCategory.getCode());
+				continue;
+			}
+
+			// --- Auslassen
+			//if (oCategory.getCode().equals("VERKAUFSHILFE") || oCategory.getCode().equals("PREISLISTENARTIKEL"))
+			if (colFilter.contains(oCategory.getCode())) {
+				LOG.info("++ SKIP Kategorie = " + oCategory.getCode());
+				continue;
+			}
+
+			// --- Categorie übernehmen und Produkte sammeln
+			final List aList = oCategory.getProducts();
+			LOG.info("++ read Category = " + oCategory.getCode() + ", anzahl products=" + aList.size());
+			if (aList != null && aList.size() > 0) {
+				productsTmp.addAll(aList);
+			}
+
+		} // --- for ( Iterator it1 = categories.iterator(); it1.hasNext();)
+
+		// --- Sollen die Prokdute sortiert werden
+		if (productsTmp != null && productsTmp.size() > 0 && bSortIt) {
+			// --- Filtere aktive WeraProduct / WeraProductSet / WeraProductSetinSet
+			for (WeraProduct oWeraProduct : productsTmp) {
+
+				// --- Ist das Produkt aktiv, bzw. in einer aktiven Kategorie
+				if (oWeraProduct instanceof WeraProduct || oWeraProduct instanceof WeraProductSet || oWeraProduct instanceof WeraProductSetinSet) {
+					if (oWeraProduct._IsAktiv(catalogversion)) {
+						weraproductslist.add(oWeraProduct);
+					}
+				}
+			}
+
+			// --- Sortiere nach CODE-Nummer
+			final FieldComparatorString oFieldcomparatorstring = new FieldComparatorString();
+			oFieldcomparatorstring.setCompareField(strSortBy);
+			Collections.sort(weraproductslist, oFieldcomparatorstring);
+		} else {
+			weraproductslist.addAll(productsTmp);
+		}
+
+		// --- SB-Varianten anf�gen -----------------------------------------------------------------------
+		if (bExportSBVariants) {
+
+			// --- preset tmp-array
+			productsTmp.clear();
+			productsTmp.addAll(weraproductslist);
+			weraproductslist.clear();
+
+			// --- iterate on all collected produtcs
+			for (WeraProduct oWeraProduct : productsTmp) {
+
+				// --- hole alle SB-Varianten
+				Collection<WeraProductSetinSet> colSBVariants = getAllSB_Variants(oWeraProduct);
+
+				// --- weraproduct und sb-varianten anf�gen
+				weraproductslist.add(oWeraProduct);
+				weraproductslist.addAll(colSBVariants);
+
+			}
+
+		} // --- if { bExportSBVariants ) {
+		// --- SB-Varianten anf�gen -----------------------------------------------------------------------
+
+		return weraproductslist;
+	}
+
+	/**
+	 * Hole alle Produkte einer Katelogversion (klappt nur bei Masterkatalog)
+	 *
+	 * @param CatalogVersion catalogversion
+	 * @param boolean bSortIt
+	 * @param String strSortBy
+	 * @return Collection
+	 */
+	public static Collection getAllProductsFromCatalog(final CatalogVersion catalogversion, final boolean bSortIt,
+			final String strSortBy) {
+
+		// --- Initialize
+		Product product = null;
+		final ArrayList weraproductslist = new ArrayList();
+
+		// --- Hole alle Produkte
+		final Collection products = catalogversion.getAllProducts();
+
+		// --- Sollen die Prokdute sortiert werden
+		if (products != null && products.size() > 0 && bSortIt) {
+			// --- Filtere WeraPordukte / WeraProductSets
+			for (final Iterator it2 = products.iterator(); it2.hasNext();) {
+				// --- Hole die Instance
+				product = (Product) it2.next();
+
+				// --- Ist das Produkt aktiv, bzw. in einer aktiven Kategorie
+				if (product instanceof WeraProduct || product instanceof WeraProductSet || product instanceof WeraProductSetinSet) {
+					if (((WeraProduct) product)._IsAktiv(catalogversion)) {
+						weraproductslist.add(product);
+					}
+				}
+			}
+
+			// --- Sortiere nach CODE-Nummer
+			final FieldComparatorString oFieldcomparatorstring = new FieldComparatorString();
+			oFieldcomparatorstring.setCompareField(strSortBy);
+			Collections.sort(weraproductslist, oFieldcomparatorstring);
+		} else {
+			weraproductslist.addAll(products);
+		}
+
+		return weraproductslist;
+	}
+
+	/**
+	 * Hole alle Produkte einer Katelogversion
+	 *
+	 * @param CatalogVersion catalogversion
+	 * @param bSortIt bSortIt
+	 * @param String strSortBy
+	 * @return Collection
+	 */
+	static Collection getAllProductsFromCatalog4PriceList(final CatalogVersion catalogversion, final boolean bSortIt,
+			final String strSortBy) {
+
+		// --- Initialize
+		Product product = null;
+		final ArrayList weraproductslist = new ArrayList();
+		weraproductslist.clear();
+		final ArrayList weraproductslistSB = new ArrayList();
+		weraproductslistSB.clear();
+		final ArrayList weraproductslistVH = new ArrayList();
+		weraproductslistVH.clear();
+		final Category categorySB = catalogversion.getCategory("SBKATALOG");
+		final Category categoryVK = catalogversion.getCategory("VERKAUFSHILFE");
+		final Collection categories = null;
+		boolean bAdded = false;
+
+		// --- Hole alle Produkte
+		final Collection products = catalogversion.getAllProducts();
+
+		// --- Sollen die Prokdute sortiert werden
+		if (products != null && products.size() > 0 && bSortIt) {
+
+			// --- Filtere WeraPordukte / WeraProductSets
+			for (final Iterator it2 = products.iterator(); it2.hasNext();) {
+				// --- Hole die Instance
+				product = (Product) it2.next();
+
+				// --- Ist das Produkt aktiv, bzw. in einer aktiven Kategorie
+				if (product != null && (product instanceof WeraProduct || product instanceof WeraProductSet)) {
+
+					bAdded = false;
+					//if (((WeraProduct) product).bIsAkitvPriceList())
+					//{
+
+					weraproductslist.add(product);
+
+					/*
+					 * // --- Ist das Produkt ein SB-Artikel? try { categories =
+					 * (Collection)product.getAttributeValue("supercategories"); } catch (JaloInvalidParameterException e) {
+					 * // TODO Auto-generated catch block e.printStackTrace(); } catch (JaloSecurityException e) { // TODO
+					 * Auto-generated catch block e.printStackTrace(); }
+					 * 
+					 * if ( categories != null && categories.contains(categoryVK) ) { weraproductslistVH.add(product);
+					 * weraproductslist.add(product); bAdded = true; } else { bAdded = true; if ( categories != null &&
+					 * categories.contains(categorySB) ) weraproductslistSB.add(product); else {
+					 * weraproductslist.add(product); } }
+					 */
+					//}
+				}
+				// if ( !bAdded ) log.info ("++ not added >" + product.getCode() + "<");
+			}
+
+			// --- Sortiere nach Reihenfolge (Preisliste)
+			log.info("Sort weraproductslist by " + strSortBy);
+			final FieldComparatorInt oFieldcomparator = new FieldComparatorInt();
+			oFieldcomparator.setCompareField(strSortBy);
+			Collections.sort(weraproductslist, oFieldcomparator);
+
+			// --- Sortiere nach Reihenfolge (Preisliste)
+			//log.info ("Sort weraproductslistSB by " + strSortBy);
+			//FieldComparatorInt oFieldcomparator1 = new FieldComparatorInt();
+			//oFieldcomparator1.setCompareField(strSortBy);
+			//Collections.sort( weraproductslistSB, oFieldcomparator1 );
+			// --- Sortiere nach Reihenfolge (Preisliste)
+			//log.info ("Sort weraproductslistVH by " + strSortBy);
+			//FieldComparatorInt oFieldcomparator2 = new FieldComparatorInt();
+			//oFieldcomparator2.setCompareField(strSortBy);
+			//Collections.sort( weraproductslistVH, oFieldcomparator2 );
+			// --- SB / VH ans Ende h�ngen
+			//weraproductslist.addAll(weraproductslistSB);
+			//weraproductslist.addAll(weraproductslistVH);
+		} else {
+			weraproductslist.addAll(products);
+		}
+
+		// --- Logdatei
+		if (true) {
+			FileWriter export_log = null;
+			try {
+				export_log = new FileWriter("/home/hybris/pricelist_export.log");
+				export_log.write("Sortierte Produktliste \n");
+				log.info("sortierte Produktliste");
+				for (final Iterator it1 = weraproductslist.iterator(); it1.hasNext();) {
+					product = (WeraProduct) it1.next();
+					//log.info ( "orderPL=" + product.getAttribute("orderPL")+ " / " + product.getCode() );
+					try {
+						export_log.write("orderPL=" + product.getAttribute("orderPL") + " / " + product.getCode() + "\n");
+					} catch (final JaloInvalidParameterException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (final JaloSecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+				export_log.flush();
+				export_log.close();
+
+			} catch (final IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return weraproductslist;
+	}
+
+	/*
+	 * public boolean bIsAkitvPriceList() { // --- Initialize boolean bResult = false; final Boolean bAkitv = null;
+	 * 
+	 * // --- Pr�fe, ob das Produkt überhaupt aktiv ist Boolean bAkitvPriceListe = null; try { bAkitvPriceListe =
+	 * (Boolean) getLocalizedProperty("ausgabe_preisliste"); } catch (final JaloInvalidParameterException e) { // TODO
+	 * Auto-generated catch block e.printStackTrace(); }
+	 * 
+	 * // // if ( bAkitvPriceListe != null && bAkitvPriceListe.booleanValue() ) bResult = true; if ( bResult == false )
+	 * // return false; // bResult = true;
+	 * 
+	 * if (this instanceof WeraProductSet) { } else { // --- Pr�fem, ob das Produkt akitve Varianten hat Collection
+	 * articles = null; try { articles = getVarianten(); } catch (final JaloInvalidParameterException e) { // TODO
+	 * Auto-generated catch block e.printStackTrace(); } catch (final JaloSecurityException e) { // TODO Auto-generated
+	 * catch block e.printStackTrace(); }
+	 * 
+	 * // --- Filtere WeraPordukte / WeraProductSets if (articles != null) {
+	 * 
+	 * WeraVariante article = null; for (final Iterator it2 = articles.iterator(); it2.hasNext();) { article =
+	 * (WeraVariante) it2.next(); if (article.bIsAkitvPriceList()) { bResult = true; break; } } }
+	 * 
+	 * }
+	 * 
+	 * return bResult; }
+	 */
+	/**
+	 * Ist das ein aktives Produkt
+	 *
+	 * @param CatalogVersion catalogversion
+	 * @return boolean
+	 */
+	public boolean _IsAktiv(final CatalogVersion catalogversion) {
+		// --- Setze Katalogversion
+		m_catalogversion = catalogversion;
+		return IsAktiv();
+	}
+
+	/**
+	 * Ist das Produkt aktiv
+	 *
+	 * @return boolean
+	 */
+	public boolean IsAktiv() {
+		// --- Initialize
+		final WeraManager wm = WeraManager.getInstance();
+		boolean bAktiv = false;
+		if (m_catalogversion != null) {
+			m_catalogversion = wm.getCatalogVersion(Config.getParameter("wera.mastercatalog"),
+					Config.getParameter("wera.mastercatalogversion"));
+		}
+
+		// --- Ist das Produkt aktiv
+		final Boolean oAktiv = (Boolean) WeraManager.getInstance().getAttribute(this, "aktiv");
+		if (oAktiv != null && oAktiv.booleanValue()) {
+			// --- Pr�fe ob, die Kategory auch akitv ist.
+			Collection categories = null;
+			try {
+				categories = (Collection) getAttribute("supercategories");
+			} catch (final JaloInvalidParameterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (final JaloSecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// --- Schleife über alle Kategorien
+			if (categories != null) {
+				for (final Iterator it2 = categories.iterator(); it2.hasNext();) {
+
+					final Category category = (Category) it2.next();
+					final CatalogVersion testcsv = (CatalogVersion) wm.getAttribute(category, "catalogVersion");
+					if (testcsv.equals(wm.getCatalogVersion(Config.getParameter("wera.mastercatalog"),
+							Config.getParameter("wera.mastercatalogversion")))) {
+						final Boolean bAktivCatTmp = (Boolean) category.getLocalizedProperty("aktiv");
+						if (bAktivCatTmp != null && bAktivCatTmp.booleanValue()) {
+							bAktiv = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		return bAktiv;
+	}
+
+	/**
+	 *
+	 */
+	public void updateVariantNames() {
+		final WeraManager wm = WeraManager.getInstance();
+		final SessionContext ctx = JaloSession.getCurrentSession().getSessionContext();
+		final Collection colLang = C2LManager.getInstance().getAllLanguages();
+		List listVariants = new LinkedList();
+		try {
+			listVariants = (List) getAttribute("variants");
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+		if (listVariants != null && listVariants.size() > 0) {
+			log.info("WeraProduct::afterSave => setting localized names for variants...");
+			Language currentSessionLanguage = JaloSession.getCurrentSession().getSessionContext().getLanguage();
+			
+			log.info("WeraProduct::afterSave => current session language = "+currentSessionLanguage.getIsoCode());
+			for (final Iterator it1 = colLang.iterator(); it1.hasNext();) {
+				final Language lang1 = (Language) it1.next();
+				final String currentLanguage = lang1.getIsoCode();
+				wm.SetLanguage(currentLanguage);
+				for (final Iterator it2 = listVariants.iterator(); it2.hasNext();) {
+					final WeraVariante oVariant = (WeraVariante) it2.next();
+					// log.info  ( currentLanguage + " => " + getLocalizedPropertyInternal(ctx,"name") );
+					// wir wollen NICHT die Fallback Version, daher getLocalizedPropertyInternal benutzen!
+					oVariant.setLocalizedProperty("name", getLocalizedPropertyInternal(ctx, "name"));
+					// log.info  (" ( validation : " + oVariant.getLocalizedPropertyInternal(ctx,"name") + " )" );
+				}
+			}
+			log.info("WeraProduct::afterSave => restoring session language = "+currentSessionLanguage.getIsoCode() );
+			wm.SetLanguage( currentSessionLanguage.getIsoCode() );
+		}
+	}
+
+	// --- Ersetzt für Bildnamens-Suche auf HD Sonderzeichen durch Filesystemvertr�gliche
+	// --- Zeichen und normalisiert auf lower case.
+	// --- Gibt normalisierten String zur�ck, oder null, falls das Produkt einen null Code hat.
+	public String normalizeFilenameForImageLookup() {
+		String cProductNr = null;
+		try {
+			cProductNr = getCode().toString();
+			cProductNr = WeraProduct.s_normalizeFilenameForImageLookup(cProductNr);
+
+		} catch (final NullPointerException e) {
+			// do nothing
+		}
+		return cProductNr;
+	}
+
+	// --- Ersetzt für Bildnamens-Suche auf HD Sonderzeichen durch Filesystemvertr�gliche
+	// --- Zeichen und normalisiert auf lower case.
+	// --- Gibt normalisierten String zur�ck, oder null, falls das Produkt einen null Code hat.
+	// --- STATIC Version
+	public static String s_normalizeFilenameForImageLookup(String cProductNr) {
+
+		try {
+			if (cProductNr != null) {
+				cProductNr = cProductNr.toLowerCase();
+				cProductNr = cProductNr.replace(' ', '_');
+				cProductNr = cProductNr.replace('/', '_');
+				cProductNr = cProductNr.replace(',', '_');
+				cProductNr = cProductNr.replace('#', '_');
+				cProductNr = cProductNr.replace('+', '_');
+				cProductNr = cProductNr.replace('(', '_');
+				cProductNr = cProductNr.replace(')', '_');
+				cProductNr = cProductNr.replace("\u00ae", ""); // Registered Zeichen ignorieren
+				cProductNr = cProductNr.replace("\"", ""); // Zoll-Zeichen ignorieren
+				cProductNr = cProductNr.replace("\u00f6", "oe");
+				cProductNr = cProductNr.replace("\u00e4", "ae");
+				cProductNr = cProductNr.replace("\u00fc", "ue");
+				cProductNr = cProductNr.replace("\u00df", "ss");
+			}
+		} catch (final NullPointerException e) {
+			// do nothing
+		}
+		return cProductNr;
+	}
+
+	/**
+	 * Name des Produktbildes (Jalo)
+	 * 
+	 * @Override
+	 * @param SessionContext ctx
+	 * @return String
+	 */
+	public String getDesc_picture1(final SessionContext ctx) {
+		String strProduktBildJPG = s_normalizeFilenameForImageLookup(getCode()) + ".jpg";
+
+		int iImageState = _checkCode2Picture();
+		// --- Vergleiche, ob der Code noch übereinstimmt...
+		switch ( iImageState ) {
+		    case 0: strProduktBildJPG += " - ACHTUNG FEHLER!!!"; break;
+		    case 1: strProduktBildJPG += " (EPS, alt)"; break;
+		}
+
+		return strProduktBildJPG;
+	}
+
+	/**
+	 * Alphanummerische Artikelnummer (mehrsprech. Print) - Jalo
+	 * 
+	 * @Override
+	 * @param SessionContext ctx
+	 * @return String
+	 */
+	public String getCheck_artikelnr_index(final SessionContext ctx) {
+
+		// --- preset
+		String strResult		= "";
+		final WeraManager wm	= WeraManager.getInstance();
+		
+		// --- hole sprachen
+		Language currentSessionLanguage = JaloSession.getCurrentSession().getSessionContext().getLanguage();
+		final Collection colLang = C2LManager.getInstance().getAllLanguages();
+
+		// --- schleife �ber alle Sprachen
+		for (final Iterator it1 = colLang.iterator(); it1.hasNext();) {
+			final Language lang1 = (Language) it1.next();
+			final String currentLanguage = lang1.getIsoCode();
+			wm.SetLanguage(currentLanguage);
+			String artikelnr_index	= (String)getLocalizedPropertyInternal(ctx, "artikelnr_index");
+			if ( artikelnr_index == null || artikelnr_index.equals("") ) {
+				if ( strResult.equals("")) {
+					
+					strResult = "Nicht gepflegt in:" + currentLanguage;
+					
+				} else {
+					
+					strResult += ", " + currentLanguage;
+				}
+			}
+		}
+		wm.SetLanguage( currentSessionLanguage.getIsoCode() );
+
+		return strResult.equals("") ? "OK :)" : strResult;
+	}
+
+	// --- Name des Produktbildes
+	public String getNamePicture(final SessionContext ctx) {
+
+		String strProduktBildJPG = s_normalizeFilenameForImageLookup(getCode()) + ".jpg";
+
+
+		return strProduktBildJPG;
+	}
+
+	// ********************************************************************************
+	// --- SJ 2006-06-29: Funktionen zum Zusammenstellen der Setdaten
+	// --- generiert hierarchische Datenstruktur mit Zusammenstellung der benutzten
+	//     Icons, Produktcodes,Artikel,CAs und durch Outputcontrol festgelegten, für die Ausgabe
+	//     bestimmten Werte.
+	//     Datenstruktur: siehe debugOutWeraProductSetData()
+	public ArrayList _genCADataForVariantList(final Collection listVariants, final Collection listVarianteSet) {
+		log.info("_genCADataForVariantList() (S) called");
+		// "variants" liefert Collection von WeraVarianteSet,
+		// über die "weravariants" die zugeh�rige Artikelnummer
+
+		// --- initialize
+		HashMap<String, String> hashMapOcUnit = new HashMap();
+
+		m_colWeraProductSetData = new ArrayList();
+		m_colWeraProductSetFootnotes = new ArrayList();
+		final WeraClassificationHelper weraclassificationhelper = new WeraClassificationHelper();
+
+		try {
+			Iterator iterVS = null;
+			if (listVarianteSet != null) {
+				iterVS = listVarianteSet.iterator();
+			}
+			for (final Iterator iter = listVariants.iterator(); iter.hasNext();) {
+				final WeraVariante myWeraVariante = (WeraVariante) iter.next();
+
+				Item weraVarSet = null;
+				if (iterVS != null && iterVS.hasNext()) {
+					weraVarSet = (Item) iterVS.next();
+				}
+
+				if (myWeraVariante != null) {
+
+					// Produkt holen, dessen Artikel zum Set geh�rt
+					final Product myBaseProduct = (Product) myWeraVariante.getAttribute("baseProduct");
+
+					// Basis Produkt- und Artikeldaten schonmal ermitteln und hashen (icon1, icon2, order, produktnr)
+					_initWeraProductSetData(myBaseProduct, myWeraVariante, weraVarSet);
+
+					// Wir sammeln beim Durchlaufen der Outputcontrols alle Attributcodes.
+					// Sp�ter updaten wir colWeraProductSetData mit den korrespondierenden Attributen
+					final ArrayList colAttributeCodesFromOutputControls = new ArrayList();
+
+					if (myBaseProduct != null) {
+						final Collection myOutputControls = (Collection) myBaseProduct.getAttribute("outputcontrols");
+
+						// Alle Outputcontrols des Produkts durchgehen
+						for (final Iterator iterOC = myOutputControls.iterator(); iterOC.hasNext();) {
+							final Outputcontrol myOC = (Outputcontrol) iterOC.next();
+							/*
+							 * getilgt 02.08.2011 GT Boolean bAktiv = myOC.isAktiv(); if (bAktiv == null) { bAktiv = new
+							 * Boolean(false); }
+							 */
+							Boolean bInset = myOC.isShowinset();
+							if (bInset == null) {
+								bInset = new Boolean(false);
+							}
+
+							//if (bAktiv.booleanValue() && bInset.booleanValue())
+							if (bInset.booleanValue()) {
+								final String codeFromOC = myOC.getAttribute("code").toString();
+
+								// --- merken unit-ca
+								String strUnitCA = (String) myOC.getAttribute("unitca");
+								if (strUnitCA != null) {
+									if (!strUnitCA.equals("")) {
+										hashMapOcUnit.put(codeFromOC, strUnitCA.toString());
+									}
+								}
+								// --- merken unit-ca
+
+								// Attributcode merken
+								colAttributeCodesFromOutputControls.add(codeFromOC);
+							}
+						}
+
+						_updateCAInWeraProductSetData(myBaseProduct, colAttributeCodesFromOutputControls);
+
+					}
+
+				}
+
+			}
+
+			// --- Varianten im MasterHash richtig sortieren (nach order)
+			_sortVariantsInWeraProductSetData();
+
+			// --- Produkte im MasterHash richtig sortieren (nach Code alphabetisch!)
+			// _sortProductsInWeraProductSetData();
+			// --- F�r alle Produkte im Set und für alle Artikel darin die eigentlichen Values festlegen
+			for (final Iterator iterProduct = m_colWeraProductSetData.iterator(); iterProduct.hasNext();) {
+
+				final HashMap productHash = (HashMap) iterProduct.next();
+				final Collection colVariants = (Collection) productHash.get("colHashArtikel");
+				final Collection colCA = (Collection) productHash.get("colCA");
+				//final Collection colCA = (Collection) productHash.get("colCAAll");
+				final HashMap mapCA2Inch = (HashMap) productHash.get("mapCA2Inch");
+
+				// --- last CA
+				ClassificationAttribute lastCA = null;
+
+				LOG.info("0. for (final Iterator iterVariant = colVariants.iterator(); iterVariant.hasNext();) {");
+				for (final Iterator iterVariant = colVariants.iterator(); iterVariant.hasNext();) {
+					final HashMap variantHash = (HashMap) iterVariant.next();
+					final WeraVariante myVariant = (WeraVariante) variantHash.get("variant");
+					int myVariantQuantity = 0;
+					try {
+						final Integer tmpInteger = (Integer) variantHash.get("contentQuantity");
+						if (tmpInteger != null) {
+							myVariantQuantity = tmpInteger.intValue();
+						}
+					} catch (final Exception e) {
+						e.printStackTrace();
+					}
+
+					String stringValue = "";
+					LOG.info("1. for (final Iterator iterCA = colCA.iterator(); iterCA.hasNext();) {");
+					for (final Iterator iterCA = colCA.iterator(); iterCA.hasNext();) {
+						String stringCAValue = "";
+
+						final ClassAttributeAssignment myCAA = (ClassAttributeAssignment) iterCA.next();
+
+						final ClassificationAttribute myCA = myCAA.getClassificationAttribute();
+						LOG.info("1.x myCA.getCode()=" + myCA.getCode());
+
+						// --- Hole Type
+						final EnumerationValue type = myCAA.getAttributeType();
+
+						LOG.info("1.5. getPickedClassificationAttributeValuesByProduct");
+						final HashMap<String, ClassificationAttributeValue> hCav = weraclassificationhelper
+								.getPickedClassificationAttributeValuesByProduct(myVariant, myCAA);
+						final Collection colProductFeatures = hCav.values();
+						//Collection colProductFeatures  = getProductFeatures(myVariant,myCA);
+
+						LOG.info("2. for (final Iterator iterNeededPF = colProductFeatures.iterator(); iterNeededPF.hasNext();) { size=" + colProductFeatures.size() );
+						for (final Iterator iterNeededPF = colProductFeatures.iterator(); iterNeededPF.hasNext();) {
+							final ClassificationAttributeValue classificationattributevalue = (ClassificationAttributeValue) iterNeededPF
+									.next();
+							LOG.info(myCA.getCode() + " start");
+							if (type.getCode().equals(GeneratedCatalogConstants.Enumerations.ClassificationAttributeTypeEnum.STRING)) {
+								//LOG.info(myCA.getCode() + "in value");
+
+								if (!stringCAValue.equals("")) {
+									stringCAValue += ",";
+								}
+								String sValueItem = null;
+								if (classificationattributevalue != null) {
+									final String sValue = classificationattributevalue.getName();
+
+									if (sValue == null) {
+										LOG.info("_genCADataForVariantList() could not find non-emtpy value for FeatureValue "
+												+ classificationattributevalue.getCode() + ", trying german value...");
+
+										final Language oAktLang = JaloSession.getCurrentSession().getSessionContext().getLanguage();
+										JaloSession.getCurrentSession().getSessionContext()
+												.setLanguage(C2LManager.getInstance().getLanguageByIsoCode("de"));
+										sValueItem = classificationattributevalue.getName();
+										JaloSession.getCurrentSession().getSessionContext().setLanguage(oAktLang);
+
+									} else {
+										sValueItem = (String) classificationattributevalue.getAttribute("name");
+									}
+								} else {
+									log.info("classificationattributevalue is null, cannot get attribute name");
+								}
+								LOG.info(myCA.getCode() + " in value = " + sValueItem);
+								if (sValueItem == null || sValueItem.trim().equals("-")) {
+									sValueItem = "";
+								} else {
+									sValueItem = sValueItem.replace("\u00b4", "");
+									sValueItem = sValueItem.replace("\"", "##dq##");
+								}
+								if (mapCA2Inch != null) {
+									//LOG.info(myCA.getCode() + "in mapCA2Inch = " );
+									final String sUseInch = (String) mapCA2Inch.get(myCA);
+									LOG.info(myCA.getCode() + "in mapCA2Inch sUseInch= " +sUseInch);
+									String sCAName = myCA.getName();
+									if (sCAName == null) {
+										sCAName = "";
+									}
+
+									if (sUseInch != null
+											&& (sUseInch.equals("1") || sCAName.toLowerCase().contains("zoll") || (sValueItem.contains("/") && !(myCA
+											.getCode().equals("AAA972f001")
+											|| myCA.getCode().equals("AAA957f001") //
+											|| myCA.getCode().equals("AAC551f001")
+											|| myCA.getCode().equals("AAA971f001") //
+											|| myCA.getCode().equals("AAA358f001")
+											|| myCA.getCode().equals("_AAA972f001")
+											|| myCA.getCode().equals("_00011f001"))))) {
+										if (sValueItem.isEmpty() || sValueItem.equals("-")) {
+											sValueItem = "";
+										} else {
+											// --- Zollzeichen
+											if ( sValueItem.contains("##dq##") ) {
+												sValueItem = sValueItem.replaceAll("##dq##", "\"");
+											} else {
+
+												sValueItem += "\"";
+											}
+										}
+									}
+
+								}
+								LOG.info(myCA.getCode() + "in ende sValueItem= " +sValueItem);
+
+								stringCAValue += sValueItem;
+							}
+
+						}
+						LOG.info("3. nach for (final Iterator iterNeededPF = colProductFeatures.iterator(); iterNeededPF.hasNext();) {");
+
+						// --- leere CA Values auslassen
+						stringCAValue = stringCAValue.trim();
+						if (stringCAValue.length() > 0) {
+							// --- Hole Unit ----------------------------------------
+							String stringUnit = null;
+							final ClassificationAttributeUnit oUnit = myCAA.getUnit();
+							//oUnit = classificationattribute.getUnitForCategory(JaloSession.getCurrentSession().getSessionContext(), oCategory);
+							if (stringUnit == null || stringUnit.length() == 0) {
+								if (oUnit != null) {
+									stringUnit = oUnit.getUnitType();
+								}
+							}
+							// --- unit aus oc holen
+							if (hashMapOcUnit.containsKey(myCA.getCode())) {
+								stringUnit = hashMapOcUnit.get(myCA.getCode());
+							}
+							if (stringUnit == null) {
+								stringUnit = "";
+							}
+							// --- Hole Unit ----------------------------------------
+
+							if (!stringValue.equals("")) {
+								// --- pr�fe 
+								if ((lastCA != null && lastCA.getCode().equals("_00011f001")) || myCA.getCode().equals("_00003f001")) {
+									// --- letztes CA war Artikelnummer, daher ein Leezeichen als Trenner
+									// oder akteulles ist ein Messbereich
+									if (!stringUnit.equals("") && !stringUnit.equals("mm") && !stringUnit.equals("inch")) {
+										stringValue += ", ";
+
+										// --- unit hinzuf�gen
+										stringCAValue += " " + stringUnit;
+									} else {
+										stringValue += ", ";
+									}
+
+								} else {
+									stringValue += "x";
+								}
+							}
+
+							// --- Wert anh�ngen
+							stringValue += stringCAValue;
+						}
+						LOG.info("E: 1. for (final Iterator iterCA = colCA.iterator(); iterCA.hasNext();) {");
+
+						// --- letze ca merken
+						lastCA = myCA;
+
+					}
+
+System.out.println("(v) stringValue=" + stringValue);
+					// --- bereiginigen
+					stringValue = stringValue.replaceAll("--x", "");
+System.out.println("(n) stringValue=" + stringValue);
+
+					// --- übernehmen!
+					if (stringValue.trim().length() > 0) {
+
+						log.info ( "myVariantQuantity=" + myVariantQuantity +  ", stringValue=>" +stringValue + "<" );
+						variantHash.put("value", myVariantQuantity + "x " + stringValue);
+					} else {
+						log.info ( "myVariantQuantity=" + myVariantQuantity +  ", stringValue=>" +stringValue + "<" );
+						variantHash.put("value", "");
+					}
+					log.info ( "-END-" );
+
+				}
+			}
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+
+		// --- fussnoten
+		_genFootnotes();
+
+		log.info("_genCADataForVariantList() (E) called" + getCode() );
+
+		return m_colWeraProductSetData;
+	}
+
+
+	/*
+	 * private static void _initWeraProductSetData(final Product product, final WeraVariante variante, final
+	 * WeraVarianteSet varianteSet)
+	 */
+	private void _initWeraProductSetData(final Product product, final WeraVariante variante, final Item varianteSet) {
+
+		log.info("_initWeraProductSetData() (S) called" + getCode() );
+
+		// --- Initialize
+		boolean bFound = false;
+		HashMap myHash = null;
+		HashMap newHash = null;
+		final WeraManager wm = WeraManager.getInstance();
+
+		if (m_colWeraProductSetData != null && product != null && variante != null) {
+			Collection myOutputControls = null;
+			try {
+				myOutputControls = (Collection) product.getAttribute("outputcontrols");
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
+			for (final Iterator i = m_colWeraProductSetData.iterator(); i.hasNext();) {
+				myHash = (HashMap) i.next();
+				if (myHash.get("code").equals(product.getCode())) {
+					bFound = true;
+					break;
+				}
+			}
+
+			// Product-HashMap neu anlegen und initialisieren
+			if (bFound == false) {
+				Integer iOrder = null;
+				String strArtrNr = product.getClass() + "=>strArtrNr";
+				String strLagerNr = product.getClass() + "=>strLagerNr";
+				String strVariantenNr = product.getClass() + "=>strVariantenNr";
+				String strEAN = product.getClass() + "=>strEAN";
+				String strVPE = product.getClass() + "=>strVPE";
+				try {
+					iOrder = (Integer) product.getAttribute("order");
+					if (product instanceof WeraProductSet) {
+						strArtrNr = (String) product.getAttribute("artnr");
+					} else {
+						strArtrNr = (String) variante.getAttribute("code");
+					}
+					strLagerNr = (String) variante.getAttribute("lagerNr");
+					strVariantenNr = (String) variante.getAttribute("variantenNr");
+					strEAN = (String) variante.getAttribute("ean");
+					Integer oVPE = (Integer) variante.getAttribute("contentQuantity");
+					if (oVPE == null) {
+						
+						strVPE = "1";
+						
+					} else {
+						
+						strVPE = oVPE.toString();
+					}
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
+				newHash = new HashMap();
+				newHash.put("artnr", strArtrNr);
+				newHash.put("lagernr", strLagerNr);
+				newHash.put("variantennr", strVariantenNr);
+				newHash.put("ean", strEAN);
+				newHash.put("vpe", strVPE);
+				newHash.put("code", product.getCode());
+				newHash.put("icons1", null);
+				newHash.put("icons1_collection", new ArrayList());
+				newHash.put("icons2", null);
+				newHash.put("icons2_collection", new ArrayList());
+				newHash.put("colHashArtikel", new ArrayList());
+				newHash.put("colCA", new ArrayList());
+				newHash.put("colCAAll", null);
+				newHash.put("order", iOrder);
+				newHash.put("pk", product.getPK());
+				newHash.put("name", "name=" + product.getName());
+
+				if (m_setHalterCodes.contains(product.getCode())) {
+					newHash.put("isNoHandhalter", new String("0"));
+				} else {
+					newHash.put("isNoHandhalter", new String("1"));
+				}
+
+				Collection col1 = null;
+				Collection col2 = null;
+				try {
+					col1 = (Collection) ((WeraProduct) product).getAttribute("icons1");
+					col2 = (Collection) ((WeraProduct) product).getAttribute("icons2");
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
+				if (col1.size() > 0) {
+					final WeraMedia weramedia = (WeraMedia) col1.iterator().next();
+					newHash.put("icons1", weramedia);
+					newHash.put("icons1_collection", col1);
+				}
+				if (col2.size() > 0) {
+					final WeraMedia weramedia = (WeraMedia) col2.iterator().next();
+					newHash.put("icons2", weramedia);
+					newHash.put("icons2_collection", col2);
+				}
+
+				/*
+				 * Alle Attribute zum Baseprodukt holen Ben�tigen wir zum Abgleich mit den Attributcodes aus den
+				 * Outputcontrols
+				 */
+				//CategoryManager catm = CategoryManager.getInstance();
+				//Collection colCategoriesOfMyBaseProduct = catm.getCategoriesByProduct ( product );
+				final Collection colCategoriesOfMyBaseProduct = (Collection) wm.getAttribute(product, "classificationClasses");
+
+				final ArrayList colAllAttributesOfMyBaseProduct = new ArrayList();
+				//CatalogManager cm = CatalogManager.getInstance();
+				ClassificationClass oClassificationClass = null;
+				// ClassificationSystemVersion versionProduct = null;
+
+				final HashMap mapCA2Inch = new HashMap();
+
+				for (final Iterator it1 = colCategoriesOfMyBaseProduct.iterator(); it1.hasNext();) {
+					oClassificationClass = (ClassificationClass) it1.next();
+
+					// --- Filtern aller doppelten Kategorien anderer Werakataloge ---	
+					Collection classificationattributeassignments = null;
+					try {
+
+						//---							
+						/*
+						 * Entfernt - 28.10. GT - Collection enth�lt ausschliesslich klassifizierende Kategorien boolean
+						 * bIsWeraCatalog = false; if ( version.getCatalog() != null ) bIsWeraCatalog =
+						 * version.getCatalog().getId().equals("weracatalog"); if ((bIsWeraCatalog &&
+						 * (versionProduct.getVersion().equals(version.getVersion()) && bIsWeraCatalog)) ||
+						 * bIsWeraCatalog==false ) classificationattributes = cm.getClassificationAttributes(oCategory);
+						 */
+						//---							
+						//classificationattributeassignments = oClassificationClass.getClassificationAttributes();
+						classificationattributeassignments = oClassificationClass.getClassificationAttributeAssignments();
+
+					} catch (final Exception e) {
+						e.printStackTrace();
+						log.info("Error=" + e.getMessage());
+					}
+					if (classificationattributeassignments == null || classificationattributeassignments.size() == 0) {
+						continue;
+						// --- Filtern aller doppelten Kategorien anderer Werakataloge ---					
+					}
+
+					for (final Iterator it2 = classificationattributeassignments.iterator(); it2.hasNext();) {
+						final ClassAttributeAssignment classificationattributeassignment = (ClassAttributeAssignment) it2.next();
+
+						// --- Initialize
+						final ClassificationAttribute classificationattribute = classificationattributeassignment
+								.getClassificationAttribute();
+
+						final Outputcontrol outputcontrol = (Outputcontrol) WeraManager.checkContaining(myOutputControls, "code",
+								classificationattribute.getCode());
+
+						// --- Hole Einheit
+						String stringUnit = null;
+						if (outputcontrol != null) {
+							stringUnit = (String) outputcontrol.getLocalizedProperty("unitca");
+
+						}
+						log.info  ("CA " + classificationattribute.getCode() + " output>" +  stringUnit + "<");
+
+						// --- Hole Unit
+						final ClassificationAttributeUnit oUnit = classificationattributeassignment.getUnit();
+						//oUnit = classificationattribute.getUnitForCategory(JaloSession.getCurrentSession().getSessionContext(), oCategory);
+						if (stringUnit == null || stringUnit.length() == 0) {
+							if (oUnit != null) {
+								stringUnit = oUnit.getUnitType();
+							}
+						}
+						if (stringUnit == null) {
+							stringUnit = "";
+						}
+
+						final boolean bIsUnitInch = (stringUnit.toLowerCase().equals("inch"));
+
+						if (bIsUnitInch ||classificationattribute.getCode().equals("AAA971f001") ) {
+							mapCA2Inch.put(classificationattribute, "1");
+							log.info  ("CA " + classificationattribute.getCode() + ", mapCA2Inch=1" );
+						} else {
+							mapCA2Inch.put(classificationattribute, "0");
+							log.info  ("CA " + classificationattribute.getCode() + "" + classificationattribute.getName() + " has unit " + stringUnit );
+						}
+
+						log.info  ("CA (E)" + classificationattribute.getCode() + " output>" +  stringUnit + "<");
+					}
+
+					colAllAttributesOfMyBaseProduct.addAll(classificationattributeassignments);
+				}
+				newHash.put("mapCA2Inch", mapCA2Inch);
+				newHash.put("colCAAll", colAllAttributesOfMyBaseProduct);
+
+				// neuen Produkthash in Collection werfen
+				m_colWeraProductSetData.add(newHash);
+			}
+
+			final HashMap newArticle = new HashMap();
+			Integer iOrder = null;
+			try {
+				iOrder = (Integer) variante.getAttribute("order");
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
+
+			newArticle.put("variant", variante);
+			newArticle.put("value", "");
+			newArticle.put("order", iOrder);
+
+			/*
+			 * // --- Hole Fussnoten Collection footnotesFromVariant = null; try { footnotesFromVariant = new ArrayList (
+			 * (Collection) variante.getAttribute("footnotes") ); } catch (Exception e1) { // TODO Auto-generated catch
+			 * block e1.printStackTrace(); }
+			 * 
+			 * newArticle.put( "footnotes", footnotesFromVariant);
+			 */
+			Integer cQuant = new Integer(0);
+			if (varianteSet != null) {
+				try {
+					//log.info  ( "+++WPS.varianteSet.getClass()=" + varianteSet.getClass().toString()  );
+					cQuant = (Integer) varianteSet.getAttribute("contentQuantity");
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (cQuant == null) {
+				newArticle.put("contentQuantity", new Integer(0) );
+			} else {
+				newArticle.put("contentQuantity", cQuant);
+			}
+
+			if (myHash != null && bFound == true) {
+				((Collection) myHash.get("colHashArtikel")).add(newArticle);
+			} else {
+				((Collection) newHash.get("colHashArtikel")).add(newArticle);
+			}
+
+		}
+
+		log.info("_initWeraProductSetData() (E) called" + getCode() );
+
+	}
+
+	/**
+	 * get the first occurens of a product / category relation from a given
+	 * Catalogversion
+	 *
+	 * @param String strCatalogversion
+	 * @return Category oFirstCategory - found category, or null
+	 */
+	public Category getFirstCategoryByProduct(final String strCatalogversion) {
+
+		// --- initialize
+		final WeraManager wm = WeraManager.getInstance();
+		Category oWebCategory = null;
+		Category oWeramasterCategory = null;
+
+		// --- get all category information ---------------------------------------------------------------------
+		final Collection<Category> supercategories = (Collection<Category>) wm.getAttribute(this, "supercategories");
+		for (final Category cm : supercategories) {
+			final CatalogVersion categoryCatalogVersion = (CatalogVersion) wm.getAttribute(cm, "catalogVersion");
+			if (categoryCatalogVersion != null && categoryCatalogVersion.getVersion().equals(strCatalogversion)) {
+				oWebCategory = cm;
+				break;
+			}
+		} // --- for (final Category cm : supercategories)
+
+		if (oWebCategory != null) {
+			for (final Category cm : supercategories) {
+				final CatalogVersion categoryCatalogVersion = (CatalogVersion) wm.getAttribute(cm, "catalogVersion");
+				if (categoryCatalogVersion != null && categoryCatalogVersion.getVersion().equals("weramaster")
+						&& cm.getCode().equals(oWebCategory.getCode())) {
+					oWeramasterCategory = cm;
+					break;
+				}
+			} // --- for (final Category cm : supercategories)
+		}
+
+		// use path of web category only if no corresponding weramaster category with the same code exists
+		if (oWebCategory != null) {
+			oWebCategory = oWebCategory;
+			if (oWeramasterCategory != null) {
+				oWebCategory = oWeramasterCategory;
+			}
+		}
+
+		// --- get all category information ---------------------------------------------------------------------
+		return oWebCategory;
+	}
+
+	// --- Gleicht "colCA" Feld im WeraProductSetData Hash ab gegen colCodes und sortiert diese
+	private void _updateCAInWeraProductSetData(final Product product, final Collection colCodes) {
+		//log.info ("WeraProductSet::_updateCAInWeraProductSetData() called");
+
+		HashMap myHash = null;
+
+		for (final Iterator i = m_colWeraProductSetData.iterator(); i.hasNext();) {
+			myHash = (HashMap) i.next();
+			if (myHash.get("code").equals(product.getCode())) {
+				final Collection colAllCA = (Collection) myHash.get("colCAAll");
+				final Collection colCA = (Collection) myHash.get("colCA");
+
+				// Bereitstellen und Sortieren der CAs nur wenn nicht schon geschehen
+				if (colCA.size() == 0) {
+					for (final Iterator ic = colAllCA.iterator(); ic.hasNext();) {
+						final ClassAttributeAssignment caa = (ClassAttributeAssignment) ic.next();
+						final ClassificationAttribute ca = caa.getClassificationAttribute();
+						if (colCodes.contains(ca.getCode())) {
+							colCA.add(caa);
+							//log.info ("_updateCAInWeraProductSetData(): adding CA " + ca.getCode());
+						}
+					}
+
+					// Sortieren der benutzten CAs
+					final OrderCtrlComparator orderctrl_comparator = new OrderCtrlComparator();
+					orderctrl_comparator.setProduct(product);
+					Collections.sort((List) colCA, orderctrl_comparator);
+				}
+			}
+		}
+
+	}
+
+	private void _sortVariantsInWeraProductSetData() {
+		log.info("_sortVariantsInWeraProductSetData() (S) called");
+
+		if (m_colWeraProductSetData != null) {
+			for (final Iterator iMaster = m_colWeraProductSetData.iterator(); iMaster.hasNext();) {
+				final HashMap productMap = (HashMap) iMaster.next();
+				final Collection myVariantMaps = (Collection) productMap.get("colHashArtikel");
+				final ArrayList myNewVariantMaps = new ArrayList();
+
+				final int iSize = myVariantMaps.size();
+
+				for (int j = 0; j < iSize; j++) {
+					HashMap tmpHash = null;
+					int iMinOrder = Integer.MAX_VALUE;
+
+					for (final Iterator i = myVariantMaps.iterator(); i.hasNext();) {
+						final HashMap variantHash = (HashMap) i.next();
+						int iVariantOrder = -1;
+						try {
+							iVariantOrder = ((Integer) variantHash.get("order")).intValue();
+						} catch (final Exception e) {
+							e.printStackTrace();
+						}
+						if (iVariantOrder < iMinOrder) {
+							iMinOrder = iVariantOrder;
+							tmpHash = variantHash;
+
+						}
+					}
+
+					if (tmpHash != null) {
+						myNewVariantMaps.add(tmpHash);
+						myVariantMaps.remove(tmpHash);
+					}
+				}
+
+				productMap.put("colHashArtikel", myNewVariantMaps);
+
+			}
+
+		}
+
+		log.info("_sortVariantsInWeraProductSetData() (E) called");
+	}
+
+	private void _sortProductsInWeraProductSetData() {
+		//log.info ("WeraProductSet::_sortProductsInWeraProductSetData() called");
+
+		final ArrayList myNewColWeraProductSetDataMaps = new ArrayList();
+		if (m_colWeraProductSetData != null) {
+
+			final int iSize = m_colWeraProductSetData.size();
+
+			for (int j = 0; j < iSize; j++) {
+				HashMap tmpHash = null;
+				String sMinCodename = "ZZZZZZZZZZZZ";
+				for (final Iterator i = m_colWeraProductSetData.iterator(); i.hasNext();) {
+					final HashMap productHash = (HashMap) i.next();
+					String sProductCode = null;
+					String sIsHandhalter = null;
+					String sCode = null;
+					try {
+						sIsHandhalter = productHash.get("isNoHandhalter").toString();
+						sCode = productHash.get("code").toString();
+						sProductCode = sIsHandhalter + sCode;
+					} catch (final Exception e) {
+						e.printStackTrace();
+					}
+					if (sProductCode.compareTo(sMinCodename) < 0) {
+						sMinCodename = sProductCode;
+						tmpHash = productHash;
+					}
+				}
+
+				if (tmpHash != null) {
+					myNewColWeraProductSetDataMaps.add(tmpHash);
+					m_colWeraProductSetData.remove(tmpHash);
+				}
+			}
+		}
+		m_colWeraProductSetData = myNewColWeraProductSetDataMaps;
+
+	}
+
+	public void _genFootnotes() {
+		if (m_colWeraProductSetData != null) {
+			for (final Iterator i = m_colWeraProductSetData.iterator(); i.hasNext();) {
+				final HashMap myHash = (HashMap) i.next();
+				for (final Iterator ia = ((Collection) myHash.get("colHashArtikel")).iterator(); ia.hasNext();) {
+					final HashMap myAHash = (HashMap) ia.next();
+					final WeraVariante wv = (WeraVariante) myAHash.get("variant");
+					if (wv != null) {
+						Collection colFootnotes = null;
+						try {
+							colFootnotes = (Collection) wv.getAttribute("footnotes");
+						} catch (final Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if (colFootnotes != null) {
+							for (final Iterator ifn = colFootnotes.iterator(); ifn.hasNext();) {
+								final Footnote oFootnote = (Footnote) ifn.next();
+								int iFootnodeIndex = m_colWeraProductSetFootnotes.indexOf(oFootnote);
+								if (iFootnodeIndex < 0) {
+									m_colWeraProductSetFootnotes.add(oFootnote);
+									iFootnodeIndex = m_colWeraProductSetFootnotes.lastIndexOf(oFootnote);
+								}
+								if (myAHash.get("footnotes") == null) {
+									myAHash.put("footnotes", new ArrayList());
+								}
+								final Collection myAHashFootnotes = (Collection) myAHash.get("footnotes");
+								myAHashFootnotes.add(new Integer(iFootnodeIndex + 1));
+
+							}
+						}
+
+					}
+				}
+			}
+		}
+	}
+
+	public void debugOutWeraProductSetData() {
+		// log.info ("WeraProductSet::debugOutWeraProductSetData() called");
+
+		int iCnt = 0;
+		int jCnt = 0;
+		log.info("DEBUG output WeraProductSetData...");
+		log.info("----------------------------------");
+		if (m_colWeraProductSetData == null) {
+			log.info("WeraProductSetData is not yes initialized!");
+		} else {
+			for (final Iterator i = m_colWeraProductSetData.iterator(); i.hasNext();) {
+				final HashMap myHash = (HashMap) i.next();
+				final WeraMedia med1 = (WeraMedia) myHash.get("icons1");
+				final WeraMedia med2 = (WeraMedia) myHash.get("icons2");
+				iCnt++;
+				log.info("P #" + iCnt);
+				log.info(" o code : " + myHash.get("code"));
+				log.info(" o icons1: " + (med1 == null ? "[n/a]" : med1.getURL()));
+				log.info(" o icons2: " + (med2 == null ? "[n/a]" : med2.getURL()));
+				log.info(" o order : " + myHash.get("order"));
+				log.info(" o isNoHandhalter : " + myHash.get("isNoHandhalter"));
+				log.info(" o colHashArtikel: ");
+				jCnt = 0;
+				for (final Iterator ia = ((Collection) myHash.get("colHashArtikel")).iterator(); ia.hasNext();) {
+					final HashMap myAHash = (HashMap) ia.next();
+					jCnt++;
+					log.info("   A #" + jCnt);
+					log.info("    - variant :" + ((WeraVariante) myAHash.get("variant")).getCode());
+					log.info("    - value:" + myAHash.get("value"));
+					log.info("    - order :" + myAHash.get("order"));
+					log.info("    - contentQuantity :" + myAHash.get("contentQuantity"));
+					if (myAHash.get("footnotes") != null) {
+						log.info("    - footnotes :");
+						for (final Iterator ift = ((Collection) myAHash.get("footnotes")).iterator(); ift.hasNext();) {
+
+							final Integer oFootnote = (Integer) ift.next();
+							try {
+
+								log.info("      > FN: " + oFootnote.intValue());
+							} catch (final Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+
+				// log.info  ( " o colCA : " + myHash.get("colCA") );
+				// log.info  ( " o colCAAll : " + myHash.get("colCAAll") );
+			}
+		}
+
+		if (m_colWeraProductSetFootnotes != null) {
+			log.info("  ------------ Footnotes --------------- :");
+			iCnt = 0;
+			for (final Iterator ifttxt = m_colWeraProductSetFootnotes.iterator(); ifttxt.hasNext();) {
+				final Footnote oFootnote = (Footnote) ifttxt.next();
+				final String strCode = (String) oFootnote.getLocalizedProperty("name");
+				log.info(++iCnt + ") " + strCode);
+			}
+		}
+
+	}
+
+	// --- ProduktSetData zur�ckgeben
+	public ArrayList getWeraProductSetData() {
+		return m_colWeraProductSetData;
+	}
+
+	// --- ProduktSetData zur�ckgeben
+	public ArrayList getWeraProductSetFootnotes() {
+		return m_colWeraProductSetFootnotes;
+	}
+
+	// ********************************************************************************
+	// --- Initialisierung der Grunddaten für WERA
+	public void setEssentialData() {
+		// --- UNIT
+		final List aResult = JaloSession
+				.getCurrentSession()
+				.getFlexibleSearch()
+				.search("select {pk},{code},{name[de]} from {Unit} WHERE code='pieces'", null, Collections.singletonList(Unit.class),
+						true, // fail on unknown fields
+						true, // don't need total
+						0, 1 // range
+				).getResult();
+		Unit fnResult = null;
+		if (aResult != null && aResult.isEmpty() == false) {
+			fnResult = (Unit) aResult.get(0);
+		}
+		if (fnResult != null) {
+
+			setUnit(fnResult);
+
+			WeraManager.getInstance().setAttribute(this, "contentUnit", fnResult);
+
+		}
+		// --- UNIT
+
+		// --- Produkt Defaultwerte initialisieren
+		setLocalizedProperty("aktiv", new Boolean(true));
+
+		WeraManager.getInstance().setAttribute(this, "manufacturerName", new String("WERA"));
+	}
+
+	// --- Hole alle angelegten Datenfelder (Portalclassifizierung)
+	public static ArrayList getAllDatenfelder() {
+
+		// --- Initiliaze
+		final ArrayList colMerkmale = new ArrayList();
+		ArrayList colAllowedList = new ArrayList();
+		colAllowedList.addAll(Arrays.asList("pk"));
+
+		// --- Schleife über alle Felder
+		final Collection descriptors = TypeManager.getInstance().getComposedType(WeraProduct.class).getAttributeDescriptors();
+		for (final Iterator it1 = descriptors.iterator(); it1.hasNext();) {
+			// --- Hole Attribut-describtor
+			final AttributeDescriptor oAD = (AttributeDescriptor) it1.next();
+			if (oAD.isWritable() || colAllowedList.contains(oAD.getQualifier())) {
+
+				// --- Filter nach GrundTypen und MediaObjekten
+				if (!(oAD.getAttributeType() instanceof de.hybris.platform.jalo.type.AtomicType)
+						&& !(oAD.getAttributeType().toString().equals("Collection(WeraMedia)"))) {
+					continue;
+				}
+
+				final HashMap hMerkmal = new HashMap();
+				hMerkmal.put("name", oAD.getQualifier());
+				hMerkmal.put("visibility", "Produkt");
+				if (oAD.getName() == null) {
+					hMerkmal.put("description", oAD.getQualifier());
+				} else {
+					hMerkmal.put("description", oAD.getName());
+				}
+				hMerkmal.put("type", oAD.getAttributeType().getName());
+				hMerkmal.put("namespace", "WeraProduct@hybris/core");
+				colMerkmale.add(hMerkmal);
+
+			}
+
+		}
+
+		return colMerkmale;
+	}
+
+	public Collection<WeraProduct> getCrossSellingProducts() {
+		final Collection<WeraProduct> colProducts = new ArrayList();
+		Collection<ProductReference> colCrossSellingProducts = null;
+		try {
+			colCrossSellingProducts = (Collection<ProductReference>) getAttribute("productReferences");
+		} catch (final JaloInvalidParameterException e) {
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (final ProductReference pr : colCrossSellingProducts) {
+
+			Product wp = pr.getTarget();
+			if (wp != null && wp instanceof WeraProduct) {
+				colProducts.add((WeraProduct) wp);
+				LOG.info("getCrossSellingProducts(): Found cross selling product " + wp.getCode());
+			} else {
+				LOG.warn("getCrossSellingProducts(): not WeraProduct skip " + wp.getCode());
+			}
+		}
+		return colProducts;
+	}
+
+	// --- Check if product belongs to this catalog via direct assignment or category assignment
+	public boolean belongsToCatalogVersion(final CatalogVersion cv) {
+
+		boolean bBelongsToCatalogVersion = false;
+		CatalogVersion oProductsDirectCatalogVersion = null;
+		try {
+			oProductsDirectCatalogVersion = (CatalogVersion) this.getAttribute("catalogVersion");
+		} catch (final JaloInvalidParameterException e) {
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (final JaloSecurityException e) {
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (oProductsDirectCatalogVersion != null && oProductsDirectCatalogVersion.getVersion().equals(cv.getVersion())) {
+			bBelongsToCatalogVersion = true;
+		} else {
+			Collection<Category> colSuperCats = null;
+			try {
+				colSuperCats = (Collection<Category>) this.getAttribute("supercategories");
+				if (colSuperCats != null) {
+					for (final Category oCat : colSuperCats) {
+						final CatalogVersion oSuperCatsCatalogVersion = (CatalogVersion) oCat.getAttribute("catalogVersion");
+						if (oSuperCatsCatalogVersion.getVersion().equals(cv.getVersion())) {
+							bBelongsToCatalogVersion = true;
+							break;
+						}
+					}
+				}
+
+			} catch (final JaloInvalidParameterException e) {
+				// YTODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (final JaloSecurityException e) {
+				// YTODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		if (!bBelongsToCatalogVersion) {
+			LOG.info("belongsToCatalogVersion(): product " + this.getCode() + " does NOT belong to catalog version "
+					+ cv.getVersion());
+		}
+		return bBelongsToCatalogVersion;
+	}
+	
+	/**
+	 * content-info f�r alle Varianten als String
+	 * 
+	 * @param string lang_iso
+	 * @return Map<String, String>
+	 */
+	public String getContentInfoString ( final String lang_iso ) {
+		
+		// --- preset
+		String contentInfoResult	= "";
+
+		try {
+		    
+			// --- content info
+			Map<String, String> mapContentInfos	= this.getContentInfoForVariants ( lang_iso );
+			
+			for (final String contentInfo : mapContentInfos.values()) {
+				if ( contentInfoResult.length() != 0) {
+					
+					contentInfoResult	+= "; ";
+				}
+				contentInfoResult	+= contentInfo;
+		    }
+			
+	    } catch (final Exception e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+	    }
+		
+		
+		return contentInfoResult.trim();
+	}
+	
+	/**
+	 * content-info f�r alle Varianten
+	 * 
+	 * @param string lang_iso
+	 * @return Map<String, String>
+	 */
+	public Map<String, String> getContentInfoForVariants ( final String lang_iso ) {
+	    HashMap<String, String> hMap = new HashMap();
+	    // Connection myCon = this._init_datawarehouse_db();
+	    Connection myCon = WeraManager.getDWHConnection();
+	    Collection<String> colVariantCodes = new ArrayList();
+
+	    // --- Hole alle Produkte
+	    Collection<VariantProduct> colVariantProducts = null;
+	    try {
+		    colVariantProducts = (Collection<VariantProduct>) getAttribute("variants");
+	    } catch (final JaloInvalidParameterException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+	    } catch (final JaloSecurityException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+	    }
+
+	    if (colVariantProducts != null) {
+		for (final VariantProduct variant : colVariantProducts) {
+		    if (variant instanceof WeraVariante) {
+			WeraVariante wv = (WeraVariante) variant;
+			colVariantCodes.add( wv.getLagerNr() + wv.getCode() + wv.getVariantenNr());
+		    }
+		}
+	    }
+
+	    String sWhereClause = StringUtils.join( colVariantCodes, "\",\"");
+	    try {
+		PreparedStatement preparedStmt = myCon.prepareStatement("select product_id, content_info from products_merged where product_id in (\""+sWhereClause+"\") and lang_iso=?");
+		preparedStmt.setString(1, lang_iso);
+		final ResultSet rsContentInfo = preparedStmt.executeQuery();
+		while (rsContentInfo.next()) {
+		    final String productId = rsContentInfo.getString("product_id");
+		    final String contentInfo = rsContentInfo.getString("content_info");
+		    hMap.put(productId, contentInfo);
+		}	    
+	    } catch (final SQLException e) {
+		LOG.error("ERROR retrieving content_info from products_merged for product = "+this.getCode()+" and lang_iso="+lang_iso);
+	    }
+	    try {
+		if (!myCon.isClosed()) {
+		    myCon.close();
+		    LOG.info("getContentInfo(): mysql connection closed.");
+		} else {
+		    LOG.warn("getContentInfo(): mysql connection already closed or invalid!");
+		}
+	    } catch (final SQLException e) {
+		LOG.error("getContentInfo(): error trying to close mysql connection.");
+	    }
+	    return hMap;	
+	}	
+	
+	public String getGreatToolsHeadline() {
+	    String sText = null;
+	    final String sTextbausteinFormat = "text_great-tools-headline-%s";
+	    final String sGreatToolsID = this.getGreat_tools_basename();
+	    final String sSearchKey = String.format( sTextbausteinFormat, sGreatToolsID );
+
+	    // --- Suchen der Variante
+	    String strSearch = "select {pk} from {Textbaustein} WHERE p_code='"+ sSearchKey + "'";
+	    try {
+		final SearchResult res = JaloSession.getCurrentSession().getFlexibleSearch().search(
+			strSearch, null, Collections.singletonList(Textbaustein.class), true, // fail on unknown fields
+			true, // don't need total
+			0, 1 // range
+		);
+		if (res.getCount() > 0) {
+		    Textbaustein oGTBaustein = null;
+		    // --- Schleife �ber alle Varianten
+		    for (Iterator itResult1 = res.getResult().iterator(); itResult1.hasNext();) {
+			oGTBaustein = (Textbaustein) itResult1.next();
+			if ( oGTBaustein != null ) {
+			    sText = oGTBaustein.getText();
+			    break;
+			}
+		    }
+		}
+		
+	    } catch (FlexibleSearchException fse) {
+		LOG.error("getGreatToolsHeadline(): ERROR using flexible search with query key "+sSearchKey);
+		LOG.error(fse.getMessage());
+	    }
+	    return sText;
+	}
+
+	/*
+	 * // --- Hole alle aktiven Varianten, sortiert public Collection getVariants () throws
+	 * JaloInvalidParameterException, JaloSecurityException { // --- Debug //log.info ("getVariants() => für product="+
+	 * getCode());
+	 * 
+	 * // --- Initialize List colList = new ArrayList(); Collection variants = new ArrayList();
+	 * 
+	 * // --- Hole alle Produkte variants = (Collection)super.getVariants(); //variants =
+	 * (Collection)getAttribute("variants"); // --- Schleife über alle Ergebniss for (Iterator it0=variants.iterator();
+	 * it0.hasNext();) { WeraVariante weraproductvariant = (WeraVariante) it0.next(); if (weraproductvariant != null ) {
+	 * // --- Hole Aktiv-Flag Localized Boolean bAktiv = ( java.lang.Boolean ) weraproductvariant.getLocalizedProperty(
+	 * "aktiv" ); if ( m_bCheckForActivation==false || (bAktiv != null && bAktiv.booleanValue()) ) { //log.info
+	 * ("getVariants() => bAktiv="+bAktiv+", Code="+weraproductvariant.getCode()); colList.add(weraproductvariant); } } }
+	 * 
+	 * // --- Sortiere nach Order if ( colList!=null && colList.size() > 0 ) Collections.sort((List) colList, new
+	 * OrderComparator( ) );
+	 * 
+	 * return colList; }
+	 */
+}

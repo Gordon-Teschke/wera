@@ -1,0 +1,904 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.computationaldesign.wera.jalo;
+
+import java.util.Collection;
+
+import de.hybris.platform.jalo.media.MediaManager;
+import de.hybris.platform.jalo.enumeration.EnumerationValue;
+import java.util.HashMap;
+
+import org.jdom.Element;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.jdom.Comment;
+
+/**
+ * @author teschke
+ *
+ * Modifications: Background="J" => Background="N"
+ * PrintFileName="pictures/code_schwarz.eps" =>
+ * PrintFileName="pictures/test_trans.eps" UnitSymbol="Code => UnitSymbol=" "
+ *
+ */
+public class WeraProduktExportBlack extends WeraProduktExport {
+
+	/**
+	 * Used logger instance.
+	 */
+	private static final Log LOG = LogFactory.getLog(WeraProduktExportBlack.class);
+
+	/**
+	 * modification: Background="J" => Background="N" return result background
+	 *
+	 * marker (J/N), J=show green column background, N=do not show background
+	 *
+	 * @param Boolean hasBackground
+	 * @return String
+	 */
+	protected String _getBackgroundMarker(Boolean hasBackground) {
+
+		// --- initialize
+		String strBackgroundMarker = "";
+
+		// --- get Background Marker (always none background))
+		strBackgroundMarker = "N";
+
+		return strBackgroundMarker;
+	}
+
+	/**
+	 * modification: UnitSymbol="Code => UnitSymbol=" "
+	 *
+	 * @param oAttributeList
+	 * @param strID
+	 * @param strBez
+	 * @param strType
+	 * @param strWert
+	 * @param iOrder
+	 * @param strMediaCode
+	 * @param stringUnit
+	 */
+	protected void initMerkmal(final Element oAttributeList, final String strID, final String strBez, final String strType,
+			final String strWert, final int iOrder, final String strMediaCode, String stringUnit) {
+
+		// --- unit-symbol code nicht mehr ausgeben
+		if (stringUnit.toLowerCase().equals("code")) {
+			stringUnit = " ";
+		}
+
+		// --- default handlings
+		super.initMerkmal(oAttributeList, strID, strBez, strType, strWert, iOrder, strMediaCode, stringUnit);
+	}
+
+	/**
+	 * modification: PrintFileName="pictures/code_schwarz.eps" =>
+	 * PrintFileName="pictures/test_trans.eps"
+	 *
+	 * @param weramedia
+	 * @param strDirectory
+	 * @param cProductNr
+	 * @param bProductBild
+	 * @return
+	 */
+	protected Element _initImage(WeraMedia weramedia, String strDirectory, String cProductNr, final boolean bProductBild) {
+		// --- code - icon unterdrï¿½cken
+		if (weramedia != null) {
+			if (weramedia.getRealFileName().contains("code_schwarz")) {
+				cProductNr = ""; // -> test_trans;
+				weramedia = null;
+			}
+
+		}
+
+		// --- default handling
+		return super._initImage(weramedia, strDirectory, cProductNr, bProductBild, null);
+	}
+
+	/**
+	 * Version fï¿½r Printausgabe fï¿½r Katalog 2016 zusï¿½tzliches Textelement fï¿½r
+	 * weitere Icons
+	 *
+	 * @param iCntIcon
+	 * @param iOrder
+	 * @param oIcon1
+	 * @param oTexList
+	 * @return Element
+	 */
+	@Override
+	protected Element _assign2TextList(int iCntIcon, int iOrder, Element oIconLinks, Element textXML, Element oTexList) {
+		
+		// --- bildpfad aktionsprospect für icons anpassen
+		if ( super.isM_bAktionsprospekt() ) {
+
+			String iconPathName	= oIconLinks.getAttribute("Name").getValue();
+			iconPathName	= iconPathName.replaceAll("pictures/", "pictures/aktionen/");
+			oIconLinks.setAttribute("TypeName", iconPathName);
+			oIconLinks.setAttribute("Name", iconPathName);
+		}
+
+		if (iCntIcon == 1) {
+
+			// --- Kennzeichner 1 oder 2. Icon-Links
+			oIconLinks.setAttribute("second_icon", "N");
+
+			
+			// --- 1. icon
+			textXML.addContent(oIconLinks);
+			
+		} else {
+
+			// --- Kennzeichner 1 oder 2. Icon-Links
+			oIconLinks.setAttribute("second_icon", "J");
+
+			// --- Icons 2 - n als weitere Textelenmente ablegen
+			// --- Textobjekt anlegen
+			Element textXML2 = _createTextElement("", "", iOrder, m_iOffset, "BLT_SET", false);
+			oTexList.addContent(textXML2);
+
+			// --- 2 - n. icon
+			textXML2.addContent(oIconLinks);
+
+			// --- offset erhï¿½hen
+			m_iOffset++;
+		}
+
+		return oTexList;
+	}
+
+	/**
+	 * generiert ein Textelement unter berï¿½cksichtigung der multilay funktionen
+	 *
+	 * @param strTagContent
+	 * @param strLinkType
+	 * @param bConvertTag
+	 * @return
+	 */
+	@Override
+	protected Element _createTextElementML(String strTagContent, boolean bConvertTag, HashMap<String, String> hashAttributes, Element textXML) {
+		// --- Prï¿½fe auf Brï¿½che
+//		if ((strTagContent.contains("\"") || strTagContent.contains("&quot;")) && strTagContent.contains("/")) {
+		strTagContent = _genBruch(strTagContent);
+//		}
+
+		// --- Text konvertieren
+		strTagContent = strTagContent.replaceAll("</", "##e_");
+		if (bConvertTag) {
+			strTagContent = strTagContent.replaceAll("<", "##");
+			strTagContent = strTagContent.replaceAll(">", "##");
+		}
+		strTagContent = strTagContent.replaceAll("&quot;", "\"");
+		strTagContent = strTagContent.trim();
+
+		// --- <TextBlock Language="German">In stabiler Klapptasche mit Klettverschluss zur praktischen Aufbewahrung.</TextBlock>
+		final Element inhaltXML = new Element("TextBlock");
+		for (String strAttrName : hashAttributes.keySet()) {
+			String strAttrValue = hashAttributes.get(strAttrName);
+			inhaltXML.setAttribute(strAttrName, strAttrValue);
+		}
+		//CDATA cdataText = new CDATA(strTagContent);
+		strTagContent = strTagContent.replaceAll("##br##", " ");
+		strTagContent = strTagContent.replaceAll("##br /##", " ");
+		strTagContent = strTagContent.replaceAll("##br/##", " ");
+		strTagContent = this.getExportFormatter().formatDescription(strTagContent);
+		inhaltXML.addContent(strTagContent);
+		textXML.addContent(inhaltXML);
+
+		return textXML;
+	}
+
+	/**
+	 * create Text-Elements of default-export language and additional
+	 * exportlanguages
+	 *
+	 * @param hashTagContents
+	 * @param oTexList
+	 * @param strType
+	 * @return
+	 */
+	protected Element createMultiLayerTextElement(HashMap<String, String> hashTagContents, final Element oTexList, String strType) {
+
+		// --- nur bei Multilayer-Support
+		if (!m_bMultilayer) {
+			// --- kein Multilayer XML-Version
+			return createTextElement(hashTagContents.get(m_strLanguage), oTexList, strType);
+		}
+
+		// --- initialize
+		Element textXML_LeftContent = null;
+		Element textXML_RightContent = null;
+
+		for (String strCurrentLanguage : hashTagContents.keySet()) {
+
+			// --- get current content
+			String strTagContent = hashTagContents.get(strCurrentLanguage);
+// System.out.println("createMultiLayerTextElement=>" + strTagContent + "<=");
+
+			// --- Initialize
+			if (strType == null) {
+				strType = "BLT_SET";
+			}
+			boolean bLeftElement = false;
+			boolean bOutput = false;
+			String strLeftContent = "";
+			String strRightContent = "";
+
+			/* Content sï¿½ubern und nach <br/> splitten */
+			strTagContent = prepareForLineSplit(strTagContent);
+			final String aList[] = strTagContent.split("<br/>");
+
+			// --- Schleife ï¿½ber alle Eintrï¿½ge
+			output("normalized-aList.length=" + aList.length, 2);
+			for (int iPos = 0; iPos < aList.length; iPos++) {
+
+				// --- initialize
+				bOutput = false;
+				bLeftElement = false;     // --- linker content nicht vorhanden (=> trigger Template productset1 bei Sï¿½tzen)
+				strLeftContent = "";
+				strRightContent = "";
+				final String aElements[] = aList[iPos].split("</b>");
+
+				// --- ist text vorhanden?
+				if (aElements.length >= 1) {
+
+					// --- Textzï¿½hler
+					m_iCntText++;
+
+					// --- Text-Element aufbauen (left)
+					//if ( textXML_LeftContent == null ) {
+					textXML_LeftContent = new Element("Text");
+					textXML_LeftContent.setAttribute("Id", new Integer(m_iOffset++).toString());
+					textXML_LeftContent.setAttribute("Type", strType);
+					textXML_LeftContent.setAttribute("LinkType", strType);
+					textXML_LeftContent.setAttribute("TypeName", "LC");
+					textXML_LeftContent.setAttribute("Sequence", new Integer(iPos).toString());
+					textXML_LeftContent.setAttribute("Language", strCurrentLanguage);
+
+					// --- add content to textlist
+					oTexList.addContent(textXML_LeftContent);
+
+					//} // --- if textXML_LeftContent textXML == null ) {
+					// --- Ausgabetyp prï¿½fen
+					if (strType.equals("BLT_1")) {
+
+						bOutput = true;
+
+						// --- left / right content
+						strLeftContent = aElements[0].trim();
+						if (aElements.length == 2) {
+
+							// --- rechter content vorhanden
+							strRightContent = aElements[1].trim();
+
+							// --- Left-content Einleitendes Steuertag entfernen (aktuelle Wera-Konvention - description1)
+							strLeftContent = strLeftContent.replaceAll("<b>", "");
+
+							// --- linker content vorhanden (=> trigger Template productset bei Sï¿½tzen)
+							bLeftElement = true;
+
+						} // --- if ( aElements.length == 2 ) {
+						else {
+
+							// --- rechter content vorhanden, linke content leer
+							strLeftContent = "";
+							strRightContent = aElements[0].trim();
+
+							// --- right-content Einleitendes Steuertag entfernen (aktuelle Wera-Konvention - description1)
+							strRightContent = strRightContent.replaceAll("<b>", "");
+
+						}
+						/*                                
+						 // --- Text-Element aufbauen (right)
+						 if ( textXML_RightContent == null ) {
+
+						 textXML_RightContent = new Element("Text");
+						 textXML_RightContent.setAttribute("Id", new Integer(m_iOffset++).toString());
+						 textXML_RightContent.setAttribute("Type", strType );
+						 textXML_RightContent.setAttribute("LinkType", strType );
+						 textXML_RightContent.setAttribute("TypeName", "RIGHT_CONTENT" );
+						 textXML_RightContent.setAttribute("Sequence", new Integer(iPos).toString() );
+
+						 // --- add content to textlist
+						 oTexList.addContent(textXML_RightContent);
+
+						 } // --- if ( textXML_RightContent == null ) {
+						 */
+					} else {
+
+						// --- default - only left content
+						strLeftContent = aElements[0].trim();
+						bOutput = true;
+					}
+
+				} // --- if (aElements.length >= 1) {
+
+				if (bOutput) {
+
+					if (strType.equals("BLT_1")) {
+
+						// --- Attribute fï¿½r TextNode vorbelegen
+						HashMap<String, String> hashAttributes = new HashMap();
+						hashAttributes.put("Language", strCurrentLanguage);
+
+						// --- left / right content ---------------------------------------------
+						// --- left-content
+						hashAttributes.put("TypeName", "LC");
+						textXML_LeftContent = _createTextElementML(strLeftContent, true, hashAttributes, textXML_LeftContent);
+
+						// --- right-content
+						hashAttributes.put("TypeName", "RC");
+						textXML_LeftContent = _createTextElementML(strRightContent, true, hashAttributes, textXML_LeftContent);
+						//textXML_RightContent = _createTextElementML ( strRightContent, true, strCurrentLanguage, textXML_RightContent );
+
+						// --- left / right content ---------------------------------------------
+					} else {
+
+						// --- Attribute fï¿½r TextNode vorbelegen
+						HashMap<String, String> hashAttributes = new HashMap();
+						hashAttributes.put("Language", strCurrentLanguage);
+
+						// --- left content ------------------------------------------------------
+						// --- left-content
+						textXML_LeftContent = _createTextElementML(strLeftContent, true, hashAttributes, textXML_LeftContent);
+
+						// --- left content ------------------------------------------------------
+					}
+
+				} // --- if (bOutput) {
+
+			} // ---for (int iPos = 0; iPos < aList.length; iPos++) {
+
+			// --- Flag fï¿½r ein linkes Tabellenelement setzen
+			m_bLeftElement = bLeftElement;
+
+		} // --- for ( String strCurrentLanguage : hashTagContents.keySet() ) {
+
+		return oTexList;
+	}
+
+	/**
+	 * generiert ein einzelnes Textelement
+	 *
+	 * @param strTypeName
+	 * @param strTagContent
+	 * @param iOrder
+	 * @param iID
+	 * @param strLinkType
+	 * @param bConvertTag
+	 * @return
+	 */
+	@Override
+	protected Element _createTextElement(String strTypeName, String strTagContent, final Integer iOrder, final Integer iID,
+			final String strLinkType, final boolean bConvertTag) {
+		// --- Content bereinigen
+		strTypeName = strTypeName.replaceAll("<p>", "");
+		strTypeName = strTypeName.replaceAll("</p>", "");
+		strTypeName = strTypeName.replaceAll("<b>", "");
+		strTypeName = strTypeName.replaceAll("</b>", "");
+
+		// --- Text konvertieren
+		strTagContent = strTagContent.replaceAll("</", "##e_");
+		if (bConvertTag) {
+			strTagContent = strTagContent.replaceAll("<", "##");
+			strTagContent = strTagContent.replaceAll(">", "##");
+		}
+		strTagContent = strTagContent.replaceAll("&quot;", "\"");
+		strTypeName = strTypeName.trim();
+		strTagContent = strTagContent.trim();
+
+		// --- Element aufbauen
+		final Element textXML = new Element("Text");
+		textXML.setAttribute("Id", iID.toString());
+		textXML.setAttribute("Type", strLinkType);
+		textXML.setAttribute("LinkType", strLinkType);
+		textXML.setAttribute("TypeName", strTypeName);
+		textXML.setAttribute("Sequence", iOrder.toString());
+		//textXML.setAttribute("LinkTypeName", strTypeName) ;
+
+		// --- <TextBlock Language="German">In stabiler Klapptasche mit Klettverschluss zur praktischen Aufbewahrung.</TextBlock>
+		final Element inhaltXML = new Element("TextBlock");
+		inhaltXML.setAttribute("Language", m_strLanguage);
+		//CDATA cdataText = new CDATA(strTagContent);
+		strTagContent = strTagContent.replaceAll("##br##", " ");
+		strTagContent = strTagContent.replaceAll("##br /##", " ");
+		strTagContent = strTagContent.replaceAll("##br/##", " ");
+		strTagContent = this.getExportFormatter().formatDescription(strTagContent);
+		inhaltXML.addContent(strTagContent);
+		textXML.addContent(inhaltXML);
+
+		return textXML;
+	}
+
+	/**
+	 * generiert ein Textelement unter berï¿½cksichtigung der multilay funktionen
+	 * 12.03.2015 - TypeName bei BLT_1 wird aufgeteilt in "LC" / "RC"
+	 *
+	 * @param strTagContent
+	 * @param oTexList
+	 * @param strType
+	 * @return
+	 */
+	@Override
+	protected Element createTextElement(String strTagContent, final Element oTexList, String strType /* "BLT_1" */) {
+		// --- <Text Id="16336" Type="BLT_Extra" LinkType="BLT_Extra" TypeName="Extra" LinkTypeName="Extra" Sequence="10">
+		//LOG.info("s.createTextElement.strTagContent=" + strTagContent);
+//System.out.println("createTextElement=>" + strTagContent + "<=");
+
+		// --- Initialize
+		if (strType == null) {
+			strType = "BLT_SET";
+		}
+		boolean bLeftElement = false;
+		String strTypeName = "";
+
+		/* Content sï¿½ubern und nach <br/> splitten */
+		strTagContent = prepareForLineSplit(strTagContent);
+		final String aList[] = strTagContent.split("<br/>");
+
+		// --- Schleife ï¿½ber alle Eintrï¿½ge
+		boolean bOutput = false;
+		Element textXML = null;
+		output("normalized-aList.length=" + aList.length, 2);
+		for (int iPos = 0; iPos < aList.length; iPos++) {
+			// --- strTypeName
+			bOutput = false;
+			final String aElements[] = aList[iPos].split("</b>");
+
+			// --- Content
+			if (aElements.length == 2) {
+				strTypeName = aElements[0].trim();
+				strTagContent = aElements[1].trim();
+				bOutput = true;
+			} else {
+				if (aElements.length > 0) {
+					strTypeName = "  ";
+					strTagContent = aElements[0].trim();
+					if (strTagContent.length() > 0) {
+						bOutput = true;
+					}
+				}
+			}
+
+			if (bOutput) {
+
+				// --- Gibt es ein linkes Tabellenelement=
+				if (!strTypeName.equals("  ")) {
+					bLeftElement = true;
+				}
+
+				// --- Prï¿½fe auf Brï¿½che
+//				if ((strTagContent.contains("\"") || strTagContent.contains("&quot;")) && strTagContent.contains("/")) {
+				strTagContent = _genBruch(strTagContent);
+//				}
+
+				// --- Textzï¿½hler
+				m_iCntText++;
+
+				textXML = _createTextElement(strTypeName, strTagContent, iPos, m_iOffset, strType, true);
+				oTexList.addContent(textXML);
+				m_iOffset++;
+
+			}
+		}
+
+		// --- Flag fï¿½r ein linkes Tabellenelement setzen
+		m_bLeftElement = bLeftElement;
+
+		//LOG.info("e.createTextElement.length=" + strTagContent);
+		return oTexList;
+	}
+
+	/**
+	 * generiert ein Textelement unter berï¿½cksichtigung der multilay funktionen
+	 *
+	 * @param strTagContent
+	 * @param oTexList
+	 * @param strType
+	 * @return
+	 */
+	protected Element createTextElementFliesstext(String strTagContent, final Element oTexList, String strType /* "BLT_MT" */) {
+		// --- <Text Id="16336" Type="BLT_Extra" LinkType="BLT_Extra" TypeName="Extra" LinkTypeName="Extra" Sequence="10">
+		//LOG.info("s.createTextElement.strTagContent=" + strTagContent);
+
+		// --- Initialize
+		if (strType == null) {
+			strType = "BLT_MT";
+		}
+		boolean bLeftElement = false;
+		String strTypeName = "";
+// System.out.println("createTextElementFliesstext=>" + strTagContent + "<=");
+
+		// --- Content
+		strTagContent = prepareForLineSplit(strTagContent);
+		Element textXML = null;
+		textXML = _createTextElement(strTypeName, strTagContent, 0, m_iOffset, strType, true);
+		oTexList.addContent(textXML);
+		m_iOffset++;
+
+		// --- Flag fï¿½r ein linkes Tabellenelement setzen
+		m_bLeftElement = bLeftElement;
+
+		//LOG.info("e.createTextElement.length=" + strTagContent);
+		return oTexList;
+	}
+
+	/**
+	 * filter products - filter auslaufartikel
+	 *
+	 * @param WeraProduct
+	 * @return boolean
+	 */
+	protected boolean _isFilteredProduct(WeraProduct oWeraProduct) {
+		/*
+		 O-Ton RH - Mail vom 18.02.2015
+            
+		 Produkt => "aktiv/nicht aktiv" wird ï¿½ber weralive fï¿½r das Produkt und den Katalog gesteuert
+		 Sï¿½tze ==> "aktiv/nicht aktiv" wird ï¿½ber weralive fï¿½r das Produkt und den Katalog gesteuert
+            
+		 => Ab Mï¿½rz 2016 <=
+		 Webkataloge, Printkataloge, Preislisten, BMEcats beinhalten nur noch aktive/gï¿½ltige Varianten, Produkte, Sï¿½tze.
+		 Dann ist das Flag ï¿½Auslaufartikelï¿½ irrrelevant (bis es wieder gebraucht wird).
+            
+		 Boolean bProduktAuslauf = null;
+		 if ( oWeraProduct instanceof WeraProductSet ) {
+		 bProduktAuslauf = (Boolean) m_wm.getAttribute(oWeraProduct, "artikel_auslauf");
+		 }
+		 if ( bProduktAuslauf == null )  bProduktAuslauf = new Boolean(false);
+
+		 return bProduktAuslauf.booleanValue();
+		 */
+		return false;
+	}
+
+	/**
+	 * filter varianten - filter auslaufartikel
+	 *
+	 * @param WeraVariante
+	 * @return boolean
+	 */
+	protected boolean _isFilteredVariante(WeraVariante oWeraVariante) {
+		/*
+		 O-Ton RH - Mail vom 18.02.2015
+            
+		 => Ab Mï¿½rz 2016 <=
+		 Webkataloge, Printkataloge, Preislisten, BMEcats beinhalten nur noch aktive/gï¿½ltige Varianten, Produkte, Sï¿½tze.
+		 Dann ist das Flag ï¿½Auslaufartikelï¿½ irrrelevant (bis es wieder gebraucht wird).
+		 */
+		Boolean bVarianteAuslauf = (Boolean) m_wm.getAttribute(oWeraVariante, "artikel_auslauf");
+		if (bVarianteAuslauf == null) {
+			bVarianteAuslauf = new Boolean(false);
+		}
+
+		return bVarianteAuslauf.booleanValue();
+	}
+
+	
+	/**
+	 * initialize list off SB-Variants (not supported in this object)
+	 *
+	 * @param ElementoTreegroupLink
+	 * @param Element oProductList
+	 * @param WeraProduct oWeraHauptProduct
+	 * @return 
+	 */
+	@Override
+	protected boolean initalizeSB_Variants(Element oTreegroupLink, Element oProductList, WeraProduct oWeraHauptProduct) {
+
+		Collection<WeraProductSetinSet> colSB_Variants = (Collection<WeraProductSetinSet>) m_wm.getAttribute(oWeraHauptProduct, "weraproductsetinsets_relation");
+		if (colSB_Variants.size() > 0) {
+
+			LOG.info("initalizeSB_Variants oWeraHauptProduct.code=" + oWeraHauptProduct.getCode());
+
+			// --- iterate on all
+			int iCounter = 1;
+			for (WeraProductSetinSet oWeraProductSetinSet : colSB_Variants) {
+
+				LOG.info("initalizeSB_Variants oWeraProductSetinSet.code=" + oWeraProductSetinSet.getCode());
+				if (colSB_Variants.size() == iCounter) {
+					oProductList = _initalizeSB_Variants(oTreegroupLink, oProductList, oWeraHauptProduct, (WeraProduct) oWeraProductSetinSet, true);
+				} else {
+					oProductList = _initalizeSB_Variants(oTreegroupLink, oProductList, oWeraHauptProduct, (WeraProduct) oWeraProductSetinSet, false);
+				}
+
+				// --- increment counter
+				iCounter++;
+
+			} // --- for ( WeraProductSetInSet oWeraProductSetInSet : colSB_Variants ) {
+
+		} // --- if ( colSB_Variants.size() > 0 ) {
+
+		return (colSB_Variants.size() > 0);
+	}
+
+	/**
+	 * initial SB-Variant-Data
+	 *
+	 * @param oProductList
+	 * @param oWeraHauptProduct
+	 * @param oWeraProductSetinSet
+	 * @param boolean bLastItem (true=last variant-item)
+	 */
+	private Element _initalizeSB_Variants(Element oTreegroupLink, Element oProductList, WeraProduct oWeraHauptProduct, WeraProduct oWeraProductSetinSet, boolean bLastItem) {
+
+		// --- initialize
+		String strOrder = "";
+
+		// --- Fï¿½lle ProduktListe ( neues Produkt => Categorien )
+		Element produktXML = new Element("Product");
+		oProductList.addContent(produktXML);
+
+		try {
+			// --- Eindeutige ProduktID
+			m_strProduktID = "P" + m_iProduktID;
+			LOG.info("v: NEW m_strProduktID=" + m_strProduktID);
+
+			// --- Fï¿½lle LinkListe ( neues Produkt => Categorien )
+			// --- <ProductLink LinkedId="3773" LinkedRefCode="U100T601" LinkedType="SET" LinkedWorkflow="OKE_DATEN" LinkedManufacturer="WIHA" LinkedEAN="4010995260156" Sequence="10" Hierarchy="ONLINE_CATALOG_03/04" LinkedName="System 6 Wechselklingen Magnetic Set, 6-tlg." LinkedTypeName="SET" LinkedWorkflowName="OKE_DATEN" LinkedManufacturerDescription="Wiha">
+			final Element oProductLink = new Element("ProductLink");
+
+			//  					TODO: Write Log
+			String strCode = (String) getAttribute(oWeraProductSetinSet, "code");
+			if (strCode == null) {
+				strCode = m_strProduktID;
+				m_aLogList.add(oWeraProductSetinSet + " - CodeNr fehlt.");
+			}
+			oProductLink.setAttribute("LinkedRefCode", m_strProduktID);
+			oProductLink.setAttribute("LinkedId", m_strProduktID);
+			if (m_wm.getAttribute(oWeraHauptProduct, "order") == null) {
+				strOrder = "00000000";
+			} else {
+				strOrder = "0000000" + m_wm.getAttribute(oWeraHauptProduct, "order").toString();
+			}
+
+			if (strOrder == null) {
+				oProductLink.setAttribute("Sequence", "1");
+				m_aLogList.add(oWeraProductSetinSet + " - Reihenfolge fehlt.");
+			} else {
+				oProductLink.setAttribute("Sequence", strOrder.substring(strOrder.length() - 7));
+			}
+			String strName = (String) getAttribute(oWeraProductSetinSet, "name");
+			if (strName == null) {
+				strName = "??";
+				m_aLogList.add(oWeraProductSetinSet + " - Name fehlt.");
+			}
+			oTreegroupLink.addContent(oProductLink);
+			final Comment nameComment = new Comment(strName);
+			oTreegroupLink.addContent(nameComment);
+
+			// --- Fï¿½lle ProduktListe ( neues Produkt => Categorien )
+			produktXML = new Element("Product");
+			oProductList.addContent(produktXML);
+
+			// --- last variant-item (verwemdet zur Steuerung der Template-Abstï¿½nde)
+			if (bLastItem) // ---  (true = Abstand zum nï¿½chsten Template)
+			{
+				produktXML.setAttribute("LastItem", "true");
+			} else // --- (false = kein Abstand, zum nï¿½chsten Template)
+			{
+				produktXML.setAttribute("LastItem", "false");
+			}
+
+			// --- template festlegen fï¿½r sb-variante
+			if (oWeraHauptProduct instanceof WeraProductSet) {
+				m_strCurrentTemplateName = "PRODUCTSETINSET_SBVARIANT_SORTIMENT";
+			} else {
+				m_strCurrentTemplateName = "PRODUCTSETINSET_SBVARIANT";
+			}
+			LOG.info("v:m_strCurrentTemplateName=" + m_strCurrentTemplateName);
+
+			// --- Fï¿½lle Datenzweig
+			initWeraProduct(produktXML, oWeraProductSetinSet, oProductList, m_strCurrentTemplateName);
+
+			LOG.info("n:m_strCurrentTemplateName=" + m_strCurrentTemplateName);
+
+			// --- Setze Templatetyp in Product-node
+			produktXML.setAttribute("LinkedType", m_strCurrentTemplateName);
+			produktXML.setAttribute("TypeName", m_strCurrentTemplateName);
+			produktXML.setAttribute("Typ", m_strCurrentTemplateName);
+
+			// --- Setze Templatetyp in Productlink
+			oProductLink.setAttribute("LinkedTypeName", m_strCurrentTemplateName);
+			oProductLink.setAttribute("LinkedType", m_strCurrentTemplateName);
+
+			// --- Eindeutige ProduktID erhï¿½hen
+			m_iProduktID++;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return oProductList;
+	}
+
+	/**
+	 * create inital all media data, supports feature-icon excludelist
+	 *
+	 * @param WeraProduct weraProduct
+	 * @return Element
+	 */
+	@Override
+	protected Element initializeMediaData(final WeraProduct weraProduct) {
+
+		// --- initialize
+		WeraMedia weramedia = null;
+		Element bildXML = null;
+		int iSequence = 1;
+
+		// --- Media-Daten
+		final Element motivelistXML = new Element("Motive-List");
+
+		// --- ICON 1 (Liste) ----------------------------------------------------------------------------------------------------------
+		LOG.info("initializeMediaData.ICON1=");
+		// WeraMedia weramedia = m_wm._getPicture(weraProduct, "icons1");
+		Collection<WeraMedia> colIconMedias = (Collection<WeraMedia>) m_wm.getAttribute(weraProduct, "icons1");
+		if (colIconMedias != null) {
+
+			// --- iterate on all icons
+			for (WeraMedia wera_icon : colIconMedias) {
+
+				// --- Hole Artikel / Variante
+				if (wera_icon != null) {
+					bildXML = createBildElement("ICON1", wera_icon, String.valueOf(iSequence++), "icons", "");
+					motivelistXML.addContent(bildXML);
+				}
+
+			} // --- for (  WeraMedia wera_icon : colIconMedias ) {
+
+		} // --- if ( colIconMedias != null ) {
+		// --- ICON 1 (Liste) ----------------------------------------------------------------------------------------------------------
+
+		// --- ICON 2 ------------------------------------------------------------------------------------------------------------------
+		LOG.info("initializeMediaData.ICON2=");
+		weramedia = m_wm._getPicture(weraProduct, "icons2");
+		if (weramedia != null) {
+			bildXML = createBildElement("ICON2", weramedia, "2", "icons", "");
+			motivelistXML.addContent(bildXML);
+		}
+		// --- ICON 2 ------------------------------------------------------------------------------------------------------------------
+
+		// --- BILD1 -------------------------------------------------------------------------------------------------------------------
+		LOG.info("initializeMediaData.PICTURES1=");
+		weramedia = m_wm._getPicture(weraProduct, "pictures1");
+		if (weramedia != null) {
+			bildXML = createBildElement("PICTURE1", weramedia, "1", "pictures", weraProduct.getCode());
+			motivelistXML.addContent(bildXML);
+		}
+		// --- BILD1 -------------------------------------------------------------------------------------------------------------------
+
+		// --- BILD2 -------------------------------------------------------------------------------------------------------------------
+		LOG.info("initializeMediaData.PICTURES2=");
+		colIconMedias = (Collection<WeraMedia>) m_wm._getPictures(weraProduct, "others_productpictures");
+		if (colIconMedias != null) {
+
+			// --- next picture
+			Integer iPicture = 2;
+
+			// --- iterate on all icons
+			for (WeraMedia wera_picture2 : colIconMedias) {
+				if (wera_picture2 != null) {
+
+					// --- create bild-element
+					bildXML = createBildElement("PICTURE" + iPicture.toString(), wera_picture2, iPicture.toString(), "pictures", weraProduct.getCode());
+					motivelistXML.addContent(bildXML);
+
+					// --- bild hochzï¿½hlen
+					iPicture++;
+				}
+
+			} // --- for (  WeraMedia wera_picture2 : colIconMedias ) {
+
+		}
+		// --- BILD2 -------------------------------------------------------------------------------------------------------------------
+
+		// --- Satz in Satz Premium Icon -----------------------------------------------------------------------------------------------
+		LOG.info("initializeMediaData.Satz in Satz Premium Icon=");
+		if (weraProduct instanceof WeraProductSetinSet) {
+			// output("WeraProductSetinSet.PREMIUMICON=", 2);
+			final EnumerationValue eSbClassificatrion = (EnumerationValue) m_wm.getAttribute(weraProduct, "SbClassificatrion");
+			String strSbClassificatrion = "classic";
+			if (eSbClassificatrion != null) {
+				strSbClassificatrion = eSbClassificatrion.getCode();
+			}
+			if (strSbClassificatrion.equals("classic") || strSbClassificatrion.length() == 0) {
+				strSbClassificatrion = "SB_CLASSIC";
+			} else {
+
+				if (strSbClassificatrion.equals("premium_plus")) {
+					strSbClassificatrion = "SB_PREMIUMPLUS";
+				}
+				if (strSbClassificatrion.equals("premium")) {
+					strSbClassificatrion = "SB_PREMIUM";
+				}
+			}
+			final Collection colSbClassificatrion = MediaManager.getInstance().getMediaByCode(strSbClassificatrion);
+			if (colSbClassificatrion != null && colSbClassificatrion.size() > 0) {
+				final WeraMedia oMediaSbClassificatrion = (WeraMedia) colSbClassificatrion.iterator().next();
+				bildXML = createBildElement("PREMIUMICON", oMediaSbClassificatrion, "1", "pictures", strSbClassificatrion);
+				motivelistXML.addContent(bildXML);
+			}
+		}
+		// --- Satz in Satz Premium Icon -----------------------------------------------------------------------------------------------
+
+		// --- Hole Feature-Icons ------------------------------------------------------------------------------------------------------
+		LOG.info("initializeMediaData.Feature-Icons=");
+		if (true /* m_bAktionsprospekt */) {
+
+			// --- get the feature-icon exclude-liste by current export-category
+			String strFeatureIconExcludeListByCategory = weraProduct.getFeatureIconExcludeListByCategory(m_oCategoryWera);
+
+			final HashMap mapFeatureIcons = weraProduct.getFeatureIconsByBooleanProperties();
+			if (mapFeatureIcons != null) {
+				// --- Hole Collection der Media-Objekte
+				final Collection<WeraMedia> colMedia = (Collection<WeraMedia>) mapFeatureIcons.get("iconlist");
+				if (colMedia != null && colMedia.size() > 0) {
+
+					// --- initialize
+					Integer iMediaCounter = 0;
+
+					// --- iterate on all medias
+					for (WeraMedia oWeraMedia : colMedia) {
+						// --- icon nur verwenden wenn nicht in exclude-list enthalten
+						if (!strFeatureIconExcludeListByCategory.toLowerCase().contains(":" + oWeraMedia.getCode().toLowerCase() + ":")) {
+
+							// --- FEATRUREICONS n
+							iMediaCounter++;
+
+							bildXML = createBildElement("FEATRUREICONS" + iMediaCounter.toString(), oWeraMedia, iMediaCounter.toString(), "features", "");
+							motivelistXML.addContent(bildXML);
+
+						} // --- if ( !strFeatureIconExcludeListByCategory.toLowerCase().contains( ":"+oWeraMedia.getCode().toLowerCase()+":" ) ) {
+					}
+
+				} // --- if ( colMedia != null && colMedia.size() > 0 )
+			}
+
+		} // --- if ( m_bAktionsprospekt ) {
+		// --- Hole Feature-Icons ------------------------------------------------------------------------------------------------------
+
+		return motivelistXML;
+	}
+
+	/**
+	 * initialize the template-name
+	 *
+	 * @param WeraProduct weraProduct
+	 * @return String strTemplate
+	 */
+	@Override
+	protected String _initTemplateName(WeraProduct weraProduct) {
+
+		// --- initialize
+		String strTemplate = null;
+
+		// --- get templatename from hybris-product-data
+		strTemplate = (String) getAttribute(weraProduct, "outputtemplate");
+//		LOG.info("_initTemplateNamem.outputtemplate (oc)=" + strTemplate );
+
+		// --- set template
+		if ((strTemplate == null || strTemplate.equals("")) || (!strTemplate.toUpperCase().equals("PRODUCT8") && !strTemplate.toUpperCase().equals("PRODUCT16") && !strTemplate.toUpperCase().equals("COLOREDPRODUCT"))) {
+			if (weraProduct instanceof WeraProductSet) {
+				strTemplate = "PRODUCTSET";
+			} else {
+				strTemplate = "PRODUCT";
+			}
+			if (weraProduct instanceof WeraProductSetinSet) {
+				strTemplate = "PRODUCTSETINSET";
+			}
+		}
+		strTemplate = strTemplate.toUpperCase();
+		if (strTemplate.equals("PRODUKT")) {
+			strTemplate = "PRODUCT";
+		}
+		if (strTemplate.equals("PRODUKTSET")) {
+			strTemplate = "PRODUCTSET";
+
+		}
+//		LOG.info("_initTemplateNamem.outputtemplate return=" + strTemplate );
+
+		return strTemplate;
+	}
+
+}

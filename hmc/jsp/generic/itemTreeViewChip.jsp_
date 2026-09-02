@@ -1,0 +1,256 @@
+<%@include file="../head.inc"%>
+
+<%@page import="com.computationaldesign.wera.jalo.WeraManager"%>
+<%@page import="com.computationaldesign.wera.jalo.WeraProduct"%>
+<%@page import="de.hybris.platform.jalo.Item"%>
+<%@page import="de.hybris.platform.category.jalo.Category"%>
+<%@page import="de.hybris.platform.jalo.type.*"%>
+<%@page import="de.hybris.platform.jalo.type.AttributeDescriptor"%>
+<%@page import="de.hybris.platform.catalog.jalo.classification.ClassificationSystemVersion"%>
+
+<!-- ############# openmyitem example start #########################################################
+ -->
+<script language="javascript">
+	if( !document.getElementsByName('openmyitem')[0] )
+	{
+		document.write('<input type="hidden" name="openmyitem" value=""/>');
+	}
+</script>
+<!-- ############# openmyitem example end ######################################################### -->
+
+<%
+	final ItemTreeViewChip theChip = (ItemTreeViewChip) request.getAttribute(AbstractChip.CHIP_KEY);
+    WeraManager wm = WeraManager.getInstance();
+	String rootImage = "";
+	String rootLink = null;
+	String rootBackground = "";
+	String openLink = getRequestURL() + "&" + theChip.getCommandID( ItemTreeViewChip.OPEN ) + "=" + AbstractChip.TRUE;
+	String id = theChip.wasRecentlyActive() ? "scrollhere" : "";
+	String strText = "";
+	
+	if( !theChip.hasChildren() )
+	{
+		if( theChip.isLast() )
+		{
+			rootImage = "<img border=\"0\" src=\"images/end.gif\"/>";
+		}
+		else
+		{
+			rootImage = "<img border=\"0\" src=\"images/horiz.gif\"/>";
+		}
+		rootBackground = "";
+	}
+	else
+	{
+		if( theChip.isExpanded() )
+		{
+			rootLink = getRequestURL() + "&" + theChip.getCommandID( TreeViewChip.COLLAPSE ) + "=" + AbstractChip.TRUE;
+			rootImage = "<img border=\"0\" src=\"images/minus.gif\"/>";
+			
+		}
+		else
+		{
+			rootLink = getRequestURL() + "&" + theChip.getCommandID( TreeViewChip.EXPAND ) + "=" + AbstractChip.TRUE;
+			rootImage = "<img border=\"0\" src=\"images/plus.gif\"/>";
+		}
+	}
+	if( !theChip.isLast() )
+	{
+		rootBackground = "background=\"images/vert.gif\"";
+	}
+	
+	// ############# openmyitem example start #########################################################
+	boolean showLinks  = false;
+	Category category = null;
+	WeraProduct product = null;
+	if( GenericHelper.findParentChip(theChip, OrganizerListEntryChip.class) != null )
+	{
+		final OrganizerListEntryChip entryChip = (OrganizerListEntryChip) GenericHelper.findParentChip(theChip, OrganizerListEntryChip.class);
+
+		
+        // --- Initialize
+		Integer iOrder = new Integer(0);
+        String strCsvVersion = "";
+        showLinks = false;
+		Boolean bAktiv = null;
+
+        // --- Nur Produtke / Kategorien
+		if ( theChip.getItem() instanceof WeraProduct ) {
+	       ItemTreeViewChip parentChip = (ItemTreeViewChip) theChip.getParent();
+		   if ( parentChip.getItem() instanceof Category )  {
+		      showLinks = true;
+ 	          category = (Category)parentChip.getItem();
+		      product = (WeraProduct)theChip.getItem();
+              iOrder = (Integer)product.getOrderByCategory(category);
+              bAktiv = new Boolean( product.getAktivByCategory(category) );
+	       } 
+		}
+		else {
+		   if ( theChip.getItem() instanceof Category )  {
+		      showLinks = true;
+		      category = (Category)theChip.getItem();
+	          ClassificationSystemVersion csv = (ClassificationSystemVersion)wm.getAttribute(category,"catalogVersion");
+	          strCsvVersion = ", " + csv.getVersion();
+
+              iOrder = (Integer)category.getAttribute("order");
+			  bAktiv = (Boolean)theChip.getItem().getAttribute( "aktiv" );
+		   }
+		}
+		
+        if ( showLinks ) {
+
+           if ( iOrder != null )
+             strText = iOrder.toString();
+            else
+             strText = "0";
+			if ( bAktiv != null && !bAktiv.booleanValue() )
+			   strText = strText + " - nA";
+ 	       
+ 	       strText += strCsvVersion;
+	    }
+	}
+	// ############# openmyitem example end ##########################################################
+%>
+<table border="0" cellspacing="0" cellpadding="0">
+<%   
+	if( theChip.isRoot() )
+	{
+%>
+	<tr>
+		<td valign="top" rowspan="2" <%= rootBackground %>><%= getLinkedIDLabel( id, rootLink, rootImage ) %></td>
+		<td valign="top" style="white-space:nowrap;"><%= getLinkedLabel( rootLink, "<img border=\"0\" src=\"" + theChip.getIcon() + "\">" ) %>&nbsp;<%= getLinkedLabel( openLink, theChip.getLabel() ) %>
+<% 	
+		// ############# openmyitem example start #########################################################			
+		if( showLinks)
+			{
+%>
+				 - (<%= strText %>)
+<%
+			}
+		// ############# openmyitem example end #########################################################
+%>
+		</td>
+	</tr>
+<%
+	}
+	else
+	{
+%>
+	<tr>
+		<td colspan="2" style="white-space:nowrap;"><%= getLinkedIDLabel( id, rootLink, "<img border=\"0\" src=\"" + theChip.getIcon() + "\">" ) %>&nbsp;<%= getLinkedLabel( openLink, theChip.getLabel() )%>
+<% 	
+		// ############# openmyitem example start #########################################################
+		if( showLinks )
+			{
+%>
+				 - (<%= strText %>)
+<%
+			}
+		// ############# openmyitem example end #########################################################
+%>
+		</td>
+	</tr>
+<%	
+	}
+	
+	if( theChip.isExpanded() ) 
+	{
+%>
+	<tr>
+		<td>
+			<table border="0" cellspacing="0" cellpadding="0">
+<% 
+		for( Iterator it = theChip.getChildren().iterator(); it.hasNext(); )
+		{
+			final TreeViewChip node = (TreeViewChip)it.next();
+			if( node instanceof ItemTreeViewChip && !((ItemTreeViewChip) node).getItem().isAlive() )
+			{
+				it.remove();
+				continue;
+			}
+			String image;
+			String url;
+			String bg = "";
+
+			
+			if( !node.hasChildren() )
+			{
+				url = null;
+				if( it.hasNext() )
+				{
+					image = "<img border=\"0\" src=\"images/horiz.gif\"/>";
+				}
+				else
+				{
+					image = "<img border=\"0\" src=\"images/end.gif\"/>";
+				}
+			}		
+			else
+			{
+				if( node.isExpanded() )
+				{
+					url = getRequestURL() + "&" + node.getCommandID(TreeViewChip.COLLAPSE) + "=" + AbstractChip.TRUE;
+					if( it.hasNext() )
+					{
+						image = "<img border=\"0\" src=\"images/minus.gif\"/>";
+					}
+					else
+					{
+						image = "<img border=\"0\" src=\"images/minusend.gif\"/>";
+					}
+				}
+				else
+				{
+					url = getRequestURL() + "&" + node.getCommandID(TreeViewChip.EXPAND) + "=" + AbstractChip.TRUE;
+					if( it.hasNext() )
+					{
+						image = "<img border=\"0\" src=\"images/plus.gif\"/>";
+					}
+					else
+					{
+						image = "<img border=\"0\" src=\"images/plusend.gif\"/>";
+					}
+				}
+			}
+			if( it.hasNext() )
+			{
+				bg = "background=\"images/vert.gif\"";
+			}
+			if( node instanceof CollectionTreeViewChip )
+			{
+				String id2 = node.wasRecentlyActive() ? "scrollhere" : "";
+%>	
+				<tr>
+					<td <%=bg%>><%= getLinkedIDLabel( id2, url, image ) %></td>
+					<td><%= node.getAttributeLabel()%> - (<%= strText %>)</td>
+				</tr>
+<%				
+				if( node.isExpanded() )
+				{
+%>				
+				<tr>
+					<td <%=bg%>>&nbsp;</td>
+					<td>re1<% node.render( pageContext ); %></td>
+				</tr>
+<%		
+				}	
+			}
+			else
+			{
+%>	
+				<tr>
+					<td valign="top" <%=bg%>><%= getLinkedLabel( url, image ) %></td>
+					<td nowrap><% node.render( pageContext ); %></td>
+				</tr>
+<%		
+			
+			}
+		}
+%>
+			</table>
+		</td>
+	</tr>
+<%
+	}
+%>
+</table>

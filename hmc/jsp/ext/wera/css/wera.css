@@ -1,0 +1,51 @@
+/* --------------- wera:localizableClassificationAttributeChip ------------------------------------------------------- */
+.localAttributeChip table tr td.langCode 					{ width: 30px; text-align: left; }
+.localAttributeChip table tr td.langCode div.edit		{ width: 30px; white-space: nowrap; }
+.localAttributeChip table tr td.langCode div.noedit	{ width: 30px; white-space: nowrap; color: silver }
+
+/* DAMUrlAsImageDisplayChip */
+img#bildrefzoom {
+	position:absolute;
+	top:0;
+	right:0;
+	display:none;
+	z-index:998;
+}
+img#bildrefzoom.visible {
+	display:block;
+	z-index:999;
+}
+
+.DAMUrlAsImageDisplayChip-div {
+	
+}
+.DAMUrlAsImageDisplayChip-img {
+	border: none;
+}
+
+/* showPreviewChip */
+.showPreviewChip { 
+}
+.showPreviewChip a { 
+	cursor: pointer;
+}
+.showPreviewChip a img { 
+	border: none;
+}
+.showPreviewChip-url {
+	font-size: 9px; 
+	padding-bottom: 20px; 
+	padding-top: 5px;
+}
+.showPreviewChip-url a {
+	text-decoration: underline; 
+	cursor: pointer;
+}
+
+/* altes bullet points array rot einfärben (nicht benutzen!) */
+table[title*="shop_bullet_point"], table[title*="shop_title"], table[title*="shop_description"] {
+    background: red;
+}
+td.text {
+	font-size:0.9em !important;
+}

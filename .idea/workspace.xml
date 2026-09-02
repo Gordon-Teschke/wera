@@ -1,0 +1,1665 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" readonly="true" id="44c1c2cc-6e94-462e-bf3f-a4503d6ca46b" name="Default" comment="" />
+    <ignored path="wera.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path=".idea/dataSources.local.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="wera" />
+  </component>
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.6442167">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="WeraProduktExportMinikatalog.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExportMinikatalog.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="3043">
+                  <caret line="1489" column="23" selection-start-line="1489" selection-start-column="23" selection-end-line="1489" selection-end-column="23" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="method#produktExportOrderCSV#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                    <element signature="method#produktExportMinikatalog#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                    <element signature="docComment;method#_ProduktExport#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                    <element signature="method#_ProduktExport#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                    <element signature="method#initCategory#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                    <element signature="method#_checkExportTip#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                    <element signature="method#__generateTippsElements#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                    <element signature="method#__generateTipText#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                    <element signature="method#getPriceData#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                    <element signature="method#_org_createContentElementSetinSet#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraPricelistNeutral.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraPricelistNeutral.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="12325">
+                  <caret line="759" column="51" selection-start-line="759" selection-start-column="51" selection-end-line="759" selection-end-column="51" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraProductSetinSet.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProductSetinSet.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="16966">
+                  <caret line="1020" column="21" selection-start-line="1020" selection-start-column="21" selection-end-line="1020" selection-end-column="21" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraProduct.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduct.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="58412">
+                  <caret line="3510" column="19" selection-start-line="3510" selection-start-column="19" selection-end-line="3510" selection-end-column="19" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraManager.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraManager.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="38522">
+                  <caret line="2357" column="5" selection-start-line="2357" selection-start-column="5" selection-end-line="2357" selection-end-column="5" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraMedia.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraMedia.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="136">
+                  <caret line="30" column="18" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="18" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ArtikelClassificationVariantListEntryChip.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ArtikelClassificationVariantListEntryChip.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1173">
+                  <caret line="102" column="60" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="60" />
+                  <folding>
+                    <element signature="e#0#8821#0" expanded="false" />
+                    <element signature="imports" expanded="false" />
+                    <element signature="e#6245#6246#0" expanded="false" />
+                    <element signature="e#6278#6279#0" expanded="false" />
+                    <element signature="e#6322#6323#0" expanded="false" />
+                    <element signature="e#6351#6352#0" expanded="false" />
+                    <element signature="e#6391#6392#0" expanded="false" />
+                    <element signature="e#6422#6423#0" expanded="false" />
+                    <element signature="e#6473#6474#0" expanded="false" />
+                    <element signature="e#6516#6517#0" expanded="false" />
+                    <element signature="e#6548#6549#0" expanded="false" />
+                    <element signature="e#6569#6570#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ClassificationEditorChip.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ClassificationEditorChip.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="85">
+                  <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#0#8247#0" expanded="false" />
+                    <element signature="imports" expanded="false" />
+                    <element signature="e#2187#2188#0" expanded="false" />
+                    <element signature="e#2209#2210#0" expanded="false" />
+                    <element signature="e#2407#2408#0" expanded="false" />
+                    <element signature="e#2485#2486#0" expanded="false" />
+                    <element signature="e#2525#2526#0" expanded="false" />
+                    <element signature="e#2546#2547#0" expanded="false" />
+                    <element signature="e#3441#3442#0" expanded="false" />
+                    <element signature="e#3472#3473#0" expanded="false" />
+                    <element signature="e#3734#3735#0" expanded="false" />
+                    <element signature="e#3777#3778#0" expanded="false" />
+                    <element signature="e#3959#3960#0" expanded="false" />
+                    <element signature="e#3988#3989#0" expanded="false" />
+                    <element signature="e#4091#4092#0" expanded="false" />
+                    <element signature="e#4124#4125#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ClassificationVariantListChip.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ClassificationVariantListChip.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="2006">
+                  <caret line="152" column="18" selection-start-line="152" selection-start-column="18" selection-end-line="152" selection-end-column="18" />
+                  <folding>
+                    <element signature="e#0#5181#0" expanded="false" />
+                    <element signature="imports" expanded="false" />
+                    <element signature="e#2137#2138#0" expanded="false" />
+                    <element signature="e#2158#2159#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraPricelist.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraPricelist.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="221">
+                  <caret line="3129" column="38" selection-start-line="3129" selection-start-column="38" selection-end-line="3129" selection-end-column="38" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="WeraProduktExportBlack.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExportBlack.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="935">
+                  <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraPricelistNeutral.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraPricelistNeutral.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="49402">
+                  <caret line="2940" column="9" selection-start-line="2940" selection-start-column="9" selection-end-line="2940" selection-end-column="9" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraVariante.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraVariante.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="3230">
+                  <caret line="211" column="35" selection-start-line="211" selection-start-column="31" selection-end-line="211" selection-end-column="35" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraProductSet.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProductSet.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="12699">
+                  <caret line="783" column="33" selection-start-line="783" selection-start-column="33" selection-end-line="783" selection-end-column="33" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WeraProduktExport.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExport.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="451">
+                  <caret line="795" column="4" selection-start-line="795" selection-start-column="4" selection-end-line="795" selection-end-column="4" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#147386#147392#0" expanded="true" />
+                    <element signature="e#147451#147457#0" expanded="true" />
+                    <element signature="e#148195#148201#0" expanded="true" />
+                    <element signature="e#151434#151440#0" expanded="true" />
+                    <element signature="e#324928#324938#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="hmc.iml" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hmc/hmc.iml">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="DataExport.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/DataExport.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="833">
+                  <caret line="111" column="0" selection-start-line="110" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="wera-items.xml" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/resources/wera-items.xml">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="25347">
+                  <caret line="1491" column="55" selection-start-line="1491" selection-start-column="55" selection-end-line="1491" selection-end-column="55" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ClassificationVariantListEntryChip.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ClassificationVariantListEntryChip.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="85">
+                  <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#0#7419#0" expanded="false" />
+                    <element signature="imports" expanded="false" />
+                    <element signature="e#4841#4842#0" expanded="false" />
+                    <element signature="e#4874#4875#0" expanded="false" />
+                    <element signature="e#4918#4919#0" expanded="false" />
+                    <element signature="e#4947#4948#0" expanded="false" />
+                    <element signature="e#4987#4988#0" expanded="false" />
+                    <element signature="e#5018#5019#0" expanded="false" />
+                    <element signature="e#5069#5070#0" expanded="false" />
+                    <element signature="e#5112#5113#0" expanded="false" />
+                    <element signature="e#5146#5147#0" expanded="false" />
+                    <element signature="e#5167#5168#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="HMCClassificationHelper.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/HMCClassificationHelper.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="272">
+                  <caret line="74" column="13" selection-start-line="74" selection-start-column="13" selection-end-line="74" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#0#46709#0" expanded="false" />
+                    <element signature="imports" expanded="false" />
+                    <element signature="e#9615#9616#0" expanded="false" />
+                    <element signature="e#9645#9646#0" expanded="false" />
+                    <element signature="e#15549#15550#0" expanded="false" />
+                    <element signature="e#15576#15577#0" expanded="false" />
+                    <element signature="e#23521#23522#0" expanded="false" />
+                    <element signature="e#23541#23542#0" expanded="false" />
+                    <element signature="e#27360#27361#0" expanded="false" />
+                    <element signature="e#27380#27381#0" expanded="false" />
+                    <element signature="e#27765#27766#0" expanded="false" />
+                    <element signature="e#27785#27786#0" expanded="false" />
+                    <element signature="e#27826#27827#0" expanded="false" />
+                    <element signature="e#27846#27847#0" expanded="false" />
+                    <element signature="e#27881#27882#0" expanded="false" />
+                    <element signature="e#27943#27944#0" expanded="false" />
+                    <element signature="e#28002#28003#0" expanded="false" />
+                    <element signature="e#28029#28030#0" expanded="false" />
+                    <element signature="e#28096#28097#0" expanded="false" />
+                    <element signature="e#28135#28136#0" expanded="false" />
+                    <element signature="e#28277#28278#0" expanded="false" />
+                    <element signature="e#28300#28301#0" expanded="false" />
+                    <element signature="e#29098#29099#0" expanded="false" />
+                    <element signature="e#29137#29138#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/hmc/resources/com/computationaldesign/wera/hmc/locales_de.properties" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraClassificationHelper.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraImportPricelist.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraKatalog.java" />
+        <option value="$PROJECT_DIR$/hmc/jsp/ext/wera/artikelClassificationVariantListChip.jsp" />
+        <option value="$PROJECT_DIR$/../../platform/ext/hmc/web/webroot/WEB-INF/classes/de/hybris/platform/hmc/hmc.xml" />
+        <option value="$PROJECT_DIR$/hmc/resources/hmc.xml" />
+        <option value="$PROJECT_DIR$/resources/localization/wera-locales_de.properties" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProductSetinSet.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProductSet.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/MediandoXml.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExportMinikatalog.java" />
+        <option value="$PROJECT_DIR$/resources/wera-items.xml" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProductCopy.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduct.java" />
+        <option value="$PROJECT_DIR$/classes/com/computationaldesign/wera/jalo/WeraPricelist.class" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraManager.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExportBlack.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExport.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraPricelistNeutral.java" />
+        <option value="$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraPricelist.java" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsBuildToolPackageJson" detection-done="true" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Bundled (Maven 3)" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1186" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jalo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wera" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hmc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="js-jscs-nodeInterpreter" value="D:\Program Files\nodejs\node.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.computationaldesign.wera.jalo" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="EXTRA_OPTIONS" value="" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="myFilePath" />
+      <option name="GLUE" />
+      <option name="myNameFilter" />
+      <option name="myGeneratedName" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
+      <option name="BCName" value="" />
+      <option name="IOSSimulatorSdkPath" value="" />
+      <option name="adlOptions" value="" />
+      <option name="airProgramParameters" value="" />
+      <option name="appDescriptorForEmulator" value="Android" />
+      <option name="debugTransport" value="USB" />
+      <option name="debuggerSdkRaw" value="BC SDK" />
+      <option name="emulator" value="NexusOne" />
+      <option name="emulatorAdlOptions" value="" />
+      <option name="fastPackaging" value="true" />
+      <option name="fullScreenHeight" value="0" />
+      <option name="fullScreenWidth" value="0" />
+      <option name="launchUrl" value="false" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="FlashPlayerDebugger.exe" />
+        </LauncherParameters>
+      </option>
+      <option name="mobileRunTarget" value="Emulator" />
+      <option name="moduleName" value="" />
+      <option name="overriddenMainClass" value="" />
+      <option name="overriddenOutputFileName" value="" />
+      <option name="overrideMainClass" value="false" />
+      <option name="runTrusted" value="true" />
+      <option name="screenDpi" value="0" />
+      <option name="screenHeight" value="0" />
+      <option name="screenWidth" value="0" />
+      <option name="url" value="http://" />
+      <option name="usbDebugPort" value="7936" />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
+      <option name="BCName" value="" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="FlashPlayerDebugger.exe" />
+        </LauncherParameters>
+      </option>
+      <option name="moduleName" value="" />
+      <option name="trusted" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="passParentEnv" value="true" />
+      <setting name="launchBrowser" value="true" />
+      <setting name="depsClasspath" value="false" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnitTestDiscovery" factoryName="JUnit Test Discovery" changeList="All">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="Java Scratch" factoryName="Java Scratch">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="SCRATCH_FILE_ID" value="0" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="hmc" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNGTestDiscovery" factoryName="TestNG Test Discovery" changeList="All">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run-script" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Run Launcher">
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Test Launcher (JUnit)">
+      <method />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\teschke\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="44c1c2cc-6e94-462e-bf3f-a4503d6ca46b" name="Default" comment="" />
+      <created>1604049112732</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1604049112732</updated>
+      <workItem from="1604049114560" duration="18545000" />
+      <workItem from="1604921382141" duration="12000" />
+      <workItem from="1604933468626" duration="808000" />
+      <workItem from="1605609715866" duration="10744000" />
+      <workItem from="1606219667886" duration="598000" />
+      <workItem from="1606902925779" duration="29400000" />
+      <workItem from="1607093539341" duration="10253000" />
+      <workItem from="1607675937979" duration="6073000" />
+      <workItem from="1607765036639" duration="915000" />
+      <workItem from="1608106658651" duration="3405000" />
+      <workItem from="1608199509696" duration="8000" />
+      <workItem from="1609771895172" duration="2679000" />
+      <workItem from="1609829302582" duration="16591000" />
+      <workItem from="1609918609753" duration="6055000" />
+      <workItem from="1610009085723" duration="1753000" />
+      <workItem from="1610098519587" duration="3883000" />
+      <workItem from="1610104422105" duration="2927000" />
+      <workItem from="1610347360576" duration="69000" />
+      <workItem from="1610348137348" duration="7383000" />
+      <workItem from="1610461174780" duration="7000" />
+      <workItem from="1610545663831" duration="34192000" />
+      <workItem from="1611227358184" duration="10620000" />
+      <workItem from="1612877720001" duration="24000" />
+      <workItem from="1616482884382" duration="11000" />
+      <workItem from="1616581380296" duration="6601000" />
+      <workItem from="1616752775987" duration="7548000" />
+      <workItem from="1618918752542" duration="5509000" />
+      <workItem from="1619514225727" duration="1601000" />
+      <workItem from="1619596998406" duration="652000" />
+      <workItem from="1619699371200" duration="593000" />
+      <workItem from="1623660858375" duration="51193000" />
+      <workItem from="1624269515492" duration="14000" />
+      <workItem from="1624270684584" duration="15819000" />
+      <workItem from="1624517718167" duration="7175000" />
+      <workItem from="1624609751963" duration="5055000" />
+      <workItem from="1624872193941" duration="26159000" />
+      <workItem from="1625214082206" duration="20996000" />
+      <workItem from="1625834875053" duration="12000" />
+      <workItem from="1626096396890" duration="2749000" />
+      <workItem from="1626858456265" duration="595000" />
+      <workItem from="1627569110949" duration="21559000" />
+      <workItem from="1629807266409" duration="4440000" />
+      <workItem from="1630327125841" duration="607000" />
+      <workItem from="1630593403933" duration="8000" />
+      <workItem from="1631020639252" duration="530000" />
+      <workItem from="1635316324712" duration="8101000" />
+      <workItem from="1635491406610" duration="3200000" />
+      <workItem from="1636107606383" duration="2460000" />
+      <workItem from="1636382370815" duration="1018000" />
+      <workItem from="1636731847157" duration="594000" />
+      <workItem from="1636978997231" duration="3126000" />
+      <workItem from="1638796281927" duration="2594000" />
+      <workItem from="1638955817161" duration="4818000" />
+      <workItem from="1640082611463" duration="1396000" />
+      <workItem from="1641888649737" duration="6380000" />
+      <workItem from="1645176063389" duration="25000" />
+      <workItem from="1649161742431" duration="39000" />
+      <workItem from="1652517047293" duration="19000" />
+      <workItem from="1652966288849" duration="1979000" />
+      <workItem from="1653396828789" duration="10897000" />
+      <workItem from="1654593911671" duration="55749000" />
+      <workItem from="1655547100841" duration="6880000" />
+      <workItem from="1657014204883" duration="58341000" />
+      <workItem from="1657870741419" duration="3177000" />
+      <workItem from="1658052568641" duration="38489000" />
+      <workItem from="1659092233869" duration="7384000" />
+      <workItem from="1659687129518" duration="4155000" />
+      <workItem from="1659965119703" duration="609000" />
+      <workItem from="1660718619437" duration="16023000" />
+      <workItem from="1661343256587" duration="10624000" />
+      <workItem from="1661758820020" duration="36000" />
+      <workItem from="1662385425448" duration="557000" />
+      <workItem from="1663589596264" duration="2874000" />
+      <workItem from="1663916437320" duration="6292000" />
+      <workItem from="1665648649499" duration="811000" />
+      <workItem from="1665749665876" duration="7357000" />
+      <workItem from="1666012036107" duration="600000" />
+      <workItem from="1671115504205" duration="754000" />
+      <workItem from="1671437705700" duration="860000" />
+      <workItem from="1671626206485" duration="816000" />
+      <workItem from="1673437662881" duration="718000" />
+      <workItem from="1677494940076" duration="33241000" />
+      <workItem from="1677745309022" duration="3425000" />
+      <workItem from="1678792429142" duration="90000" />
+      <workItem from="1678964101156" duration="4379000" />
+      <workItem from="1679064074918" duration="4953000" />
+      <workItem from="1680262733425" duration="647000" />
+      <workItem from="1682428138704" duration="529000" />
+      <workItem from="1684750277183" duration="9962000" />
+      <workItem from="1686919614862" duration="843000" />
+      <workItem from="1687441315520" duration="853000" />
+      <workItem from="1689587209788" duration="222000" />
+      <workItem from="1690353725906" duration="57000" />
+      <workItem from="1690877080121" duration="12000" />
+      <workItem from="1693290365179" duration="109000" />
+      <workItem from="1697716345646" duration="598000" />
+      <workItem from="1699447485647" duration="1209000" />
+      <workItem from="1699960985043" duration="12638000" />
+      <workItem from="1700046111438" duration="838000" />
+      <workItem from="1700553386160" duration="2347000" />
+      <workItem from="1700735087264" duration="830000" />
+      <workItem from="1701170057310" duration="10066000" />
+      <workItem from="1701417730447" duration="706000" />
+      <workItem from="1703232458693" duration="758000" />
+      <workItem from="1704873468861" duration="4655000" />
+      <workItem from="1704967670957" duration="1968000" />
+      <workItem from="1706775081895" duration="2162000" />
+      <workItem from="1706792677414" duration="262000" />
+      <workItem from="1709897546558" duration="168000" />
+      <workItem from="1714644836273" duration="603000" />
+      <workItem from="1720522502543" duration="877000" />
+      <workItem from="1720534635590" duration="3312000" />
+      <workItem from="1722415539215" duration="611000" />
+      <workItem from="1723624086476" duration="4883000" />
+      <workItem from="1723712826979" duration="711000" />
+      <workItem from="1724328232765" duration="1735000" />
+      <workItem from="1727186735638" duration="691000" />
+      <workItem from="1728553634286" duration="293000" />
+      <workItem from="1738332218563" duration="749000" />
+      <workItem from="1740145775185" duration="2309000" />
+      <workItem from="1740666629140" duration="1324000" />
+      <workItem from="1741352863365" duration="21000" />
+      <workItem from="1742463969802" duration="11756000" />
+      <workItem from="1744796695553" duration="10276000" />
+      <workItem from="1755773656311" duration="3836000" />
+      <workItem from="1755846125335" duration="2945000" />
+      <workItem from="1756294374496" duration="318000" />
+      <workItem from="1757056254555" duration="246000" />
+      <workItem from="1762518126929" duration="10374000" />
+      <workItem from="1763543647417" duration="1014000" />
+      <workItem from="1763721063179" duration="803000" />
+      <workItem from="1763729995911" duration="1355000" />
+      <workItem from="1765957598457" duration="22000" />
+      <workItem from="1769428168220" duration="2248000" />
+      <workItem from="1770805860932" duration="16000" />
+      <workItem from="1770893266826" duration="20000" />
+      <workItem from="1781522981429" duration="2546000" />
+      <workItem from="1781698744634" duration="406000" />
+      <workItem from="1781864042154" duration="607000" />
+      <workItem from="1782804356227" duration="603000" />
+      <workItem from="1782998879092" duration="13000" />
+      <workItem from="1784186359877" duration="72000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="782244000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1186" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32865733" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15565032" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.052238807" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6045016" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32865733" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.052238807" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19083156" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6045016" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+    </layout-to-restore>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExportMinikatalog.java</url>
+          <line>2894</line>
+          <properties />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/hmc/jsp/ext/wera/artikelClassificationVariantListChip.jsp</url>
+          <line>226</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraManager.java</url>
+          <line>2134</line>
+          <properties />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExport.java</url>
+          <line>1385</line>
+          <properties />
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExport.java</url>
+          <line>1043</line>
+          <properties />
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExport.java</url>
+          <line>1461</line>
+          <properties />
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExport.java</url>
+          <line>1460</line>
+          <properties />
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExport.java</url>
+          <line>4461</line>
+          <properties />
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduct.java</url>
+          <line>1145</line>
+          <properties />
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExportMinikatalog.java</url>
+          <line>1282</line>
+          <properties />
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduct.java</url>
+          <line>1261</line>
+          <properties />
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduct.java</url>
+          <line>1181</line>
+          <properties />
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="20" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/resources/wera-items.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45305">
+          <caret line="2665" column="3" selection-start-line="2665" selection-start-column="3" selection-end-line="2665" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/resources/hmc.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="47838">
+          <caret line="2814" column="8" selection-start-line="2814" selection-start-column="8" selection-end-line="2814" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/resources/com/computationaldesign/wera/hmc/locales_de.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3009">
+          <caret line="177" column="65" selection-start-line="177" selection-start-column="65" selection-end-line="177" selection-end-column="65" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/localization/wera-locales_de.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3383">
+          <caret line="199" column="51" selection-start-line="199" selection-start-column="51" selection-end-line="199" selection-end-column="51" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraPricelist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="27" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#147386#147392#0" expanded="true" />
+            <element signature="e#147451#147457#0" expanded="true" />
+            <element signature="e#148195#148201#0" expanded="true" />
+            <element signature="e#151434#151440#0" expanded="true" />
+            <element signature="e#324928#324938#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38522">
+          <caret line="2351" column="60" selection-start-line="2351" selection-start-column="42" selection-end-line="2351" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/wera-items.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45305">
+          <caret line="2665" column="3" selection-start-line="2665" selection-start-column="3" selection-end-line="2665" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/resources/hmc.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="47838">
+          <caret line="2814" column="8" selection-start-line="2814" selection-start-column="8" selection-end-line="2814" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/resources/com/computationaldesign/wera/hmc/locales_de.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3009">
+          <caret line="177" column="65" selection-start-line="177" selection-start-column="65" selection-end-line="177" selection-end-column="65" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/localization/wera-locales_de.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3383">
+          <caret line="199" column="51" selection-start-line="199" selection-start-column="51" selection-end-line="199" selection-end-column="51" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/resources/com/computationaldesign/wera/hmc/locales_de.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3009">
+          <caret line="177" column="65" selection-start-line="177" selection-start-column="65" selection-end-line="177" selection-end-column="65" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraClassificationHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4488">
+          <caret line="281" column="56" selection-start-line="281" selection-start-column="56" selection-end-line="281" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/com/computationaldesign/wera/jalo/WeraImportPricelist.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WebSiteXml.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../platform/ext/hmc/web/webroot/WEB-INF/classes/de/hybris/platform/hmc/hmc.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="7922" column="33" selection-start-line="7922" selection-start-column="23" selection-end-line="7922" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/localization/wera-locales_de.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1972">
+          <caret line="116" column="35" selection-start-line="104" selection-start-column="20" selection-end-line="104" selection-end-column="35" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraKatalog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25619">
+          <caret line="1549" column="89" selection-start-line="1549" selection-start-column="78" selection-end-line="1549" selection-end-column="89" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/com/computationaldesign/wera/jalo/WeraPricelistNeutral.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraVarianteVariants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraVarianteSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/jsp/ext/wera/artikelClassificationVariantListChip.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2380">
+          <caret line="140" column="67" selection-start-line="140" selection-start-column="67" selection-end-line="140" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ArtikelClassificationVariantListChip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1343">
+          <caret line="113" column="125" selection-start-line="113" selection-start-column="113" selection-end-line="113" selection-end-column="125" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ArtikelClassificationVariantListEditorChip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ArtikelClassificationVariantListEntryChip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="102" column="60" selection-start-line="102" selection-start-column="32" selection-end-line="102" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#8821#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#6245#6246#0" expanded="false" />
+            <element signature="e#6278#6279#0" expanded="false" />
+            <element signature="e#6322#6323#0" expanded="false" />
+            <element signature="e#6351#6352#0" expanded="false" />
+            <element signature="e#6391#6392#0" expanded="false" />
+            <element signature="e#6422#6423#0" expanded="false" />
+            <element signature="e#6473#6474#0" expanded="false" />
+            <element signature="e#6516#6517#0" expanded="false" />
+            <element signature="e#6548#6549#0" expanded="false" />
+            <element signature="e#6569#6570#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ClassificationEditorChip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#8247#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#2187#2188#0" expanded="false" />
+            <element signature="e#2209#2210#0" expanded="false" />
+            <element signature="e#2407#2408#0" expanded="false" />
+            <element signature="e#2485#2486#0" expanded="false" />
+            <element signature="e#2525#2526#0" expanded="false" />
+            <element signature="e#2546#2547#0" expanded="false" />
+            <element signature="e#3441#3442#0" expanded="false" />
+            <element signature="e#3472#3473#0" expanded="false" />
+            <element signature="e#3734#3735#0" expanded="false" />
+            <element signature="e#3777#3778#0" expanded="false" />
+            <element signature="e#3959#3960#0" expanded="false" />
+            <element signature="e#3988#3989#0" expanded="false" />
+            <element signature="e#4091#4092#0" expanded="false" />
+            <element signature="e#4124#4125#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ClassificationVariantListEditorChip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="572">
+          <caret line="164" column="9" selection-start-line="164" selection-start-column="9" selection-end-line="164" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ClassificationVariantListChip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2006">
+          <caret line="152" column="18" selection-start-line="152" selection-start-column="18" selection-end-line="152" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#5181#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#2137#2138#0" expanded="false" />
+            <element signature="e#2158#2159#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraMedia.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="30" column="18" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/XmlSupport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3842">
+          <caret line="262" column="0" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraImportPricelist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54672">
+          <caret line="3286" column="101" selection-start-line="3286" selection-start-column="101" selection-end-line="3286" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraVariante.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3230">
+          <caret line="211" column="35" selection-start-line="211" selection-start-column="31" selection-end-line="211" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/ClassificationVariantListEntryChip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#7419#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#4841#4842#0" expanded="false" />
+            <element signature="e#4874#4875#0" expanded="false" />
+            <element signature="e#4918#4919#0" expanded="false" />
+            <element signature="e#4947#4948#0" expanded="false" />
+            <element signature="e#4987#4988#0" expanded="false" />
+            <element signature="e#5018#5019#0" expanded="false" />
+            <element signature="e#5069#5070#0" expanded="false" />
+            <element signature="e#5112#5113#0" expanded="false" />
+            <element signature="e#5146#5147#0" expanded="false" />
+            <element signature="e#5167#5168#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/src/com/computationaldesign/wera/hmc/HMCClassificationHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="74" column="13" selection-start-line="74" selection-start-column="13" selection-end-line="74" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#46709#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#9615#9616#0" expanded="false" />
+            <element signature="e#9645#9646#0" expanded="false" />
+            <element signature="e#15549#15550#0" expanded="false" />
+            <element signature="e#15576#15577#0" expanded="false" />
+            <element signature="e#23521#23522#0" expanded="false" />
+            <element signature="e#23541#23542#0" expanded="false" />
+            <element signature="e#27360#27361#0" expanded="false" />
+            <element signature="e#27380#27381#0" expanded="false" />
+            <element signature="e#27765#27766#0" expanded="false" />
+            <element signature="e#27785#27786#0" expanded="false" />
+            <element signature="e#27826#27827#0" expanded="false" />
+            <element signature="e#27846#27847#0" expanded="false" />
+            <element signature="e#27881#27882#0" expanded="false" />
+            <element signature="e#27943#27944#0" expanded="false" />
+            <element signature="e#28002#28003#0" expanded="false" />
+            <element signature="e#28029#28030#0" expanded="false" />
+            <element signature="e#28096#28097#0" expanded="false" />
+            <element signature="e#28135#28136#0" expanded="false" />
+            <element signature="e#28277#28278#0" expanded="false" />
+            <element signature="e#28300#28301#0" expanded="false" />
+            <element signature="e#29098#29099#0" expanded="false" />
+            <element signature="e#29137#29138#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/resources/hmc.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="127" column="20" selection-start-line="127" selection-start-column="20" selection-end-line="127" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProductCopy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="641" column="39" selection-start-line="641" selection-start-column="39" selection-end-line="641" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gensrc/com/computationaldesign/wera/jalo/GeneratedWeraProductSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="3029" column="38" selection-start-line="3029" selection-start-column="38" selection-end-line="3029" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProductSetinSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16966">
+          <caret line="1020" column="21" selection-start-line="1020" selection-start-column="21" selection-end-line="1020" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/MediandoXml.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="645" column="22" selection-start-line="645" selection-start-column="22" selection-end-line="645" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/com/computationaldesign/wera/jalo/WeraPricelist.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/DataExport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="833">
+          <caret line="111" column="0" selection-start-line="110" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduct.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58412">
+          <caret line="3510" column="19" selection-start-line="3510" selection-start-column="19" selection-end-line="3510" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProductSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12699">
+          <caret line="783" column="33" selection-start-line="783" selection-start-column="33" selection-end-line="783" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38522">
+          <caret line="2357" column="5" selection-start-line="2357" selection-start-column="5" selection-end-line="2357" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExportBlack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hmc/hmc.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/wera-items.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25347">
+          <caret line="1491" column="55" selection-start-line="1491" selection-start-column="55" selection-end-line="1491" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExportMinikatalog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3043">
+          <caret line="1489" column="23" selection-start-line="1489" selection-start-column="23" selection-end-line="1489" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#produktExportOrderCSV#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+            <element signature="method#produktExportMinikatalog#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+            <element signature="docComment;method#_ProduktExport#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+            <element signature="method#_ProduktExport#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+            <element signature="method#initCategory#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+            <element signature="method#_checkExportTip#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+            <element signature="method#__generateTippsElements#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+            <element signature="method#__generateTipText#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+            <element signature="method#getPriceData#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+            <element signature="method#_org_createContentElementSetinSet#0;class#WeraProduktExportMinikatalog#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraPricelistNeutral.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="49402">
+          <caret line="2940" column="9" selection-start-line="2940" selection-start-column="9" selection-end-line="2940" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraProduktExport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="451">
+          <caret line="795" column="4" selection-start-line="795" selection-start-column="4" selection-end-line="795" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#147386#147392#0" expanded="true" />
+            <element signature="e#147451#147457#0" expanded="true" />
+            <element signature="e#148195#148201#0" expanded="true" />
+            <element signature="e#151434#151440#0" expanded="true" />
+            <element signature="e#324928#324938#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/computationaldesign/wera/jalo/WeraPricelist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="3129" column="38" selection-start-line="3129" selection-start-column="38" selection-end-line="3129" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

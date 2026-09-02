@@ -1,0 +1,1302 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2010 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+  
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="items.xsd">
+	<collectiontypes>
+   	    <collectiontype code="WeraProductCollection"          elementtype="WeraProduct" autocreate="true" generate="true"  />
+		<collectiontype code="WeraMediaCollection" 	          elementtype="WeraMedia" autocreate="true" generate="true" />
+		<collectiontype code="OutputcontrolCollection"        elementtype="Outputcontrol" autocreate="true" generate="true" />
+		<collectiontype code="ClassificationSystemVersionSet" elementtype="ClassificationSystemVersion" autocreate="true" generate="false" type="set"/>
+		<collectiontype code="Category2ProductExtCollection"  elementtype="Category2ProductExt" autocreate="true" generate="true" />
+
+	</collectiontypes>
+	
+	<enumtypes>
+		<enumtype code="EinheitEnum" autocreate="true" generate="true">
+			<value code="milligramm"/>
+			<value code="gramm"/>
+			<value code="kilogramm"/>
+		</enumtype>		
+		<enumtype code="SbClassificatrionEnum" autocreate="true" generate="true">
+			<value code="classic"/>
+			<value code="premium"/>
+			<value code="premium_plus"/>
+		</enumtype>		
+	</enumtypes>
+	
+	<maptypes>
+		<maptype code="localized:WeraProductCollection"
+					argumenttype="Language"
+					returntype="WeraProductCollection"
+					autocreate="true"
+					generate="false"/>	
+	</maptypes>	
+	
+	<relations>
+		<relation code="ProductSet2ProductSetinSetRelation" autocreate="true" generate="true" localized="false" > 
+			<sourceElement qualifier="weraproductsetvariants_qual" type="WeraProductSetVariants" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true" optional="true" />
+			</sourceElement>
+			<targetElement qualifier="weraproductsets_qual" type="WeraProductSetinSet" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true" optional="true" />
+			</targetElement>
+		</relation>
+		
+		
+		<relation code="ProductSet2VarianteSetInSetRelation" autocreate="true" generate="true" localized="false" > 
+			<sourceElement qualifier="weravariantevariants_qual" type="WeraVarianteVariants" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true" optional="true" />
+			</sourceElement>
+			<targetElement qualifier="weravariantsets_qual" type="WeraProductSetinSet" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true" optional="true" />
+			</targetElement>
+		</relation>
+		
+		<relation code="OutputcontrolIconRelation" autocreate="true"
+			generate="true" localized="false" > 
+			<sourceElement qualifier="Outputcontrol4icon"
+				type="Outputcontrol" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="icons" type="WeraMedia" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+		
+		<relation code="ProductFeatureFootnoteRelation"
+			autocreate="true" generate="true" localized="false"  >
+			<sourceElement qualifier="productfeatures"
+				type="ProductFeature" cardinality="one">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="footnotes" type="Footnote" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+		<relation code="WeraProductFootnoteRelation"
+			autocreate="true" generate="true" localized="false"  >
+			<sourceElement qualifier="weraproducts"
+				type="WeraProduct"  cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="footnotes" type="Footnote" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+		
+		<!-- Produkt / WeraMedia, Footnode Relation (START) -->
+		<relation code="WeraMedia2KeywordRelation" autocreate="true" generate="true" localized="true" >
+    		<sourceElement qualifier="keywords" type="Keyword"  cardinality="many">
+    		   <description>Keywords</description>
+    			<modifiers read="true" write="true" search="true" optional="true"/>
+    		</sourceElement>
+    		<targetElement qualifier="medias" type="WeraMedia" cardinality="many">
+    		   <description>Products</description>
+    			<modifiers read="true" write="true" search="true" optional="true"/>
+    		</targetElement>		
+    	</relation>   
+
+		<relation code="ProductPicture1Relation" autocreate="true"
+			generate="true" localized="false" >
+			<sourceElement qualifier="products4picture1"
+				type="WeraProduct" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="pictures1" type="WeraMedia" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+		<relation code="ProductPicture2Relation" autocreate="true"
+			generate="true" localized="false"  >
+			<sourceElement qualifier="products4picture2"
+				type="WeraProduct" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="pictures2" type="WeraMedia" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+		<relation code="ProductPicture3Relation" autocreate="true"
+			generate="true" localized="false"  >
+			<sourceElement qualifier="products4picture3"
+				type="WeraProduct" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="pictures3" type="WeraMedia" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+
+		<relation code="ProductFeatureIcon1Relation" autocreate="true"
+			generate="true" localized="false" >
+			<sourceElement qualifier="products4featureicon1"
+				type="WeraProduct"  cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="featureicons1" type="WeraMedia"  cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+		<relation code="ProductFeatureIcon2Relation" autocreate="true"
+			generate="true" localized="false"  >
+			<sourceElement qualifier="products4featureicon2"
+				type="WeraProduct" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="featureicons2" type="WeraMedia"  cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+
+
+		<relation code="ProductIcon1Relation" autocreate="true"
+			generate="true" localized="false" >
+			<sourceElement qualifier="products4icon1"
+				type="WeraProduct" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="icons1" type="WeraMedia" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+		<relation code="ProductIcon2Relation" autocreate="true"
+			generate="true" localized="false"  >
+			<sourceElement qualifier="products4icon2"
+				type="WeraProduct" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="icons2" type="WeraMedia" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+		<relation code="CategoryIconRelation" autocreate="true"
+			generate="true" localized="false" >
+			<sourceElement qualifier="categories4icon"
+				type="Category" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="icons" type="WeraMedia" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+		<relation code="TipsWeraMediaRelation" autocreate="true"
+			generate="true" localized="false">
+			<sourceElement qualifier="icon"
+				type="WeraMedia" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="tips4weramedia" type="Tips" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+
+		<relation code="WeraVarianteFootnoteRelation"
+			autocreate="true" generate="true" localized="false">
+			<sourceElement qualifier="variants"
+				type="WeraVariante" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="footnotes" type="Footnote" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+<!-- Produkt / WeraMedia, Footnode / Outputcontrol Relation (ENDE) -->
+
+		<!-- Katalogversion / Kundenpreisliste (START) -->
+		<relation code="CatalogVersionUserPriceGroupRelation" autocreate="true"
+			generate="true" localized="false" >
+			<sourceElement qualifier="csv4upg"
+				type="CatalogVersion" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="upg4csv" type="UserPriceGroup" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+<!-- Katalogversion / Kundenpreisliste (ENDE) -->
+
+<!-- Textitem / Media Relation (START) -->
+		<relation code="TextitemWeraMediaRelation" autocreate="true"
+			generate="true" localized="false">
+			<sourceElement qualifier="textitems4pictures"
+				type="Textitem" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</sourceElement>
+			<targetElement qualifier="pictures4textitems" type="WeraMedia" cardinality="many">
+				<description></description>
+				<modifiers read="true" write="true" search="true"
+					optional="true" />
+			</targetElement>
+		</relation>
+<!-- Textitem / Media Relation (ENDE) -->
+
+	</relations>
+<!-- Produkt / WeraMedia, Footnode / Outputcontrol Relation (ENDE) -->
+
+	<itemtypes>
+
+<!--   WERAMEDIA
+deployment="de.hybris.jakarta.entity.media.Media"  
+-->
+		<itemtype code="WeraMedia" extends="Media"
+			jaloclass="com.computationaldesign.wera.jalo.WeraMedia"
+			singleton="false" jaloonly="false"
+			autocreate="true"
+			generate="true">
+			<attributes>
+				<attribute autocreate="true" generate="true"
+					qualifier="thumbname" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="thumbpath" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="hybrisfilename" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="intDPI" type="java.lang.Integer">
+					<persistence type="property" qualifier="" />
+
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="intSizeX" type="java.lang.Integer">
+					<persistence type="property" qualifier="" />
+
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="intSizeY" type="java.lang.Integer">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="mediakategorie" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+			
+		<itemtype generate="true" code="WeraProduct"
+			jaloclass="com.computationaldesign.wera.jalo.WeraProduct"
+			extends="Product" autocreate="true" >
+			<attributes>
+		        <attribute autocreate="true" qualifier="alternate_product" type="localized:WeraProductCollection">
+		            <persistence type="property"/>
+		            <modifiers read="true" write="true" search="true" optional="true" initial="true"/>
+		        </attribute>
+
+				<attribute autocreate="true" generate="true"
+					qualifier="masterpk" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+
+				<attribute autocreate="true" generate="true"
+					qualifier="outputtemplate" type="java.lang.String">
+					<description>Output Template</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+
+				<attribute autocreate="true" generate="true"
+					qualifier="priority" type="java.lang.Double">
+					<description>Reihenfolge Variante</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="orderPL" type="java.lang.Integer">
+					<description>Reihenfolge Preisliste</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true" 
+					qualifier="aktiv" type="localized:java.lang.Boolean">
+					<description>Ausgabe Produkt J/N</description>
+               		<persistence type="property" qualifier="" />
+					<defaultvalue>
+							new java.lang.Boolean( "false" )
+					</defaultvalue>
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="false" unique="false"
+						private="false" partof="false"  />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="ausgabe_preisliste" type="localized:java.lang.Boolean">
+					<description>Ausgabe Preisliste J/N</description>
+               		<persistence type="property" qualifier="" />
+					<defaultvalue>
+							new java.lang.Boolean( "false" )
+					</defaultvalue>
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="produkt_neu" type="java.lang.Boolean">
+					<description>Neues Produkt</description>
+					<defaultvalue>
+							new java.lang.Boolean( "TRUE" )
+					</defaultvalue>
+               		<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="description1" type="localized:java.lang.String">
+                    <persistence type="property">
+									<columntype database="oracle">
+										<value>varchar2(4000)</value>
+									</columntype>
+									<columntype database="db2">
+										<value>varchar(4000)</value>
+									</columntype>
+									<columntype database="mysql">
+										<value>varchar(4000)</value>
+									</columntype>
+									<columntype database="mssql">
+										<value>nvarchar(4000)</value>
+									</columntype>
+									<columntype database="hsql">
+										<value>varchar(4000)</value>
+									</columntype>
+									<columntype>
+										<value>varchar</value>
+									</columntype>						
+								</persistence>
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+<!-- getilgt 29.07.2011 GT				
+				<attribute autocreate="true" generate="true"
+					qualifier="description2" type="localized:java.lang.String">
+                    <persistence type="property">
+									<columntype database="oracle">
+										<value>varchar2(4000)</value>
+									</columntype>
+									<columntype database="db2">
+										<value>varchar(4000)</value>
+									</columntype>
+									<columntype database="mysql">
+										<value>varchar(4000)</value>
+									</columntype>
+									<columntype database="mssql">
+										<value>nvarchar(4000)</value>
+									</columntype>
+									<columntype database="hsql">
+										<value>varchar(4000)</value>
+									</columntype>
+									<columntype>
+										<value>varchar</value>
+									</columntype>						
+								</persistence>
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+-->
+<!-- getilgt 29.07.2011 GT				
+				<attribute autocreate="true" generate="true"
+					qualifier="description3" type="localized:java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+-->
+<!-- getilgt 29.07.2011 GT				
+				<attribute autocreate="true" generate="true"
+					qualifier="pagenr" type="localized:java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+-->		
+				<attribute autocreate="true" generate="true"
+					qualifier="outputcontrols" type="OutputcontrolCollection">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="category2productexts" type="Category2ProductExtCollection">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="false" autocreate="true" qualifier="ean_us" type="java.lang.String">
+					<persistence type="property" qualifier=""/>
+					<modifiers read="true" write="true" search="true" optional="true" removable="true" initial="false" unique="false" private="false" partof="false"/>
+				</attribute>
+
+			</attributes>
+		</itemtype>
+	
+		<itemtype generate="true" code="WeraProductSet"
+			jaloclass="com.computationaldesign.wera.jalo.WeraProductSet"
+			extends="WeraProduct" autocreate="true">
+			<attributes>
+				<attribute autocreate="true" generate="true"
+					qualifier="artnr" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="contentQuantity" type="java.lang.Integer"
+					metatype="VariantAttributeDescriptor">
+					<description>Verpackungsmenge</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="lagerNr" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="variantenNr" type="localized:java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="variantenNrUS" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description>Varianten-Nummer Handelsraum US</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="variantenNrEU" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description>Varianten-Nummer Handelsraum EU</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="ZolltarifNr" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="Ursprungsland" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="Gewicht" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="GewVE" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="GewichtEinheit" type="EinheitEnum"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+			</attributes>
+		</itemtype>
+
+
+	
+		<itemtype generate="true" code="WeraVariante"
+			jaloclass="com.computationaldesign.wera.jalo.WeraVariante"
+			extends="VariantProduct" metatype="VariantType" autocreate="true">
+			<attributes>
+				<attribute generate="true" autocreate="true"
+					qualifier="contentQuantity" type="java.lang.Integer"
+					metatype="VariantAttributeDescriptor">
+					<description>Verpackungsmenge</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				
+				<attribute autocreate="true" generate="true"
+					qualifier="artikel_neu" type="java.lang.Boolean">
+					<description>Neues Produkt</description>
+               		<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="true" unique="false"
+						private="false" partof="false" />
+					<defaultvalue>
+							new java.lang.Boolean( "true" )
+					</defaultvalue>
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="aktiv" type="localized:java.lang.Boolean">
+					<description>Ausgabe Variante J/N</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="false" initial="true" />
+					<defaultvalue>
+							new java.lang.Boolean( "true" )
+					</defaultvalue>
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="ausgabe_preisliste" type="localized:java.lang.Boolean">
+					<description>Ausgabe Produkt J/N</description>
+               		<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+					<defaultvalue>
+							new java.lang.Boolean( "true" )
+					</defaultvalue>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="lagerNr" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true" initial="false" />
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="variantenNr" type="localized:java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="variantenNrUS" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description>Varianten-Nummer Handelsraum US</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="false"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="variantenNrEU" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description>Varianten-Nummer Handelsraum EU</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="false"/>
+				</attribute>				
+				<attribute generate="true" autocreate="true"
+					qualifier="ZolltarifNr" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="Ursprungsland" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="Gewicht" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="GewVE" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="GewichtEinheit" type="EinheitEnum"
+					metatype="VariantAttributeDescriptor">
+					<description></description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+				<attribute generate="false" autocreate="true" qualifier="ean_us" type="java.lang.String">
+					<persistence type="property" qualifier=""/>
+					<modifiers read="true" write="true" search="true" optional="true" removable="true" initial="false" unique="false" private="false" partof="false"/>
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype generate="true" code="WeraVarianteSet"
+			jaloclass="com.computationaldesign.wera.jalo.WeraVarianteSet"
+			extends="WeraVariante" metatype="VariantType" autocreate="true">
+			<attributes>
+				<attribute generate="true" autocreate="true"
+					qualifier="weravariants" type="WeraVariante"
+					metatype="VariantAttributeDescriptor">
+					<description>WERAPRODUKT</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="productdescription" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description>Produktbeschreibung</description>
+					<persistence type="jalo" qualifier="" />
+					<modifiers read="true" write="false" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<!-- Satz in Satz (START) -->
+		<itemtype generate="true" code="WeraVarianteVariants"
+			jaloclass="com.computationaldesign.wera.jalo.WeraVarianteVariants"
+			autocreate="true">
+			<attributes>
+				<attribute generate="true" autocreate="true" 
+					qualifier="weravariants" type="WeraVariante" >
+					<description>WERAVARIANTE</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="order" type="java.lang.Integer"
+					metatype="VariantAttributeDescriptor">
+					<description>Order</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="vpe" type="java.lang.Integer"
+					metatype="VariantAttributeDescriptor">
+					<description>vpe</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		<itemtype generate="true" code="WeraProductSetVariants"
+			jaloclass="com.computationaldesign.wera.jalo.WeraProductSetVariants"
+			autocreate="true" >
+			<attributes>
+				<attribute generate="true" autocreate="true" 
+					qualifier="weraproductsets" type="WeraProductset" >
+					<description>WERAPRODUKTSET</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="order" type="java.lang.Integer"
+					metatype="VariantAttributeDescriptor">
+					<description>Order</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="vpe" type="java.lang.Integer"
+					metatype="VariantAttributeDescriptor">
+					<description>vpe</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		<itemtype generate="true" code="WeraProductSetinSet"
+			jaloclass="com.computationaldesign.wera.jalo.WeraProductSetinSet"
+			extends="WeraProductSet" autocreate="true">
+			<attributes>
+				<attribute generate="true" autocreate="true"
+					qualifier="SbClassificatrion" type="SbClassificatrionEnum"
+					metatype="VariantAttributeDescriptor">
+					<description>Classic, Premium, Premium Plus</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true" optional="true"/>
+				</attribute>
+
+			</attributes>
+		</itemtype>
+		<!-- Satz in Satz (ENDE) -->
+
+		
+		<itemtype code="AttributeDescriptor" generate="false"
+			autocreate="false">
+			<attributes>
+				<attribute generate="false" autocreate="true"
+					qualifier="icons" type="WeraMediaCollection">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="false"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		
+		<itemtype code="Category" generate="false" autocreate="false">
+			<attributes>
+				<attribute autocreate="true" generate="true"
+					qualifier="aktiv" type="localized:java.lang.Boolean">
+					<description>Ausgabe Kategorie J/N</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="concat_description" type="java.lang.Boolean">
+					<description>Beschreibung und Untertitel zusammenfügen(WEB)</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="untertitel" type="localized:java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="masterpk" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+<!-- getilgt 29.07.2011 GT				
+				<attribute autocreate="true" generate="true"
+					qualifier="pagenr" type="localized:java.lang.Integer">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+-->				
+			</attributes>
+		</itemtype>
+		
+		<itemtype code="CatalogVersion" generate="false" autocreate="false">
+			<attributes>
+				<attribute autocreate="true" generate="true"
+					qualifier="archiviert" type="java.lang.Boolean">
+					<description>Katalog archiviert J/N</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="true" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="is_webcatalog" type="java.lang.Boolean">
+					<persistence type="property" qualifier="" />
+					<description>Webkatalog</description>
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="domain" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+	
+		<itemtype code="PriceRow"  autocreate="false" generate="false">
+			<attributes>
+				<attribute autocreate="true" generate="true"
+					qualifier="order" type="java.lang.Integer">
+					<persistence type="property" qualifier="" />
+					<description>Reihenfolge</description>
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="evk" type="java.lang.Boolean">
+					<persistence type="property" qualifier="" />
+					<description>Preis ist EVK</description>
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="aufanfrage" type="java.lang.Boolean">
+					<persistence type="property" qualifier="" />
+					<description>Preis auf Anfrage</description>
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+	
+<!-- ClassificationAttribute
+		<itemtype code="ProfiClassClassificationAttribute" generate="false" autocreate="false">
+-->		
+		<itemtype code="ClassAttributeAssignment" generate="false" autocreate="false">
+			<attributes>
+				<attribute generate="false" autocreate="true"
+					qualifier="icons" type="WeraMediaCollection">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="false"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+
+				<attribute generate="false" autocreate="true"
+					qualifier="customValues"
+					type="ClassificationAttributeValueCollection">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="false"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="order" type="java.lang.Integer">
+					<persistence type="property" qualifier="" />
+					<description>Reihenfolge Merkmal</description>
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="aktiv" type="localized:java.lang.Boolean">
+					<description>Ausgabe Merkmal J/N</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="background" type="localized:java.lang.Boolean">
+					<description>Hintergrundfarbe J/N</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+
+			</attributes>
+		</itemtype>
+
+<!-- Fussnoten 		
+			deployment="de.hybris.jakarta.entity.GenericItem" 
+-->			
+		<itemtype code="Footnote" extends="GenericItem"
+			jaloclass="com.computationaldesign.wera.jalo.Footnote"
+			autocreate="true"
+			singleton="false" jaloonly="false"
+			generate="true">
+			<attributes>
+				<attribute generate="false" autocreate="true"
+					qualifier="code" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="true" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="false" autocreate="true"
+					qualifier="kennzeichner" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="true" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="name" type="localized:java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+<!-- getilgt 29.07.2011 GT
+				<attribute autocreate="true" generate="true"
+					qualifier="pagenr" type="localized:java.lang.Integer">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+-->				
+			</attributes>
+		</itemtype>
+		
+        <!--  Ausgabesteuerung Merkmale 
+			deployment="de.hybris.jakarta.entity.GenericItem" 
+		-->
+		<itemtype code="Outputcontrol" extends="GenericItem"
+			jaloclass="com.computationaldesign.wera.jalo.Outputcontrol"
+			singleton="false" jaloonly="false"
+			autocreate="true"
+			generate="true">
+			<attributes>
+				<attribute generate="false" autocreate="true"
+					qualifier="code" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="true" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="false" autocreate="true"
+					qualifier="classattributeassignment" type="ClassAttributeAssignment">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="true" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="bezeichnung" type="java.lang.String">
+					<persistence type="jalo" qualifier="" />
+					<modifiers read="true" write="false" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="order" type="java.lang.Integer">
+					<persistence type="property" qualifier="" />
+					<description>Reihenfolge Merkmal</description>
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="aktiv" type="localized:java.lang.Boolean">
+					<description>Ausgabe Merkmal J/N</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="background" type="localized:java.lang.Boolean">
+					<description>Hintergrundfarbe J/N</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="showinset" type="java.lang.Boolean">
+					<description>Anzeige im Satz</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				
+				<attribute qualifier="visibility" type="ClassificationAttributeVisibilityEnum">
+					<description>Visibility of attribute: visible, not_visible, visible_in_base or visible_in_variant</description>
+					<modifiers read="true" write="true" search="true" optional="true" initial="true"/>
+					<persistence type="property"/>
+				</attribute>
+				<attribute autocreate="true" qualifier="unitca"
+					type="localized:java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+        <!--  Ausgabesteuerung Merkmale -->
+
+        <!--  Ausgabesteuerung Erweiterte Steuerparameter 
+			deployment="de.hybris.jakarta.entity.GenericItem" -->
+		<itemtype code="Category2ProductExt" extends="GenericItem"
+			jaloclass="com.computationaldesign.wera.jalo.Category2ProductExt"
+			singleton="false" jaloonly="false"
+			autocreate="true"
+			generate="true">
+			<attributes>
+				<attribute generate="false" autocreate="true"
+					qualifier="category" type="Category">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="true" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute generate="true" autocreate="true"
+					qualifier="catalogversion_desc" type="java.lang.String"
+					metatype="VariantAttributeDescriptor">
+					<description>Katalogversion</description>
+					<persistence type="jalo" qualifier="" />
+					<modifiers read="true" write="false" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+<!-- getilgt - 29.07.2011				
+				<attribute autocreate="true" generate="true"
+					qualifier="aktiv" type="localized:java.lang.Boolean">
+					<description></description>
+               		<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+-->				
+				<attribute autocreate="true" generate="true"
+					qualifier="priority" type="java.lang.String">
+					<description>Reihenfolge</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="pagenr_catalog" type="java.lang.String">
+					<description>Katalogseite</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+        <!--  Ausgabesteuerung Erweiterte Steuerparameter -->
+ 
+ 
+		<itemtype code="Textitem" extends="GenericItem"
+			jaloclass="com.computationaldesign.wera.jalo.Textitem"
+			singleton="false" jaloonly="false"
+			autocreate="true"
+			generate="true">
+			<attributes>
+				<attribute generate="false" autocreate="true"
+					qualifier="code" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="true" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="name" type="java.lang.String">
+					<persistence type="jalo" qualifier="" />
+					<modifiers read="true" write="false" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="textblock" type="localized:java.lang.String">
+					<description>Text</description>
+                    <persistence type="property">
+									<columntype database="mysql">
+										<value>varchar(4000)</value>
+									</columntype>
+					</persistence>
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="header" type="java.lang.Boolean">
+					<description>Text ist eine Überschrift</description>
+					<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="order" type="java.lang.Integer">
+					<description>Reihenfolge</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<!-- Abtriebe -->
+		<itemtype code="Tips" extends="GenericItem"
+			jaloclass="com.computationaldesign.wera.jalo.Tips"
+			singleton="false" jaloonly="false"
+			autocreate="true"
+			generate="true">
+			<attributes>
+				<attribute generate="false" autocreate="true"
+					qualifier="code" type="java.lang.String">
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="false" removable="true" initial="true" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="name" type="localized:java.lang.String">
+					<description>Text</description>
+                    <persistence type="property">
+									<columntype database="mysql">
+										<value>varchar(4000)</value>
+									</columntype>
+					</persistence>
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="order" type="java.lang.Integer">
+					<description>Reihenfolge</description>
+					<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+				<attribute autocreate="true" generate="true"
+					qualifier="aktiv" type="localized:java.lang.Boolean">
+					<description></description>
+               		<persistence type="property" qualifier="" />
+					<modifiers read="true" write="true" search="true"
+						optional="true" removable="true" initial="false" unique="false"
+						private="false" partof="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		<!-- Abtriebe -->
+		
+ 
+	</itemtypes>
+</items>

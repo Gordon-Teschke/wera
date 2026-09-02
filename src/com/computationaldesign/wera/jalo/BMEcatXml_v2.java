@@ -1,0 +1,272 @@
+package com.computationaldesign.wera.jalo;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.TreeSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+
+import org.apache.log4j.Logger;
+import org.jdom.Comment;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+import org.jibble.simpleftp.SimpleFTP;
+
+import com.computationaldesign.wera.jalo.WeraManager.OrderComparator;
+
+import de.hybris.platform.catalog.jalo.CatalogVersion;
+import de.hybris.platform.catalog.jalo.ProductFeature;
+import de.hybris.platform.catalog.jalo.classification.ClassificationAttribute;
+import de.hybris.platform.catalog.jalo.classification.ClassificationSystemVersion;
+import de.hybris.platform.category.jalo.Category;
+import de.hybris.platform.jalo.Item;
+import de.hybris.platform.jalo.JaloInvalidParameterException;
+import de.hybris.platform.jalo.enumeration.EnumerationManager;
+import de.hybris.platform.jalo.enumeration.EnumerationType;
+import de.hybris.platform.jalo.enumeration.EnumerationValue;
+import de.hybris.platform.jalo.product.Product;
+import de.hybris.platform.jalo.product.Unit;
+import de.hybris.platform.jalo.security.JaloSecurityException;
+import de.hybris.platform.util.Config;
+import de.hybris.platform.europe1.enums.UserPriceGroup;
+import de.hybris.platform.europe1.jalo.PriceRow;
+import java.util.Comparator;
+
+import de.hybris.platform.jalo.user.UserManager;
+import de.hybris.platform.jalo.user.Customer;
+import de.hybris.platform.catalog.constants.GeneratedCatalogConstants;
+import de.hybris.platform.catalog.jalo.classification.ClassificationAttribute;
+import de.hybris.platform.catalog.jalo.classification.ClassificationAttributeValue;
+import de.hybris.platform.catalog.jalo.classification.ClassificationSystemVersion;
+import de.hybris.platform.catalog.jalo.classification.ClassificationSystem;
+import de.hybris.platform.catalog.jalo.classification.ClassificationClass;
+import de.hybris.platform.catalog.jalo.classification.ClassAttributeAssignment;
+import de.hybris.platform.catalog.jalo.classification.ClassificationAttributeUnit;
+import de.hybris.platform.catalog.jalo.classification.util.Feature;
+import de.hybris.platform.catalog.jalo.classification.util.FeatureContainer;
+import de.hybris.platform.catalog.jalo.classification.util.FeatureValue;
+import de.hybris.platform.catalog.jalo.classification.util.TypedFeature;
+
+
+// --- BEMCAT inckl Kundenpreise
+public class BMEcatXml_v2 extends BMEcatXml {
+	
+	/** Edit the local|project.properties to change logging behavior (properties 'log4j.*'). */
+	private static final Logger LOG = Logger.getLogger(BMEcatXml_v2.class.getName());
+	
+	// --- BMECAT - Konstanten
+	//protected    String C_BMECAT_VERSION  			= "2005";
+	protected    String C_BMECAT_VERSION            = "1.2";
+
+
+	public BMEcatXml_v2() {
+		super();
+	}
+	
+	// --- Hautproutine ----------------------------------------------------------------------
+	public String exportBMECAT_Daten_Preise ( String strCatalog, String strCatalogVersion, String strKunde, 
+										String strLanguage ) {
+						
+		// --- Debug
+		LOG.info("starte exportBMECAT_Daten_Preise ...");
+		
+		// --- Initialize
+		String strResult = "";
+		m_strKunde = strKunde;
+		
+		// --- Default Katalog initialisieren
+		InitBMEcatDefaultCatalog ( strCatalog );
+		
+		// --- Sprache setzen
+		InitBMEcatDefaultLanguage ( strLanguage );
+		
+		// --- BMECAT Export
+		BMEcatGenerate ( strCatalogVersion );
+		
+	 return strResult;
+	}
+	// --- Hautproutine ----------------------------------------------------------------------
+
+	
+	// --- Hauptknoten -----------------------------------------------------------------------
+	
+     // --- Kundendaten
+	 // HEADER>...</HEADER
+     public void BMEcatGenHEADER()
+     {
+		// --- Debug
+ 		LOG.info("BMEcatGenHEADER ...");
+		
+     	// --- Initialize
+     	Element oElementTmp = null;
+        
+		// --- Infos
+     	m_oNewHeaderElement.addContent(new Element("GENERATOR_INFO").addContent("Hybris Export BMECAT"));
+
+		// --- Katalog
+		Element oElementCatalog = new Element("CATALOG");
+		m_oNewHeaderElement.addContent(oElementCatalog);
+		oElementCatalog.addContent(new Element("LANGUAGE").addContent(m_strLanguage));
+        oElementCatalog.addContent(new Element("CATALOG_ID").addContent(m_strCatalog));
+		oElementCatalog.addContent(new Element("CATALOG_VERSION").addContent(m_strCatalogversion));
+		oElementCatalog.addContent(new Element("CATALOG_NAME").addContent(C_BMECAT_CATALOG_NAME));
+		oElementTmp = new Element("DATETIME").setAttribute("type","generation_date");
+		oElementCatalog.addContent(oElementTmp);
+		oElementTmp.addContent(new Element("DATE").addContent(m_strDatum.substring(0,4)+"-"+m_strDatum.substring(4,6)+"-"+m_strDatum.substring(6,8)));
+		
+		// --- Supplier
+		Element oElementSupplier = new Element("SUPPLIER");
+		m_oNewHeaderElement.addContent(oElementSupplier);
+		oElementTmp = new Element("SUPPLIER_ID").setAttribute("type","buyer_specific");
+		oElementTmp = new Element("SUPPLIER_NAME").addContent(C_BMECAT_DISPLAYMANUFACTURE);
+		//oElementSupplier.addContent(oElementTmp.addContent(m_strLieferantenNr));
+		oElementTmp  = new Element("ADDRESS");
+		oElementTmp.setAttribute("type","supplier");
+		oElementTmp.addContent(new Element("NAME").addContent("Hermann Werner GmbH & Co. KG"));
+		oElementTmp.addContent(new Element("STREET").addContent("Korzerter Strasse 21-25"));
+		oElementTmp.addContent(new Element("ZIP").addContent("42349"));
+		oElementTmp.addContent(new Element("CITY").addContent("Wuppertal"));
+		oElementTmp.addContent(new Element("COUNTRY").addContent("Deutschland"));
+		oElementTmp.addContent(new Element("COUNTRY_CODED").addContent("DE"));
+		oElementTmp.addContent(new Element("PHONE").addContent("+49 202 4045 311"));
+		oElementTmp.addContent(new Element("FAX").addContent("+49 202 4036 34"));
+		oElementTmp.addContent(new Element("URL").addContent("http://www.wera.de"));
+  		oElementSupplier.addContent(oElementTmp );
+		
+		// --- Buyer (Kunde)
+	    Customer oBuyer = UserManager.getInstance().getCustomerByLogin( m_strKunde );
+		if ( oBuyer != null ) {
+			String strBuyerID = oBuyer.getCustomerID();
+			String strBuyerNAME = oBuyer.getName();
+			String strBuyerSTREET = "";
+			String strBuyerZIP = "";
+			String strBuyerCITY = "";
+			String strBuyerCOUNTRY = "Deutschland";
+			String strBuyerCOUNTRY_CODED = "DE";
+			String strBuyerPHONE = "";
+			String strBuyerFAX = "";
+			String strBuyerURL = "";
+			Element oElementBuyer = new Element("BUYER");
+			m_oNewHeaderElement.addContent(oElementBuyer);
+			if ( strBuyerID != null && !strBuyerID.equals("") ) {
+				Element oElementBUYER_ID = new Element("BUYER_ID");
+				oElementBUYER_ID.setAttribute("type","supplier_specific");
+				oElementBUYER_ID.addContent( strBuyerID );
+				oElementBuyer.addContent( oElementBUYER_ID );
+			}
+			if ( strBuyerNAME != null && !strBuyerNAME.equals("") ) {
+				oElementBuyer.addContent( new Element("BUYER_NAME").addContent(strBuyerNAME));
+			}
+			oElementTmp  = new Element("ADDRESS");
+			oElementTmp.setAttribute("type","buyer");
+			oElementBuyer.addContent(oElementTmp );
+			if ( strBuyerNAME != null && !strBuyerNAME.equals("") ) {
+				oElementTmp.addContent(new Element("NAME").addContent ( strBuyerNAME ));
+			}
+			if ( strBuyerSTREET != null && !strBuyerSTREET.equals("") ) {
+				oElementTmp.addContent(new Element("STREET").addContent ( strBuyerSTREET ));
+			}
+			if ( strBuyerZIP != null && !strBuyerZIP.equals("") ) {
+				oElementTmp.addContent(new Element("ZIP").addContent ( strBuyerZIP ));
+			}
+			if ( strBuyerCITY != null && !strBuyerCITY.equals("") ) {
+				oElementTmp.addContent(new Element("CITY").addContent ( strBuyerCITY ));
+			}
+			if ( strBuyerCOUNTRY != null && !strBuyerCOUNTRY.equals("") ) {
+				oElementTmp.addContent(new Element("COUNTRY").addContent ( strBuyerCOUNTRY ));
+			}
+			if ( strBuyerCOUNTRY_CODED != null && !strBuyerCOUNTRY_CODED.equals("") ) {
+				oElementTmp.addContent(new Element("COUNTRY_CODED").addContent ( strBuyerCOUNTRY_CODED ));
+			}
+			if ( strBuyerPHONE != null && !strBuyerPHONE.equals("") ) {
+				oElementTmp.addContent(new Element("PHONE").addContent ( strBuyerPHONE ));
+			}
+			if ( strBuyerFAX != null && !strBuyerFAX.equals("") ) {
+				oElementTmp.addContent(new Element("FAX").addContent ( strBuyerFAX ));
+			}
+			if ( strBuyerURL != null && !strBuyerURL.equals("") ) {
+				oElementTmp.addContent(new Element("URL").addContent ( strBuyerURL ));
+			}
+			
+		} // --- if ( oBuyer != null ) {
+     }
+	 
+	 // --- Preisdaten
+     // ARTICLE_PRICE_DETAILS>...</ARTICLE_PRICE_DETAILS>
+     public Element BMEcatGenARTICLE_PRICE_DETAILS ( Product oVerkaufsProduct )
+     {
+		// --- Debug
+ 		LOG.info("BMEcatGenARTICLE_PRICE_DETAILS ...");
+		
+		// --- Hole Preisliste
+		String strPreis  = C_BMECAT_EMPTY_TAG;
+		String strMinqtd = C_BMECAT_EMPTY_TAG;
+		
+    	// --- Initialize
+		Element oARTICLE_PRICE_DETAILS = new Element("ARTICLE_PRICE_DETAILS");
+		Element oDATETIME = new Element("DATETIME");
+		oARTICLE_PRICE_DETAILS.addContent(oDATETIME);
+		oDATETIME.addContent(new Element("DATE").addContent(m_strDatum.substring(0,4) + "-01-01"));
+		oDATETIME.setAttribute("type","valid_start_date");
+		oDATETIME = new Element("DATETIME");
+		oARTICLE_PRICE_DETAILS.addContent(oDATETIME);
+		oDATETIME.addContent(new Element("DATE").addContent(m_strDatum.substring(0,4) + "-12-31"));
+		oDATETIME.setAttribute("type","valid_end_date");
+		oARTICLE_PRICE_DETAILS.addContent(new Element("DAILY_PRICE").addContent("false"));
+
+		// --- ARTIKEL_PRICE
+		if ( m_strNamePreisListe.length() > 0 ) {
+			Collection<PriceRow> prices = m_wm._aGetPriceList(oVerkaufsProduct, m_strNamePreisListe);
+			if ( prices != null && prices.size() > 0 ) {
+				for ( Iterator itPriceRow=prices.iterator(); itPriceRow.hasNext(); ){
+				
+					PriceRow price = (PriceRow)itPriceRow.next();
+					strPreis  = price.getPrice() != null  ? price.getPrice().toString()  : C_BMECAT_EMPTY_TAG ;
+					strMinqtd = price.getMinqtd() != null ? price.getMinqtd().toString() : C_BMECAT_EMPTY_TAG ;
+					
+					// --- Element anlegen
+					Element oARTICLE_PRICE = new Element("ARTICLE_PRICE");
+					oARTICLE_PRICE_DETAILS.addContent(oARTICLE_PRICE);
+					if ( price.isNet() )
+						oARTICLE_PRICE.setAttribute("price_type","net_list");
+					else
+						oARTICLE_PRICE.setAttribute("price_type","nrp"); // --- UVP Liste
+					oARTICLE_PRICE.addContent(new Element("PRICE_AMOUNT").addContent(strPreis));
+					oARTICLE_PRICE.addContent(new Element("PRICE_CURRENCY").addContent("EUR"));
+					oARTICLE_PRICE.addContent(new Element("TAX").addContent("0.19"));
+					//oARTICLE_PRICE.addContent(new Element("PRICE_FACTOR").addContent("1"));
+					oARTICLE_PRICE.addContent(new Element("LOWER_BOUND").addContent(strMinqtd));
+				}
+			}
+		}
+		
+	  return oARTICLE_PRICE_DETAILS;
+	 }
+	// --- Hauptknoten -----------------------------------------------------------------------
+
+	// --- Hilfsmethoden ---------------------------------------------------------------------
+	 
+	// --- BMECAT-VERSION
+	@Override
+	public String _getBMECAT_VERSION() {
+	  return C_BMECAT_VERSION;
+	}
+  
+	// --- Hilfsmethoden ---------------------------------------------------------------------
+}
+

@@ -1,0 +1,3273 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2010 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+  
+-->
+<configuration xmlns="hybris.de/schemas/hmc/generic"
+			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xsi:schemaLocation="hybris.de/schemas/hmc/generic hmc.xsd">
+	<explorertree>
+		<group name="catalog" expand="false" description="group.catalog.description">
+			<typeref type="Textitem" position="6" description="typeref.Textitem.description" />
+			<typeref type="Tips" position="7" description="typeref.Tips.description" />
+			<typeref type="WeblinkText" position="8" description="typeref.WeblinkText.description" />
+			<typeref type="Weblink" position="9" description="typeref.Weblink.description" />
+			<typeref type="ExtImage" position="10" description="typeref.ExtImage.description" />
+			<typeref type="Textbaustein" position="11" description="typeref.Textbaustein.description" />
+			<typeref type="Bildreferenz" position="12" description="typeref.Bildreferenz.description" />
+			<typeref type="Tipp" position="13" description="typeref.Tipp.description" />
+		</group>
+	</explorertree>
+
+	<type name="SampleWizard" useselector="true">
+		<organizer>
+			<editor>
+				<exclude>
+					<exclusion attribute="owner"/>
+				</exclude>
+				<tab name="SampleWizard.tab1" position="0">
+					<section name="SampleWizard.section1">
+						<listlayout>
+							<attribute name="productNeu" labelwidth="150" width="50" />
+							<attribute name="productList" labelwidth="150" width="250" />
+							<attribute name="categoryList" labelwidth="150" width="250" />
+							<!--
+												 <attribute name="seconds" labelwidth="100" />
+												 <attribute name="pk" labelwidth="100" />
+												 <attribute name="stringList" labelwidth="100" />
+												   <attribute name="unitList" labelwidth="100" /> 
+							-->
+						</listlayout>
+					</section>
+				</tab>
+				<!--             
+							<tab name="SampleWizard.tab2" position="1">
+							   <section name="SampleWizard.section2">
+								  <listlayout>
+									 <attribute name="artikelList" labelwidth="200" />
+								  </listlayout>
+							   </section>
+							</tab>
+				-->
+			</editor>
+		</organizer>
+	</type>
+	<type name="NexMartExportWizard" useselector="true">
+		<organizer>
+			<editor>
+				<exclude>
+					<exclusion attribute="owner"/>
+				</exclude>
+				<tab name="NexMartExportWizard.tab1" position="0">
+					<section name="NexMartExportWizard.section1">
+						<listlayout>
+							<attribute name="classificationsystemversionlist" labelwidth="200" />
+							<attribute name="export_categories" labelwidth="200" />
+							<attribute name="export_products" labelwidth="200" />
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+
+
+	<!-- Wera Produkt +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Wera Produkt  -->
+	<type name="WeraProduct" mode="append" icon="/wera/images/e_weraprodukt_neu.gif">
+		<organizer>
+			<search mode="append">
+				<condition attribute="catalogVersion" />
+			</search>
+			<result mode="append">
+				<listview mode="replace">
+					<itemlayout>
+						<attribute name="code"  width="120"/>
+						<attribute name="name"  width="400"/>
+						<attribute name="catalogVersion"  width="120"/>
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview mode="replace" >
+					<itemlayout>
+						<attribute name="code"  width="120"/>
+						<attribute name="name"  width="400"/>
+						<attribute name="catalogVersion"  width="120"/>
+					</itemlayout>
+				</treeview>
+				<action type="searchresult"
+						classname="de.hybris.platform.hmc.ext.catalog.SetProductsApprovedAction"
+						name="action.catalog.setapproved" />
+				<action type="searchresult"
+						classname="de.hybris.platform.hmc.ext.catalog.SetProductsUnapprovedAction"
+						name="action.catalog.setunapproved" />
+				<action type="searchresult"
+						classname="de.hybris.platform.hmc.ext.catalog.SetProductsCheckAction"
+						name="action.catalog.setcheck" />
+				<action type="searchresult"
+						classname="de.hybris.platform.hmc.ext.catalog.SyncItemsSearchResultAction"
+						name="action.catalog.syncproducts" />
+				<action type="searchresult"
+						classname="com.computationaldesign.wera.jalo.SampleWizard" name="samplewizard" />
+				<action type="toolbar"
+						classname="com.computationaldesign.wera.jalo.SampleWizard" name="samplewizard"/>
+			</result>
+			<editor>
+				<essentials mode="append" >
+					<columnlayout>
+						<row>
+							<attribute name="desc_picture1"  /><!-- Name des Produktbilds -->
+							<attribute name="check_artikelnr_index" width="420" /><!-- Alphanummerische Artikelnummer (mehrsprech. Print) -->
+						</row>
+					</columnlayout>
+				</essentials>
+
+				<!-- Tabs entfernen -->
+				<tab name="tab.publications" mode="delete" />
+				<tab name="tab.sync.settings" mode="delete" />
+				<tab name="tab.categorysystem" mode="delete" />
+				<tab name="tab.versions" mode="delete" />
+				<tab name="product.descriptions" id="tab_product_descriptions" mode="delete" />
+				<tab name="tab.catalog.classification" mode="delete" />
+				<tab name="tab.product.features" mode="delete" />
+				<tab name="product.prices" id="tab_europe1_prices" position="4" mode="delete" />
+				<tab name="tab.product.properties" mode="delete" />
+				<tab name="tab.variants" mode="delete"/>
+				<tab name="tab.product.versions" mode="delete" />
+				<tab name="tab.product.extendedattributes" mode="delete" />
+
+				<!-- Stammdaten -->
+				<tab name="tab.products" id="tab_product_common" mode="replace" position="1">
+					<section name="section.product_allgemein">
+						<listlayout>
+							<!--						    <attribute name="aktiv" width="50"></attribute> -->
+							<attribute name="produkt_neu" width="50"></attribute>
+							<attribute name="artikel_sb_faehig" width="50"></attribute>
+							<attribute name="artikel_auslauf" width="50"></attribute>
+						</listlayout>
+					</section>
+					<section name="section.product.description">
+						<listlayout>
+							<attribute name="description1" width="500" >
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+
+							<attribute name="description2" width="500" >
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+							
+							<attribute name="description3" width="500" >
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				
+				<!-- Multimedia -->
+				<tab name="tab.product.multimedia" mode="delete" />
+				<tab name="multimedia" mode="replace" position="2">
+					<section name="section.multimedia">
+						<listlayout>
+							<attribute name="icons1" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="icons2">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="pictures1">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="pictures2">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="pictures3">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="featureicons1">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="featureicons2">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="others_productpictures">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="secondaryimagesref2weraproduct">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>							
+														
+						</listlayout>
+					</section>
+					<section name="section.product.usage_secondary_images">
+						<listlayout>
+							<attribute name="use_in_pricelist"></attribute>
+							<attribute name="use_in_catalog"></attribute>
+						</listlayout>
+					</section>
+					<section name="section.product.additionalmedias">
+						<listlayout>
+							<attribute name="data_sheet">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="detail">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="logo">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="normal">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="others">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="thumbnails">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+					<section name="section.product.externalmedia">
+						<listlayout>
+							
+							<!-- neue struktur bildreferenz ersetzen extimages (extimages) -->
+							<attribute name="anwenderimageref2weraproduct">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- neue struktur bildreferenz ersetzen extimages (extimages) -->
+							
+							<!-- extimages entfallen später -->
+							<attribute name="extimages">
+						 
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="150"/>
+										<attribute name="title" width="200"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="300"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- extimages entfallen später -->
+							
+						</listlayout>
+					</section>
+					
+					<section name="section.product.tipps" mode="replace">
+						<listlayout>
+							<attribute name="sortimenttippref" labelwidth="100" width="300">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+					
+				</tab>
+			
+			
+			
+				<tab name="tab.product.categorysystem" position="3" mode="append">
+					<section name="section.product.productreferences" mode="delete" />
+				</tab>
+				
+				<!-- Merkmale -->
+				<tab name="tab.product.technicalattributes" position="4" mode="replace" >
+					
+					<section name="section.product.classifiedattributes">
+						<listlayout>
+							<customchip classname="com.computationaldesign.wera.hmc.ClassificationEditorChip" />
+						</listlayout>
+						<!--<listlayout>
+						   <customchip classname="de.hybris.platform.catalog.hmc.ClassificationEditorChip"/>
+						</listlayout>-->
+					</section>
+					<section name="section.product.untypedfeatures">
+						<listlayout>
+							<text name="text.product.untypedfeatures"/>
+							<attribute name="untypedFeatures">
+								<referencecollectioneditor create="false">
+									<itemlayout>
+										<attribute name="qualifier" width="120"/>
+										<attribute name="unit" width="100"/>
+										<attribute name="valueDetails" width="100"/>
+										<attribute name="description" width="124"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				
+				
+				<!-- Ausagbesteuerung -->
+				<tab name="tab.outputcontrol" position="5">
+					<section name="verwaltung">
+						<listlayout>
+							<attribute name="outputcontrols" maxlength="700" width="500">
+
+								<referencecollectioneditor 
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true">
+									<itemlayout>
+										<attribute name="code" width="80" />
+										<attribute name="order" width="50" />
+										<attribute name="bezeichnung" width="300" />
+										<attribute name="background" width="80" />
+										<attribute name="showinset" width="80" />
+										<attribute name="visibility" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="category2productexts"  width="500">
+
+								<referencecollectioneditor 
+									externalcreate="false" resortable="false" create="true"
+									editable="true" remove="false" add="true" autoperform="true" >
+									<itemlayout>
+										<attribute name="category" width="300"/>
+										<attribute name="catalogversion_desc" width="250" />
+										<attribute name="priority" width="70"/>
+										<attribute name="pagenr_catalog" width="70"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="alternate_product" width="500" />
+							<!-- getilgt 29.07.2011 GT
+							<attribute name="order" width="50" />
+							<attribute name="pagenr" width="50" />
+							-->							
+							<attribute name="outputtemplate" width="300" />
+							<attribute name="priorityWebSearch" width="300" />
+
+						</listlayout>
+					</section>
+					
+					<section name="section.product.sbprogramm">
+						<listlayout>
+							<attribute name="weraproductsetinsets_relation" ><!-- SB-Varianten  -->
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" add="true" remove="true" create="true" showsearcheditor="true">
+									<itemlayout>
+										<attribute name="code" width="100" />
+										<attribute name="name" width="600" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+                                   
+					<section name="section.product.keywords">
+						<listlayout>
+							<text name="text.product.keywords" width="720"/>
+							<attribute name="keywords">
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" add="true" remove="true" create="true" showsearcheditor="true">
+									<preset sourceattribute="code" targetattribute="keyword"/>
+									<preset sourceattribute="catalogVersion" targetattribute="catalogVersion"/>
+									<itemlayout>
+										<attribute name="keyword" width="200"/>
+										<attribute name="language" width="85"/>
+										<attribute name="catalogVersion" width="252"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="footnotes">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true"
+									autoperform="true">
+									<itemlayout>
+										<attribute name="code" width="100" />
+										<attribute name="name" width="600" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				   
+					<section name="section.product.greattools">
+						<listlayout>
+							<text name="text.weraproduct.greattools_textbaustein" width="720"/>
+							<attribute name="use_for_greatttools"></attribute>
+							<attribute name="great_tools_basename" width="600"></attribute>
+						</listlayout>
+					</section>				   
+				   
+				</tab>
+
+				
+				<!-- Artikelkomplett -->
+				<tab name="tab.product.variants" mode="delete" />
+				<tab name="tab.artikelkomplett" mode="replace" position="6">
+					<!--
+															<section name="section.product.variants">
+															   <listlayout>
+																	  <attribute name="variants" width="595">
+																			 <referencecollectioneditor typeattribute="varianttype" editable="true" externalcreate="false" add="false" create="true" resortable="false">
+																					<preset targetattribute="baseproduct"/>
+																					<preset sourceattribute="code" targetattribute="code"/>
+																			 </referencecollectioneditor>
+																	  </attribute>
+															   </listlayout>
+															 </section>
+					-->
+					<section name="section.artikelkomplett">					
+						<listlayout>
+							<text name="text.variants"/>
+							<attribute name="variantType"/>
+							<!--	
+																			  <attribute name="variants" width="595">
+																					 <referencecollectioneditor typeattribute="varianttype" editable="true" externalcreate="false" add="false" create="true" resortable="false">
+																							<preset targetattribute="baseproduct"/>
+																							<preset sourceattribute="code" targetattribute="code"/>
+																					 </referencecollectioneditor>
+																			  </attribute>
+																					<attribute name="variants" labelwidth="100" mode="replace">
+																							<customeditor classname="com.computationaldesign.wera.hmc.ClassificationVariantListEditorChip" />							
+																					</attribute>
+							-->							
+							<attribute name="variants" labelwidth="100" mode="replace">
+								<customeditor classname="com.computationaldesign.wera.hmc.ArtikelClassificationVariantListEditorChip" />							
+							</attribute>
+
+						</listlayout>
+					</section>
+
+				</tab>
+
+				
+				<!-- Crosslinking / Weblinks -->
+				<tab name="tab.product.outlinks" position="7" mode="replace">
+					<section name="section.product.productreferences">
+						<listlayout>
+							<attribute name="productreferences">
+								<referencecollectioneditor presetattribute="source" autoperform="true" externalcreate="false" editable="true" resortable="true" add="true" remove="true" create="true">
+									<itemlayout>
+										<!--<attribute name="sequence" width="50"/>-->
+										<attribute name="referenceType" width="140"/>
+										<attribute name="description" width="140"/>
+										<attribute name="preselected" width="80"/>
+										<attribute name="active" width="40"/>
+										<attribute name="target" width="143"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				
+					<section name="section.product.outlinks">
+						<listlayout>
+							<attribute name="weblinks">
+								<referencecollectioneditor presetattribute="source" autoperform="true" externalcreate="false" editable="false" resortable="true" add="true" remove="true" create="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+
+				<!-- Erweiterte Eigenschaften -->
+				<tab name="tab.product.extendedattributes" mode="delete" />
+				<tab name="tab.product.extendedattributes" position="8">
+					<section name="section.product.print">
+						<columnlayout>
+							<row>
+								<attribute name="artikelnr_index"/>
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.ids">
+						<columnlayout>
+							<row>
+								<attribute name="ean"/>
+								<attribute name="manufactureraid"/>
+							</row>
+							<row>
+								<attribute name="manufacturername"/>
+								<attribute name="deliverytime"/>
+							</row>
+							<row>
+								<attribute name="contentunit"/>
+								<attribute name="numbercontentunits"/>
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.remarks">
+						<listlayout>
+							<attribute name="remarks">
+								<textareaeditor expanded="true" rows="5"/>
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				
+				<!-- Preise -->
+				<tab name="tab.product.prices" position="13" mode="replace" >
+					<section name="product.pricesdiscounts">
+						<listlayout>
+							<attribute name="europe1Prices" labelwidth="100" width="560">
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" presetattribute="product" remove="true" create="true">
+									<itemlayout>
+										<!--                               <attribute name="user" width="100"/> -->
+										<attribute name="ug" width="150"/>
+										<attribute name="pg" width="150"/>
+										<attribute name="unit" width="100"/>
+										<attribute name="minqtd" width="40"/>
+										<attribute name="price" width="70"/>
+										<attribute name="currency" width="100"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="europe1Discounts" labelwidth="100" width="560">
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" presetattribute="product" remove="true" create="true">
+									<itemeditorlayout>
+										<!--                               <attribute name="user" width="100"/> -->
+										<attribute name="ug" width="150"/>
+										<attribute name="pg" width="150"/>
+										<attribute name="discountstring" width="80"/>
+										<attribute name="discount" width="100"/>
+										<attribute name="daterange" width="260">
+											<editor classname="de.hybris.platform.hmc.attribute.DateOnlyDateRangeEditorChip">
+												<parameter key="wrapvalues" value="false"/>
+												<parameter key="showpattern" value="false"/>
+											</editor>
+										</attribute>
+									</itemeditorlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="Europe1PriceFactory_PTG" labelwidth="100" />
+						</listlayout>
+					</section>
+				</tab>
+
+				<!-- Onlineshops -->
+                <tab name="tab.product.onlineshops" position="14" mode="replace">
+					<section name="section.product.onlineshops.generell">
+                        <listlayout>
+							<!-- neu 09.12.2016 -->
+							<attribute name="weraproductset2bulletpoints" width="800">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+                                    <itemlayout>
+                                        <attribute name="code" width="400"/>
+                                        <attribute name="text" width="400"/>
+                                    </itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- neu 09.12.2016 -->
+
+							<!-- neu 10.03.2017 -->
+							<attribute name="artikel_kurztext" width="500" >
+								<textareaeditor rows="4" expanded="true" />
+							</attribute>
+							<!-- neu 10.03.2017 -->
+						</listlayout>
+
+						<columnlayout>
+							<row>
+								<attribute name="amazon_de_cat1" width="220"/>
+								<attribute name="amazon_de_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="amazon_de_cat3" width="220"/>
+								<attribute name="amazon_de_cat4" width="220"/>							
+							</row>
+							<row>
+								<attribute name="amazon_fr_cat1" width="220"/>
+								<attribute name="amazon_fr_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="amazon_fr_cat3" width="220"/>
+								<attribute name="amazon_fr_cat4" width="220"/>							
+							</row>
+							<row>
+								<attribute name="amazon_es_cat1" width="220"/>
+								<attribute name="amazon_es_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="amazon_es_cat3" width="220"/>
+								<attribute name="amazon_es_cat4" width="220"/>							
+							</row>
+							<row>
+								<attribute name="amazon_uk_cat1" width="220"/>
+								<attribute name="amazon_uk_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="amazon_uk_cat3" width="220"/>
+								<attribute name="amazon_uk_cat4" width="220"/>							
+							</row>
+							<row>
+								<attribute name="amazon_us_cat1" width="220"/>
+								<attribute name="amazon_us_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="asin_de" width="100"/>
+								<attribute name="asin_uk" width="100"/>
+							</row>
+							<row>
+								<attribute name="asin_fr" width="100"/>
+								<attribute name="asin_es" width="100"/>
+							</row>
+							<row>
+								<attribute name="asin_it" width="100"/>
+								<attribute name="asin_us" width="100"/>
+							</row>
+						</columnlayout>							
+						
+					</section>
+				</tab>				
+
+			</editor>
+		</organizer>
+	</type>
+	<!-- Wera Produkt +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Wera Produkt  -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- Wera Produkt Satz +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Wera Produkt Satz -->
+	<type name="WeraProductSet" mode="append" icon="/wera/images/e_werasatz_neu.gif">
+		<organizer>
+			<search mode="append">
+				<condition attribute="catalogVersion" />
+				<condition attribute="artnr" />
+			</search>
+			<result mode="append">
+				<listview mode="replace">
+					<itemlayout>
+						<attribute name="code"  width="120"/>
+						<attribute name="name"  width="400"/>
+						<attribute name="catalogVersion"  width="120"/>
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview mode="replace" >
+					<itemlayout>
+						<attribute name="code"  width="120"/>
+						<attribute name="name"  width="400"/>
+						<attribute name="catalogVersion"  width="120"/>
+					</itemlayout>
+				</treeview>
+				<action type="searchresult"
+						classname="de.hybris.platform.hmc.ext.catalog.SetProductsApprovedAction"
+						name="action.catalog.setapproved" />
+				<action type="searchresult"
+						classname="de.hybris.platform.hmc.ext.catalog.SetProductsUnapprovedAction"
+						name="action.catalog.setunapproved" />
+				<action type="searchresult"
+						classname="de.hybris.platform.hmc.ext.catalog.SetProductsCheckAction"
+						name="action.catalog.setcheck" />
+				<action type="searchresult"
+						classname="de.hybris.platform.hmc.ext.catalog.SyncItemsSearchResultAction"
+						name="action.catalog.syncproducts" />
+				<action type="searchresult"
+						classname="com.computationaldesign.wera.jalo.SampleWizard" name="samplewizard" />
+				<action type="toolbar"
+						classname="com.computationaldesign.wera.jalo.SampleWizard" name="samplewizard"/>
+			</result>
+			<editor>
+				<essentials mode="append" ><!-- Name des Produkbilds -->
+					<columnlayout>
+						<row>
+							<attribute name="desc_picture1"  /><!-- Name des Produktbilds -->
+							<attribute name="check_artikelnr_index" width="420" /><!-- Alphanummerische Artikelnummer (mehrsprech. Print) -->
+						</row>
+					</columnlayout>
+				</essentials>
+				
+				<!-- Tabs entfernen -->
+				<tab name="tab.publications" mode="delete" />
+				<tab name="tab.sync.settings" mode="delete" />
+				<tab name="tab.categorysystem" mode="delete" />
+				<tab name="tab.versions" mode="delete" />
+				<tab name="product.descriptions" id="tab_product_descriptions" mode="delete" />
+				<tab name="tab.catalog.classification" mode="delete" />
+				<tab name="tab.product.features" mode="delete" />
+				<tab name="product.prices" id="tab_europe1_prices" position="4" mode="delete" />
+				<tab name="tab.product.properties" mode="delete" />
+				<tab name="tab.variants" mode="delete"/>
+				<tab name="tab.product.versions" mode="delete" />
+				<tab name="tab.product.extendedattributes" mode="delete" />
+
+				
+				<!-- Stammdaten -->
+				<tab name="tab.products" id="tab_product_common" mode="replace" position="1">
+					
+					<section name="section.allgemein">
+						<listlayout>
+							<!--						    <attribute name="aktiv" width="60" labelwidth="100" /> -->
+							<attribute name="produkt_neu" width="60" />
+							<attribute name="artikel_sb_faehig" width="60" labelwidth="100" />
+							<attribute name="artikel_auslauf" width="60" labelwidth="100" />
+							<attribute name="lagerNr" width="60" labelwidth="100" />
+							<attribute name="artnr" width="60" labelwidth="100" />
+							<attribute name="variantenNr" width="60" labelwidth="100" />
+							<attribute name="variantenNrEU" width="60" labelwidth="100" />
+							<attribute name="variantenNrUS" width="60" labelwidth="100" />
+							<attribute name="contentQuantity" width="60" labelwidth="100" />
+						</listlayout>
+					</section>
+					<section name="section.product.description">
+						<listlayout>
+							<attribute name="description1" width="500" >
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+							<attribute name="description2" width="500" >
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+							<attribute name="description3" width="500" >
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+						</listlayout>
+					</section>
+					<section name="section.abmessungen_und_gewichte">
+						<columnlayout leftwidth="300" rightwidth="300" width="600">
+							<row>
+								<attribute name="artikel_laenge" 	labelwidth="150" width="100" />
+								<attribute name="packm_laenge" 		labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="artikel_hoehe" 	labelwidth="150" width="100" />
+								<attribute name="packm_hoehe" 		labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="artikel_breite" 	labelwidth="150" width="100" />
+								<attribute name="packm_breite" 		labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="artikel_volumen" 	labelwidth="150" width="100" />
+								<attribute name="packm_volumen" 		labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="artikel_laengen_einheit" 	labelwidth="150" width="100" />
+								<attribute name="packm_laengen_einheit" 	labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="Gewicht" 	labelwidth="150" width="100" />
+								<attribute name="GewVE" 	labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="GewichtBrutto" 	labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="GewichtEinheit" 	labelwidth="150" width="100" />
+								<attribute name="packm_gewichteh" 	labelwidth="150" width="100" />
+							</row>
+						</columnlayout>
+					</section>
+					
+				</tab>
+				
+				<!-- Multimedia -->
+				<tab name="tab.product.multimedia" mode="delete" />
+				<tab name="multimedia" mode="replace" position="2">
+					<section name="section.multimedia">
+						<listlayout>
+							<attribute name="icons1" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="icons2">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="pictures1">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="pictures2">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="pictures3">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="featureicons1">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="featureicons2">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="others_productpictures">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="secondaryimagesref2weraproduct">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>							
+						</listlayout>
+					</section>
+					<section name="section.product.usage_secondary_images">
+						<listlayout>
+							<attribute name="use_in_pricelist"></attribute>
+							<attribute name="use_in_catalog"></attribute>
+						</listlayout>
+					</section>
+					<section name="section.product.additionalmedias">
+						<listlayout>
+							<attribute name="data_sheet">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="detail">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="logo">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="normal">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="others">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="thumbnails">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+					<section name="section.product.externalmedia">
+						<listlayout>
+							
+							<!-- neue struktur bildreferenz ersetzen extimages (extimages) -->
+							<attribute name="anwenderimageref2weraproduct">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- neue struktur bildreferenz ersetzen extimages (extimages) -->
+
+							<!-- 1934-170519_amazon_bildverwaltung -->
+							<attribute name="amazonbilderref2weraproductset">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- 1934-170519_amazon_bildverwaltung -->
+							
+							<!-- extimages entfallen später -->
+							<attribute name="extimages">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="150"/>
+										<attribute name="title" width="200"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="300"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- extimages entfallen später -->
+							
+						</listlayout>
+					</section>
+										
+					<section name="section.product.tipps" mode="replace">
+						<listlayout>
+							<attribute name="sortimenttippref" labelwidth="100" width="300">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+
+					<section name="section.product.pictures">
+						<columnlayout>
+							<row>
+								<attribute name="variant_image"/>
+							</row>
+							<row>
+								<attribute name="etikett_image"/>
+								<attribute name="preview_etikett_image" width="30">
+									<customeditor classname="com.computationaldesign.wera.hmc.ShowPreviewChip">
+										<parameter key="previewtype" value="xs" />
+									</customeditor>
+								</attribute>
+							</row>
+						</columnlayout>
+					</section>					
+				</tab>
+				
+				<!-- Merkmale -->
+				<tab name="tab.product.technicalattributes" position="4" mode="replace" >
+					
+					<section name="section.product.classifiedattributes">
+						<listlayout>
+							<customchip classname="com.computationaldesign.wera.hmc.ClassificationEditorChip" />
+						</listlayout>
+						<!--<listlayout>
+						   <customchip classname="de.hybris.platform.catalog.hmc.ClassificationEditorChip"/>
+						</listlayout>-->
+					</section>
+					<section name="section.product.untypedfeatures">
+						<listlayout>
+							<text name="text.product.untypedfeatures"/>
+							<attribute name="untypedFeatures">
+								<referencecollectioneditor create="false">
+									<itemlayout>
+										<attribute name="qualifier" width="120"/>
+										<attribute name="unit" width="100"/>
+										<attribute name="valueDetails" width="100"/>
+										<attribute name="description" width="124"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				
+				<!-- Ausgabesteuerung -->
+				<tab name="tab.outputcontrol" position="5">
+					<section name="verwaltung">
+						<listlayout>
+							<attribute name="outputcontrols" maxlength="700" width="500">
+							
+								<referencecollectioneditor 
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true">
+									<itemlayout>
+										<attribute name="code" width="80" />
+										<attribute name="order" width="50" />
+										<attribute name="bezeichnung" width="300" />
+										<attribute name="background" width="80" />
+										<attribute name="showinset" width="80" />
+										<attribute name="visibility" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							
+							<attribute name="category2productexts"  width="500">
+							
+								<referencecollectioneditor 
+									externalcreate="false" resortable="false" create="true"
+									editable="true" remove="false" add="true" autoperform="true" >
+									<itemlayout>
+										<attribute name="category" width="300"/>
+										<attribute name="catalogversion_desc" width="250" />
+										<attribute name="priority" width="70"/>
+										<attribute name="pagenr_catalog" width="70"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							
+							<attribute name="alternate_product" width="500" />
+							
+							<!-- getilgt 29.07.2011 GT
+																				<attribute name="order" width="50" />
+																					<attribute name="pagenr" width="50" />
+							-->							
+							<attribute name="footnotes">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true"
+									autoperform="true">
+									<itemlayout>
+										<attribute name="code" width="100" />
+										<attribute name="name" width="600" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							
+							
+							<attribute name="outputtemplate" width="300" />
+
+							<attribute name="priorityWebSearch" width="300" />
+						</listlayout>
+					</section>
+					
+					<section name="section.product.keywords">
+						<listlayout>
+							<text name="text.product.keywords" width="720"/>
+							<attribute name="keywords">
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" add="true" remove="true" create="true" showsearcheditor="true">
+									<preset sourceattribute="code" targetattribute="keyword"/>
+									<preset sourceattribute="catalogVersion" targetattribute="catalogVersion"/>
+									<itemlayout>
+										<attribute name="keyword" width="200"/>
+										<attribute name="language" width="85"/>
+										<attribute name="catalogVersion" width="252"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				   
+					<section name="section.product.extendedattributes.aussteuerung">
+						<listlayout>
+							<attribute name="is_marketing_representative" />
+							<attribute name="is_bulletpoint_representative" />
+						</listlayout>
+					</section>
+			   
+				</tab>
+				
+				<!-- Artikel komplett -->
+				<tab name="tab.product.variants" mode="delete" />
+				<tab name="tab.artikelkomplett" mode="replace" position="6">
+					<section name="section.artikelkomplett">
+						<listlayout>
+							<text name="text.variants"/>
+							<attribute name="variantType"/>
+							<!--						  
+																			  <attribute name="variants" width="595">
+																					 <referencecollectioneditor typeattribute="varianttype" editable="true" externalcreate="false" add="false" create="true" resortable="false">
+																							<preset targetattribute="baseproduct"/>
+																							<preset sourceattribute="code" targetattribute="code"/>
+																					 </referencecollectioneditor>
+																			  </attribute>
+							-->							 
+							<attribute name="variants" width="595">
+								<customeditor classname="com.computationaldesign.wera.hmc.ArtikelClassificationVariantListEditorChip" />							
+							</attribute>
+							 
+						</listlayout>
+					</section>					
+					
+				</tab>
+				
+			
+				<!-- Erweiterte Eigenschaften -->
+				<tab name="tab.product.extendedattributes" mode="delete" />
+				<tab name="tab.product.extendedattributes" position="7">
+					<section name="section.product.print">
+						<columnlayout>
+							<row>
+								<attribute name="artikelnr_index"/>
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.ids">
+						<columnlayout>
+							<row>
+								<attribute name="ean"/>
+								<attribute name="manufactureraid"/>
+							</row>
+							<row>
+								<attribute name="manufacturername"/>
+								<attribute name="deliverytime"/>
+							</row>
+							<row>
+								<attribute name="contentunit"/>
+								<attribute name="numbercontentunits"/>
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.extendedattributes.logistik">
+						<columnlayout>
+							<row>
+								<attribute name="ZolltarifNr" />
+								<attribute name="Ursprungsland" />
+							</row>
+							<row>
+								<attribute name="SVHC_Stoff_enthalten" />
+								<attribute name="Benennung_SVHC_Stoffes" />
+							</row>
+							<row>
+								<attribute name="Gewicht_Stoffes" />
+								<attribute name="OnlineREACHinfo" />
+							</row>
+							<row>
+								<attribute name="OnlineSicherheitsdatenblatt" />
+								<attribute name="Produkt_ueberprueft_SVHS" />
+							</row>
+							<row>
+								<attribute name="addOnline_Verweis" />
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.remarks">
+						<listlayout>
+							<attribute name="remarks">
+								<textareaeditor expanded="true" rows="5"/>
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				
+				<!-- Preise -->
+				<tab name="tab.product.prices" position="12" mode="replace" >
+					<section name="product.pricesdiscounts">
+						<listlayout>
+							<attribute name="europe1Prices" labelwidth="100" width="560">
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" presetattribute="product" remove="true" create="true">
+									<itemlayout>
+										<!--                               <attribute name="user" width="100"/> -->
+										<attribute name="ug" width="150"/>
+										<attribute name="pg" width="150"/>
+										<attribute name="unit" width="100"/>
+										<attribute name="minqtd" width="40"/>
+										<attribute name="price" width="70"/>
+										<attribute name="currency" width="100"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="europe1Discounts" labelwidth="100" width="560">
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" presetattribute="product" remove="true" create="true">
+									<itemeditorlayout>
+										<!--                               <attribute name="user" width="100"/> -->
+										<attribute name="ug" width="150"/>
+										<attribute name="pg" width="150"/>
+										<attribute name="discountstring" width="80"/>
+										<attribute name="discount" width="100"/>
+										<attribute name="daterange" width="260">
+											<editor classname="de.hybris.platform.hmc.attribute.DateOnlyDateRangeEditorChip">
+												<parameter key="wrapvalues" value="false"/>
+												<parameter key="showpattern" value="false"/>
+											</editor>
+										</attribute>
+									</itemeditorlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="Europe1PriceFactory_PTG" labelwidth="100" />
+						</listlayout>
+					</section>
+				</tab>
+				
+				<!-- XPace -->
+				<tab name="tab.product.xpace" position="13" mode="replace">
+					<section name="section.product.xpace.generell">
+						<columnlayout>
+							<row>
+								<attribute name="xpace_typ_verpackung" />
+								<attribute name="xpace_dateiname_prefix" />
+							</row>
+							<row>
+								<attribute name="xpace_variant_id" />
+								<attribute name="xpace_stellbar" />
+							</row>
+							<row>
+								<attribute name="xpace_haengbar" />
+								<attribute name="xpace_schuettbar" />
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.xpace.abmessungen">
+						<columnlayout>
+							<row>
+								<attribute name="xpace_breite_verpackung_produkt" />
+								<attribute name="xpace_grifflaenge" />
+							</row>
+							<row>
+								<attribute name="xpace_hoehe_verpackung_produkt" />
+								<attribute name="xpace_klingenlaenge" />
+							</row>
+							<row>
+								<attribute name="xpace_tiefe_verpackung_produkt" />
+								<attribute name="xpace_gewicht_verpackung_produkt" />
+							</row>
+							<row>
+								<attribute name="xpace_gap_x" />
+								<attribute name="xpace_default_z" />
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.xpace.euroloch">
+						<columnlayout>
+							<row>
+								<attribute name="xpace_euroloch_x_koordinate" />
+								<attribute name="xpace_euroloch_y_koordinate" />
+							</row>
+						</columnlayout>
+					</section>
+				</tab>
+
+				<!-- Onlineshops -->
+				<tab name="tab.product.onlineshops" position="14" mode="replace">
+					<section name="section.product.onlineshops.generell">
+						<listlayout>
+							<attribute name="shop_title" width="600" />
+							<attribute name="shop_description" width="600">
+								<textareaeditor expanded="true" rows="5"/>
+							</attribute>
+							<attribute name="shop_keywords" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point1" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point2" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point3" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point4" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>									
+							<attribute name="shop_bullet_point5" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point6" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							
+							<!-- ersetzt shop_bullet_point1 - shop_bullet_point6 (07.11.2016 -->
+							<attribute name="weraproductset2bulletpoints" width="800">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="text" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- ersetzt shop_bullet_point1 - shop_bullet_point6 (07.11.2016 -->
+							
+							<!-- neu 10.03.2017 -->
+							<attribute name="artikel_kurztext" width="500" >
+								<textareaeditor rows="4" expanded="true" />
+							</attribute>
+							<!-- neu 10.03.2017 -->
+							
+						</listlayout>
+					</section>
+					
+					<section name="section.product.onlineshops.amazon">
+						<columnlayout>
+							<row>
+								<attribute name="amazon_de_cat1" width="220"/>
+								<attribute name="amazon_de_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="amazon_de_cat3" width="220"/>
+								<attribute name="amazon_de_cat4" width="220"/>							
+							</row>
+							<row>
+								<attribute name="amazon_fr_cat1" width="220"/>
+								<attribute name="amazon_fr_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="amazon_fr_cat3" width="220"/>
+								<attribute name="amazon_fr_cat4" width="220"/>							
+							</row>
+							<row>
+								<attribute name="amazon_es_cat1" width="220"/>
+								<attribute name="amazon_es_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="amazon_es_cat3" width="220"/>
+								<attribute name="amazon_es_cat4" width="220"/>							
+							</row>
+							<row>
+								<attribute name="amazon_uk_cat1" width="220"/>
+								<attribute name="amazon_uk_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="amazon_uk_cat3" width="220"/>
+								<attribute name="amazon_uk_cat4" width="220"/>							
+							</row>
+							<row>
+								<attribute name="amazon_us_cat1" width="220"/>
+								<attribute name="amazon_us_cat2" width="220"/>
+							</row>
+							<row>
+								<attribute name="asin_de" width="100"/>
+								<attribute name="asin_uk" width="100"/>
+							</row>
+							<row>
+								<attribute name="asin_fr" width="100"/>
+								<attribute name="asin_es" width="100"/>
+							</row>
+							<row>
+								<attribute name="asin_it" width="100"/>
+								<attribute name="asin_us" width="100"/>
+							</row>
+						</columnlayout>
+						<listlayout>
+							<attribute name="modelljahr" width="100"/>
+						</listlayout>
+					</section>
+					
+					<section name="section.product.onlineshops.branchen">
+						<columnlayout>
+							<row>
+								<attribute name="shop_industrie" />
+								<attribute name="shop_vde" />
+							</row>
+							<row>
+								<attribute name="shop_esd" />
+								<attribute name="shop_werkstatt_instandhaltung" />
+							</row>
+							<row>
+								<attribute name="shop_schlosser_monteur" />
+								<attribute name="shop_schreiner" />
+							</row>
+							<row>
+								<attribute name="shop_ish" />
+								<attribute name="shop_automotiv_aftersales" />
+							</row>
+							<row>
+								<attribute name="shop_aircraft" />
+								<attribute name="shop_bau" />
+							</row>
+							<row>
+								<attribute name="shop_modellbau" />
+							</row>
+						</columnlayout>
+					</section>
+				</tab>				
+			</editor>
+		</organizer>
+	</type>
+	<!-- Wera Produkt Satz +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Wera Produkt Satz -->
+
+
+	<!-- Wera Produkt Satz in Satz +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Wera Produkt Satz in Satz -->
+	<type name="WeraProductSetinSet" mode="append" icon="/wera/images/e_werasatzinsatz_neu.gif">
+		<organizer>
+			<search >
+				<condition attribute="code" />
+				<condition attribute="name" />
+			</search>
+			<editor>
+				<essentials mode="append" ><!-- Name des Produkbilds -->
+					<columnlayout>
+						<row>
+							<attribute name="desc_picture1"  /><!-- Name des Produktbilds -->
+							<attribute name="check_artikelnr_index" width="420" /><!-- Alphanummerische Artikelnummer (mehrsprech. Print) -->
+						</row>
+					</columnlayout>
+				</essentials>
+
+				<!-- Stammdaten -->
+				<tab name="tab.products" id="tab_product_common" mode="replace" position="1">
+					
+					<section name="section.allgemein">
+						<listlayout>
+							<!--						    <attribute name="aktiv" width="60" labelwidth="100" /> -->
+							<attribute name="artikel_auslauf" width="50"></attribute>
+							<attribute name="lagerNr" width="60" labelwidth="100" />
+							<attribute name="artnr" width="60" labelwidth="100" />
+							<attribute name="variantenNr" width="60" labelwidth="100" />
+							<attribute name="variantenNrEU" width="60" labelwidth="100" />
+							<attribute name="variantenNrUS" width="60" labelwidth="100" />
+							<attribute name="contentQuantity" width="60" labelwidth="100" />
+							<attribute name="ist_display" width="60" labelwidth="100" />
+						</listlayout>
+					</section>
+					<section name="section.product.description">
+						<listlayout>
+							<attribute name="description1" width="500" >
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+							<attribute name="description2" width="500" >
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+							<!-- getilgt 29.07.2011 GT	
+																					<attribute name="description3"
+																							labelwidth="100" />
+							-->						
+						</listlayout>
+					</section>
+				</tab>
+				
+				<!-- Multimedia -->
+				<tab name="tab.product.multimedia" mode="delete" />
+				<tab name="multimedia" mode="replace" position="2">
+					<section name="section.multimedia">
+						<listlayout>
+							<attribute name="icons1" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="icons2">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="pictures1">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="pictures2">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="pictures3">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="featureicons1">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="featureicons2">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="others_productpictures">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="secondaryimagesref2weraproduct">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>							
+						</listlayout>
+					</section>
+					<section name="section.product.usage_secondary_images">
+						<listlayout>
+							<attribute name="use_in_pricelist"></attribute>
+							<attribute name="use_in_catalog"></attribute>
+						</listlayout>
+					</section>
+					<section name="section.product.additionalmedias">
+						<listlayout>
+							<attribute name="data_sheet">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="detail">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="logo">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="normal">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="others">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="thumbnails">
+								<referencecollectioneditor autoperform="true" create="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="270"/>
+										<attribute name="catalogversion" width="271"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+					<section name="section.product.externalmedia">
+						<listlayout>
+							
+							<!-- neue struktur bildreferenz ersetzen extimages (extimages) -->
+							<attribute name="anwenderimageref2weraproduct">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- neue struktur bildreferenz ersetzen extimages (extimages) -->
+							
+							<!-- neue struktur bildreferenz ersetzen extimages (extimages) -->
+							<attribute name="anwenderimageref2weraproductsetinset">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- neue struktur bildreferenz ersetzen extimages (extimages) -->
+							
+							<!-- extimages entfallen später -->
+							<attribute name="extimages">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="150"/>
+										<attribute name="title" width="200"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="300"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- extimages entfallen später -->
+							<!-- extimagessetinset entfallen später -->
+							<attribute name="extimagessetinset">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<preset targetattribute="catalogversion" sourceattribute="catalogversion"/>
+									<itemlayout>
+										<attribute name="code" width="150"/>
+										<attribute name="title" width="200"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="300"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- extimagessetinset entfallen später -->
+							
+						</listlayout>
+					</section>
+										
+					<section name="section.product.tipps" mode="replace">
+						<listlayout>
+							<attribute name="sortimenttippref" labelwidth="100" width="300">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="sortimenttipprefsetinset" labelwidth="100" width="300">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+
+						</listlayout>
+					</section>
+
+					<section name="section.product.pictures">
+						<columnlayout>
+							<row>
+								<attribute name="variant_image"/>
+							</row>
+							<row>
+								<attribute name="variant_image_amazon"/>
+								<attribute name="preview_variant_image_amazon" width="30">
+									<customeditor classname="com.computationaldesign.wera.hmc.ShowPreviewChip">
+										<parameter key="previewtype" value="xs" />
+									</customeditor>
+								</attribute>
+							</row>
+							<row>
+								<attribute name="etikett_image"/>
+								<attribute name="preview_etikett_image" width="30">
+									<customeditor classname="com.computationaldesign.wera.hmc.ShowPreviewChip">
+										<parameter key="previewtype" value="xs" />
+									</customeditor>
+								</attribute>
+							</row>
+						</columnlayout>
+					</section>
+				</tab>				
+				
+				<tab name="tab.artikelkomplett" mode="replace" >
+					<section name="section.artikelkomplett">
+						<listlayout>
+							<attribute name="weravariantevariants_qual" labelwidth="100"
+									   mode="replace">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="true" remove="true" add="true" prohibitopening="false"
+									autoperform="true">
+									<itemlayout>
+										<attribute name="weravariants" width="400" />
+										<attribute name="order" />
+										<attribute name="vpe" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="weraproductsetvariants_qual" labelwidth="100" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="true" remove="true" add="true" prohibitopening="false"
+									autoperform="true">
+									<itemlayout>
+										<attribute name="weraproductsets" width="400" />
+										<attribute name="order" />
+										<attribute name="vpe" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="SbClassificatrion" width="100" />
+						</listlayout>
+					</section>
+				</tab>
+                                
+				<!-- Ausagbesteuerung -->
+				<tab name="tab.outputcontrol" position="5">
+                                   
+					<section name="section.product.sbprogramm">
+						<listlayout >
+							<attribute name="weraproductsetinsets_relation" mode="delete" />
+							<attribute name="weraproducts_relation"><!-- Hauptprodukt -->
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" add="true" remove="true" create="true" showsearcheditor="true">
+									<itemlayout>
+										<attribute name="code" width="100" />
+										<attribute name="name" width="600" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				   
+				</tab>
+                                
+                                
+			</editor>
+		</organizer>
+	</type>
+	<!-- Wera Produkt Satz in Satz +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Wera Produkt Satz in Satz -->
+
+	
+	
+	<!-- Wera Media Satz -->
+	<type name="WeraMedia" icon="images/icons/multimedia_container.gif"
+		  mode="append">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" operator="contains" />
+				<condition attribute="mime" />
+			</search>
+			<result>
+				<listview mode="replace">
+					<itemlayout>
+						<attribute name="url" title="title.image"
+								   width="50">
+							<display classname="de.hybris.platform.hmc.attribute.UrlAsImageDisplayChip" >
+								<parameter key="height" value="30" />
+							</display>
+						</attribute>
+						<attribute name="code" width="200" />
+						<attribute name="mime" width="100" />
+						<attribute name="url2" title="title.download"
+								   width="50">
+							<display
+								classname="de.hybris.platform.hmc.attribute.MediaDownloadUrlChip" />
+						</attribute>
+					</itemlayout>
+				</listview>
+				<editview mode="replace">
+					<itemlayout>
+						<attribute name="code" width="200" />
+						<attribute name="mime" />
+					</itemlayout>
+				</editview>
+				<treeview mode="replace">
+					<itemlayout>
+						<attribute name="code" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<exclude>
+					<exclusion attribute="mime" />
+					<exclusion attribute="realfilename" />
+					<exclusion attribute="url2" />
+				</exclude>
+				<essentials>
+					<listlayout>
+						<attribute name="code" labelwidth="100" />
+					</listlayout>
+				</essentials>
+				<tab name="properties" position="0">
+					<section name="properties">
+						<listlayout>
+							<attribute name="url" labelwidth="100">
+								<specialeditor
+									classname="de.hybris.platform.hmc.MediaFileUploadEditorChip"
+									parameter="showpreview" />
+							</attribute>
+							<attribute name="alttext" labelwidth="200" />
+							<attribute name="rahmenbreite_in_percent" labelwidth="200" />
+							<attribute name="downloadurl"
+									   labelwidth="100" />
+							<!--  							<attribute name="hybrisfilename" labelwidth="100" /> -->
+							<attribute name="description"  >
+								<textareaeditor rows="10" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				<tab name="tab.media.metadata">
+					<section name="section.media.metadata">
+						<listlayout>
+							<attribute name="alttext"/>
+							<attribute name="downloadurl"/>
+							<attribute name="feature_description" width="500">
+								<textareaeditor rows="4" expanded="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+		<defaultreference searchattribute="code" mode="replace">
+			<itemlayout>
+				<attribute name="code" />
+			</itemlayout>
+		</defaultreference>
+	</type>
+
+
+	<type name="ProductFeature" mode="append">
+		<organizer>
+			<editor>
+				<tab name="tab.footnote" position="1">
+					<section name="section.footnote">
+						<listlayout>
+							<attribute name="footnotes">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="true" remove="true" add="true" autoperform="true">
+									<itemlayout>
+										<attribute name="code" width="100" />
+										<attribute name="name" width="600" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+
+	<type name="ClassAttributeAssignment" mode="append">
+		<organizer>
+			<editor>
+				<tab name="customValues" position="1">
+					<section name="verwaltung">
+						<listlayout>
+							<attribute name="order" />
+							<!-- getilgt 04.08.20111 GT
+																					<attribute name="aktiv" />
+							-->							
+							<attribute name="background" />
+						</listlayout>
+					</section>
+					<section name="customValues">
+						<listlayout>
+							<attribute name="customValues">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									remove="true" add="true" autoperform="true" editable="true">
+									<preset
+										sourceattribute="classificationSystemVersion"
+										targetattribute="classificationSystemVersion" />
+									<itemlayout>
+										<attribute name="code" width="150" />
+										<attribute name="name" width="500" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+					<section name="section.icons">
+						<listlayout>
+							<attribute name="icons">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+					<section name="section.classattributeassignment.tipps">
+						<listlayout>
+							<attribute name="tippref" width="800">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="headline" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+
+
+	<type name="WeraVariante" mode="append">
+		<organizer>
+			<result>
+				<editview mode="replace">
+					<itemlayout>
+						<attribute name="lagerNr" width="60" />
+						<attribute name="code" width="60"  />
+						<attribute name="variantenNr" width="60"  />
+						<attribute name="variantenNrEU" width="60"  />
+						<attribute name="variantenNrUS" width="60"  />
+						<attribute name="aktiv" width="40"  />
+						<attribute name="is_marketing_representative" width="40"  />
+						<attribute name="is_bulletpoint_representative" width="40"  />
+						<attribute name="order" width="40"  />
+						<attribute name="contentQuantity" width="40"  />
+					</itemlayout>
+				</editview>
+			</result>
+			<editor>
+
+				<!-- Tabs entfernen -->
+				<tab name="tab.versions" mode="delete" />
+
+			
+				<!-- Stammdaten -->
+				<tab name="tab.product.properties" mode="replace" position="1" >
+					<section name="section.catalog_and_validity" mode="delete" />
+					<section name="section.allgemein" >
+						<listlayout>
+							<attribute name="contentQuantity" width="40" labelwidth="100" />
+							<attribute name="artikel_neu" width="60" labelwidth="100" />
+							<attribute name="artikel_auslauf" width="60" labelwidth="100" />
+							<attribute name="aktiv" width="40" labelwidth="100" />
+							<!--							<attribute name="ausgabe_preisliste" width="60" labelwidth="100" /> -->
+							<attribute name="lagerNr" width="60" labelwidth="100" />
+							<attribute name="variantenNr" width="60" labelwidth="100" />
+							<attribute name="variantenNrUS" width="60" labelwidth="100" />
+							<attribute name="variantenNrEU" width="60" labelwidth="100" />
+							<attribute name="ZolltarifNr" width="100" labelwidth="100" />
+							<attribute name="Ursprungsland" width="60" labelwidth="100" />
+							<!-- attribute name="Gewicht" width="60" labelwidth="100" / -->
+							<!-- attribute name="GewVE" width="60"  labelwidth="100" / -->
+							<!-- attribute name="GewichtEinheit" width="60"  labelwidth="100" / -->
+							<attribute name="ean" width="100" labelwidth="100" />
+							<attribute name="ean_us" width="100" labelwidth="100" />
+						</listlayout>
+					</section>
+					<section name="section.abmessungen_und_gewichte">
+						<columnlayout leftwidth="300" rightwidth="300" width="600">
+							<row>
+								<attribute name="artikel_laenge" 	labelwidth="150" width="100" />
+								<attribute name="packm_laenge" 		labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="artikel_hoehe" 	labelwidth="150" width="100" />
+								<attribute name="packm_hoehe" 		labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="artikel_breite" 	labelwidth="150" width="100" />
+								<attribute name="packm_breite" 		labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="artikel_volumen" 	labelwidth="150" width="100" />
+								<attribute name="packm_volumen" 		labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="artikel_laengen_einheit" 	labelwidth="150" width="100" />
+								<attribute name="packm_laengen_einheit" 	labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="Gewicht" 	labelwidth="150" width="100" />
+								<attribute name="GewVE" 	labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="GewichtBrutto" 	labelwidth="150" width="100" />
+							</row>
+							<row>
+								<attribute name="GewichtEinheit" 	labelwidth="150" width="100" />
+								<attribute name="packm_gewichteh" 	labelwidth="150" width="100" />
+							</row>
+						</columnlayout>
+					</section>
+				</tab>
+			
+			
+				<!-- Gueltigkeit -->
+				<tab name="weravariante.functions" position="3" mode="append">
+					<section name="section.catalog_and_validity">
+						<columnlayout leftwidth="370" rightwidth="370">
+							<row>
+								<attribute name="catalogversion" labelwidth="100" width="224" />
+								<attribute name="approvalStatus" labelwidth="100" width="224" />
+							</row>
+							<row>
+								<attribute name="onlineDate" labelwidth="100" width="224">
+									<dateeditor />
+								</attribute>
+								<attribute name="offlineDate" labelwidth="100" width="224">
+									<dateeditor />
+								</attribute>							
+							</row>
+							<row>
+								<attribute name="aktiv">
+									<booleaneditor />
+								</attribute>
+							</row>
+						</columnlayout>
+					</section>					
+				</tab>
+
+				
+				<!-- Multimedia -->
+				<tab name="tab.product.multimedia" position="5" mode="append">
+					<section name="section.product.pictures">
+						<columnlayout>
+							<row>
+								<attribute name="variant_image"/>
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.externalmedia">
+						<listlayout>
+							<!-- 1934-170519_amazon_bildverwaltung -->
+							<attribute name="amazonbilderref2weravariante">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- 1934-170519_amazon_bildverwaltung -->
+						</listlayout>
+					</section>
+				</tab>
+				
+				<!-- Erweiterte Eigenschaften -->
+				<tab name="tab.product.extendedattributes" mode="replace" position="7" >
+					<section name="section.footnote">
+						<listlayout>
+							<attribute name="footnotes">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="true" remove="true" add="true" autoperform="true">
+									<itemlayout>
+										<attribute name="code" width="100" />
+										<attribute name="name" width="600" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+					<section name="section.product.extendedattributes.logistik">
+						<columnlayout>
+							<row>
+								<attribute name="ZolltarifNr" />
+								<attribute name="Ursprungsland" />
+							</row>
+							<row>
+								<attribute name="SVHC_Stoff_enthalten" />
+								<attribute name="Benennung_SVHC_Stoffes" />
+							</row>
+							<row>
+								<attribute name="Gewicht_Stoffes" />
+								<attribute name="OnlineREACHinfo" />
+							</row>
+							<row>
+								<attribute name="OnlineSicherheitsdatenblatt" />
+								<attribute name="Produkt_ueberprueft_SVHS" />
+							</row>
+							<row>
+								<attribute name="addOnline_Verweis" />
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.extendedattributes.aussteuerung">
+						<listlayout>
+							<attribute name="is_marketing_representative" />
+							<attribute name="is_bulletpoint_representative" />
+						</listlayout>
+					</section>
+				</tab>
+			
+				<!-- XPace -->
+				<tab name="tab.product.xpace" position="8" mode="replace">
+					<section name="section.product.xpace.generell">
+						<columnlayout>
+							<row>
+								<attribute name="xpace_typ_verpackung" />
+								<attribute name="xpace_dateiname_prefix" />
+							</row>
+							<row>
+								<attribute name="xpace_variant_id" />
+								<attribute name="xpace_stellbar" />
+							</row>
+							<row>
+								<attribute name="xpace_haengbar" />
+								<attribute name="xpace_schuettbar" />
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.xpace.abmessungen">
+						<columnlayout>
+							<row>
+								<attribute name="xpace_breite_verpackung_produkt" />
+								<attribute name="xpace_grifflaenge" />
+							</row>
+							<row>
+								<attribute name="xpace_hoehe_verpackung_produkt" />
+								<attribute name="xpace_klingenlaenge" />
+							</row>
+							<row>
+								<attribute name="xpace_tiefe_verpackung_produkt" />
+								<attribute name="xpace_gewicht_verpackung_produkt" />
+							</row>
+							<row>
+								<attribute name="xpace_gap_x" />
+								<attribute name="xpace_default_z" />
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.xpace.euroloch">
+						<columnlayout>
+							<row>
+								<attribute name="xpace_euroloch_x_koordinate" />
+								<attribute name="xpace_euroloch_y_koordinate" />
+							</row>
+						</columnlayout>
+					</section>
+				</tab>	
+			
+				<!-- Onlineshops -->
+				<tab name="tab.product.onlineshops" position="9" mode="replace">
+					<section name="section.product.onlineshops.generell">
+						<listlayout>
+							<attribute name="shop_title" width="600" />
+							<attribute name="shop_description" width="600">
+								<textareaeditor expanded="true" rows="5"/>
+							</attribute>
+							<attribute name="shop_keywords" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point1" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point2" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point3" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point4" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>									
+							<attribute name="shop_bullet_point5" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="shop_bullet_point6" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							
+							<!-- ersetzt shop_bullet_point1 - shop_bullet_point6 (07.11.2016 -->
+							<attribute name="weravariante2bulletpoints" width="800">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="text" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<!-- ersetzt shop_bullet_point1 - shop_bullet_point6 (07.11.2016 -->
+							
+						</listlayout>
+					</section>
+					<section name="section.product.onlineshops.branchen">
+						<columnlayout>
+							<row>
+								<attribute name="shop_industrie" />
+								<attribute name="shop_vde" />
+							</row>
+							<row>
+								<attribute name="shop_esd" />
+								<attribute name="shop_werkstatt_instandhaltung" />
+							</row>
+							<row>
+								<attribute name="shop_schlosser_monteur" />
+								<attribute name="shop_schreiner" />
+							</row>
+							<row>
+								<attribute name="shop_ish" />
+								<attribute name="shop_automotiv_aftersales" />
+							</row>
+							<row>
+								<attribute name="shop_aircraft" />
+								<attribute name="shop_bau" />
+							</row>
+							<row>
+								<attribute name="shop_modellbau" />
+							</row>
+						</columnlayout>
+					</section>
+					<section name="section.product.onlineshops.amazon">
+						<columnlayout>
+							<row>
+								<attribute name="asin_de" width="100"/>
+								<attribute name="asin_uk" width="100"/>
+							</row>
+							<row>
+								<attribute name="asin_fr" width="100"/>
+								<attribute name="asin_es" width="100"/>
+							</row>
+							<row>
+								<attribute name="asin_it" width="100"/>
+								<attribute name="asin_us" width="100"/>
+							</row>
+						</columnlayout>
+						<listlayout>
+							<attribute name="modelljahr" width="100"/>
+						</listlayout>
+					</section>
+				</tab>					
+			
+				<!-- Preise -->
+				<tab name="tab.product.prices"  position="4" mode="delete" />
+				<tab name="product.prices" id="tab_europe1_prices" position="12" mode="replace">
+					<section name="product.pricesdiscounts">
+						<listlayout>
+							<attribute name="europe1Prices" labelwidth="100" width="560">
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" presetattribute="product" remove="true" create="true">
+									<itemlayout>
+										<!--                               <attribute name="user" width="100"/> -->
+										<attribute name="pg" width="150"/>
+										<attribute name="ug" width="150"/>
+										<attribute name="unit" width="100"/>
+										<attribute name="minqtd" width="40"/>
+										<attribute name="price" width="70"/>
+										<attribute name="currency" width="100"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="europe1Discounts" labelwidth="100" width="560">
+								<referencecollectioneditor editable="true" externalcreate="false" resortable="false" presetattribute="product" remove="true" create="true">
+									<itemeditorlayout>
+										<!--                               <attribute name="user" width="100"/> -->
+										<attribute name="pg" width="150"/>
+										<attribute name="ug" width="150"/>
+										<attribute name="discountstring" width="80"/>
+										<attribute name="discount" width="100"/>
+										<attribute name="daterange" width="260">
+											<editor classname="de.hybris.platform.hmc.attribute.DateOnlyDateRangeEditorChip">
+												<parameter key="wrapvalues" value="false"/>
+												<parameter key="showpattern" value="false"/>
+											</editor>
+										</attribute>
+									</itemeditorlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="Europe1PriceFactory_PTG" labelwidth="100" />
+						</listlayout>
+					</section>
+				</tab>
+
+		
+			</editor>
+		</organizer>
+	</type>
+	
+	<type name="Footnote" mode="replace">
+		<organizer>
+			<result>
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="80" />
+						<attribute name="name" width="400" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview mode="delete" />
+			</result>
+			<editor>
+				<tab name="tab.footnote.allgemein">
+					<section name="section.footnote.allgemein">
+						<listlayout>
+							<attribute name="code"  />
+							<attribute name="name"  width="400" />
+							<attribute name="kennzeichner" labelwidth="180" width="50" />
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+	
+	<type name="WeraVarianteSet" mode="append">
+		<organizer>
+			<result>
+				<editview mode="replace">
+					<itemlayout>
+						<attribute name="weravariants" width="200" />
+						<attribute name="aktiv" width="40" />
+						<attribute name="order" width="40"  />
+						<attribute name="contentQuantity" width="40" />
+						<attribute name="lagerNr" width="60" />
+						<attribute name="variantenNr" width="60"  />
+						<attribute name="variantenNrEU" width="60"  />
+						<attribute name="variantenNrUS" width="60"  />
+						<attribute name="productdescription" width="300" />
+						<!--						<attribute name="priceInfo" width="50" /> 
+																				<attribute name="ean" width="110" />
+																				<attribute name="onlineDate" width="300" />
+																				<attribute name="offlineDate" width="300" />
+						-->
+					</itemlayout>
+				</editview>
+			</result>
+		</organizer>
+	</type>
+	
+	<!-- Category -->
+	<type name="Category" mode="append" icon="/wera/images/e_kapitel_neu.gif">
+		<organizer>
+			<result mode="replace" defaultview="tree">
+				<listview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="name" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="name" />
+					</itemlayout>
+					<explorable>
+						<attribute name="categories" suppressroot="true" />
+						<attribute name="products" suppressroot="true" />
+					</explorable>
+				</treeview>
+			</result>
+			<editor>
+
+				<tab name="tab.properties" mode="delete" />
+				<tab name="tab.wera.textpages" position="0">
+					<section name="section.wera.textpages.infopage" mode="append">
+						<listlayout>
+							<attribute name="untertitel" width="500" />
+							<attribute name="concat_description" width="500" />
+							<attribute name="description" width="500" >
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+							
+							<!-- SJ 2017-07-26: ausblenden zugunsten der Textfeld keywords 
+							<attribute name="keywords" labelwidth="100" width="350">
+								<referencecollectioneditor resortable="false" add="true" remove="true" create="true">
+									<preset sourceattribute="catalogVersion" targetattribute="catalogVersion" />
+									<itemlayout>
+										<attribute name="keyword" width="150" />
+										<attribute name="catalogVersion" width="150" />
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							-->
+						</listlayout>
+						<listlayout>
+							<attribute name="order" width="50" />
+							<attribute name="priorityWebSearch" width="50" />
+							<attribute name="aktiv" width="50" />
+							<!-- getilgt 29.07.2011 GT
+								<attribute name="pagenr" width="50" />
+							-->
+						</listlayout>
+					</section>
+					<section name="section.icons">
+						<listlayout>
+							<attribute name="icons">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				<tab name="tab.category.common" position="1" mode="append">
+					<section name="section.category.description" mode="append">
+						<listlayout>
+							<attribute name="category2introtext" width="600">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+                                    <itemlayout>
+                                        <attribute name="code" width="200"/>
+                                        <attribute name="text" width="400"/>
+                                    </itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="meta_description" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+							<attribute name="meta_keywords" width="600">
+								<textareaeditor expanded="true" rows="3"/>
+							</attribute>
+						</listlayout>							
+					</section>
+				</tab>
+				<tab name="tab.structure" position="1" mode="append">
+					<section name="section.further_links">
+						<listlayout>
+							<attribute name="category2relcategories" labelwidth="100" width="300">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="category2relproducts" labelwidth="100" width="300">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+			
+				<tab name="multimedia" position="2" mode="replace">
+					<section name="pictures" mode="replace">
+						<listlayout>
+							<attribute name="picture" labelwidth="100">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="thumbnail" labelwidth="100">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+					<section name="section.additionalmedias" mode="replace">
+						<listlayout>
+							<attribute name="medias" labelwidth="100" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="data_sheet" labelwidth="100"  >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="detail" labelwidth="100" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="logo" labelwidth="100" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="normal" labelwidth="100" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="others" labelwidth="100" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="thumbnails" labelwidth="100" >
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+					
+					<section name="section.category.tipps" mode="replace">
+						<listlayout>
+							<attribute name="haupttippref" labelwidth="100" width="300">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="anwenderimageref" labelwidth="100" width="300">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="tippref" labelwidth="100" width="300">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+
+			</editor>
+		</organizer>
+	</type>
+	
+	<!-- Textelement -->
+	<type name="Textitem">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" />
+				<condition attribute="name" />
+			</search>
+			<result mode="append">
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="100" />
+						<attribute name="name" width="90" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="name" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="tab.wera.textitem" position="0">
+					<section name="section.wera.textitem.alg">
+						<listlayout>
+							<attribute name="code" />
+							<attribute name="name" />
+							<attribute name="order" />
+							<attribute name="header" />
+						</listlayout>
+					</section>
+					<section name="section.wera.textitem.text">
+						<listlayout>
+							<attribute name="textblock" >
+								<textareaeditor rows="30" />
+							</attribute>
+						</listlayout>
+					</section>
+					<section name="section.wera.textitem.picture">
+						<listlayout>
+							<attribute name="pictures4textitems">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+
+	
+	<!-- WeblinkText -->
+	<type name="WeblinkText">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" />
+			</search>
+			<result mode="append">
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="200" />
+						<attribute name="textblock" width="400" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="textblock" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="tab.wera.weblinktext" position="0">
+					<section name="section.wera.weblinktext.alg">
+						<listlayout>
+							<attribute name="code" />
+							<attribute name="textblock" >
+								<textareaeditor rows="30" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>	
+
+	<!-- Weblink -->
+	<type name="Weblink">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" />
+			</search>
+			<result mode="append">
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="200" />
+						<attribute name="weblinktext2weblink.code" width="200"  />
+						<attribute name="link_wera_de" width="400" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="weblinktext2weblink.code" />
+						<attribute name="link_wera_de" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="tab.wera.weblink" position="0">
+					<section name="section.wera.weblinktext.alg">
+						<listlayout>
+							<attribute name="code" />
+						</listlayout>
+					</section>
+					<section name="section.wera.weblinktext.links">
+						<listlayout>
+							<attribute name="weblinktext2weblink">
+								<referencecollectioneditor externalcreate="false" resortable="true" create="true" editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+							<attribute name="link_wera_de" width="600" />
+							<attribute name="preview_link_wera_de" width="600" />
+							<attribute name="dam_media_name" width="600" />
+							<attribute name="target_self" width="600" />
+						</listlayout>
+					</section>
+					<section name="section.wera.weblinktext.videos">
+						<columnlayout>
+							<row>
+								<attribute name="youtube_id" width="220"/>
+								<attribute name="movie_type" width="220"/>
+							</row>
+							<row>
+								<attribute name="movie_start_date" width="220"/>
+								<attribute name="movie_template_id" width="220"/>
+							</row>
+							<row>
+								<attribute name="movie_title" width="220"/>
+								<attribute name="movie_subtitle" width="220"/>
+							</row>
+							<row>
+								<attribute name="movie_tile_image_name" width="220"/>
+								<attribute name="movie_detail_image_name" width="220"/>
+							</row>
+						</columnlayout>					
+					</section>
+					<section name="section.wera.weblinktext.wera_ar">
+						<columnlayout>
+							<row>
+								<attribute name="ar_start_date" width="220"/>
+								<attribute name="ar_preview" width="220"/>
+							</row>
+							<row>
+								<attribute name="ar_tile_image_name" width="220"/>
+								<attribute name="ar_tile_image2_name" width="220"/>
+							</row>
+							<row>
+								<attribute name="ar_link" width="600"/>
+							</row>
+						</columnlayout>					
+					</section>
+					
+				</tab>
+			</editor>
+		</organizer>
+	</type>	
+
+	
+	<!-- Ext. Image  -->
+	<type name="ExtImage">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" />
+				<condition attribute="title" />
+				<condition attribute="location" />
+			</search>
+			<result mode="append">
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="200" />
+						<attribute name="title" width="200"  />
+						<attribute name="preview" title="title.image" width="50">
+							<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+								<parameter key="height" value="30" />
+								<parameter key="previewtype" value="xs" />
+							</display>
+						</attribute>
+						<attribute name="location" width="300" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="title" />
+						<attribute name="preview" title="title.image" width="50">
+							<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+								<parameter key="height" value="30" />
+								<parameter key="previewtype" value="xs" />
+							</display>
+						</attribute>
+						<attribute name="location" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="tab.wera.extimage" position="0">
+					<section name="section.wera.extimage.alg">
+						<listlayout>
+							<attribute name="code" />
+						</listlayout>
+					</section>
+					<section name="section.wera.extimage.links">
+						<listlayout>
+							<attribute name="show_image" width="500" />
+							<attribute name="title" width="500" />
+							<attribute name="location" width="500" />
+							<attribute name="preview"  width="500" >
+								<customeditor classname="com.computationaldesign.wera.hmc.ShowPreviewChip" >
+									<parameter key="previewtype" value="md" />
+								</customeditor>
+							</attribute>
+							<attribute name="description" width="500">
+								<textareaeditor rows="10"  expanded="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>		
+	
+	<!-- Textbaustein 1861-160714-A_wera_hybris_katalog -->
+	<type name="Textbaustein">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" />
+				<condition attribute="text" />
+			</search>
+			<result mode="append">
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="300" />
+						<attribute name="text" width="300" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="text" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="tab.wera.textbaustein" position="1">
+					<section name="section.wera.textbaustein.alg">
+						<listlayout>
+							<attribute name="code" width="400"/>
+							<attribute name="text" width="400">
+								<textareaeditor rows="15" expanded="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				<tab name="tab.wera.textbaustein_verwendung" position="2">
+					<section name="section.wera.textbaustein.verwendung">
+						<listlayout>
+							<attribute name="imageref" width="400" />
+							<attribute name="headlinetippref" width="400" />
+							<attribute name="tippref" width="400" />
+							<!-- throws exception, because it expects WeraProductSet Type for some reaon .... <attribute name="bulletpoints2weraproductset" width="400" /> -->
+							<attribute name="bulletpoints2weravariante" width="400" />
+						</listlayout>
+					</section>
+				</tab>
+				
+			</editor>
+		</organizer>
+	</type>
+	
+	<!-- Bildreferenz 1861-160714-A_wera_hybris_katalog -->
+	<type name="Bildreferenz">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" />
+				<condition attribute="location" />
+				<condition attribute="title.code" />
+			</search>
+			<result mode="append">
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="300" />
+						<attribute name="location" width="200" />
+						<attribute name="preview" title="title.image" width="50">
+							<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+								<parameter key="height" value="30" />
+								<parameter key="previewtype" value="xs" />
+							</display>
+						</attribute>
+						<attribute name="title.code" width="300" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="location" />
+						<attribute name="preview" title="title.image" width="50">
+							<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip">
+								<parameter key="height" value="30" />
+								<parameter key="previewtype" value="xs" />
+							</display>
+						</attribute>
+						<attribute name="title.code" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="tab.wera.bildreferenz" position="1">
+					<section name="section.wera.bildreferenz.alg">
+						<listlayout>
+							<attribute name="code" width="400" />
+							<attribute name="location" width="400" />
+							<attribute name="preview"  width="500" >
+								<customeditor classname="com.computationaldesign.wera.hmc.ShowPreviewChip" >
+									<parameter key="previewtype" value="md" />
+								</customeditor>
+							</attribute>
+							<attribute name="title" width="800">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="text" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				<tab name="tab.wera.bildreferenz_verwendung" position="2">
+					<section name="section.wera.bildreferenz.verwendung">
+						<listlayout>
+							<attribute name="title" width="400" />
+							<attribute name="imagetippref" width="400" />
+							<attribute name="icontippref" width="400" />
+							<attribute name="category2anwenderimageref" width="400" />
+							<attribute name="category2anwenderimagerefdoorway" width="400" />
+							<attribute name="weraproduct2anwenderimageref" width="400" />
+							<attribute name="weraproductsetinset2anwenderimageref" width="400" />
+							<attribute name="weraproductset2amazonbilderref" width="400" />
+							<attribute name="weravariante2amazonbilderref" width="400" />
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>	
+	
+	<!-- Tipp 1861-160714-A_wera_hybris_katalog -->
+	<!-- Note, that "Tipp" <> "Tip" !!! -->
+	<type name="Tipp">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" />
+				<condition attribute="iconref.code" />
+			</search>
+			<result mode="append">
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="300" />
+						<attribute name="iconref.code" width="300" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="iconref.code" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="tab.wera.tipp" position="1">
+					<section name="section.wera.tipp.alg">
+						<listlayout>
+							<attribute name="code" width="400" />
+							<attribute name="iconref" width="800">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip">
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="imageref" width="800">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="preview" title="title.image" width="50">
+											<display classname="com.computationaldesign.wera.hmc.DAMUrlAsImageDisplayChip" >
+												<parameter key="height" value="30" />
+												<parameter key="previewtype" value="xs" />
+											</display>
+										</attribute>
+										<attribute name="location" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="textbausteinref" width="800">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="text" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+							<attribute name="textbausteinheadlineref" width="800">
+								<referencecollectioneditor autoperform="true" create="true" remove="true" resortable="true">
+									<itemlayout>
+										<attribute name="code" width="400"/>
+										<attribute name="text" width="400"/>
+									</itemlayout>
+								</referencecollectioneditor>
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+				<tab name="tab.wera.tipp_verwendung" position="2">
+					<section name="section.wera.tipp.verwendung">
+						<listlayout>
+							<attribute name="category2haupttippref" width="400"/>
+							<attribute name="category2tippref" width="400"/>
+							<attribute name="weraproduct2sortimenttipppref" width="400"/>
+							<attribute name="weraproductsetinset2sortimenttipppref" width="400"/>
+						</listlayout>
+					</section>
+				</tab>
+					
+			</editor>
+		</organizer>
+	</type>		
+	
+	<!-- Abtrieb -->
+	<type name="Tips">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" />
+				<condition attribute="name" />
+			</search>
+			<result mode="append">
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="100" />
+						<attribute name="name" width="90" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="name" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor mode="append">
+				<tab name="tab.wera.tip" position="0">
+					<section name="section.wera.tip.alg">
+						<listlayout>
+							<attribute name="code" />
+							<attribute name="name" />
+						</listlayout>
+					</section>
+					<section name="section.wera.tip.text">
+						<listlayout>
+							<attribute name="order" />
+							<attribute name="aktiv" />
+							<attribute name="icon">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+	
+	<!-- Ausgabesteuerung -->
+	<type name="Outputcontrol">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="code" />
+				<condition attribute="name" />
+			</search>
+			<result mode="append">
+				<listview>
+					<itemlayout>
+						<attribute name="code" width="100" />
+						<attribute name="name" width="90" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="code" />
+						<attribute name="name" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="common" position="0">
+					<section name="verwaltung">
+						<listlayout>
+							<attribute name="code" />
+							<attribute name="order" />
+							<attribute name="showinset" />
+							<attribute name="unitca" />
+							<attribute name="bezeichnung" width="300" />
+							<attribute name="visibility" width="170" />
+							<!-- getilgt 02.08.2011
+							<attribute name="aktiv" />
+							-->
+							<attribute name="background" />
+						</listlayout>
+					</section>
+
+					<section name="section.icons">
+						<listlayout>
+							<attribute name="icons">
+								<referencecollectioneditor
+									externalcreate="false" resortable="true" create="true"
+									editable="false" remove="true" add="true" autoperform="true" />
+							</attribute>
+						</listlayout>
+					</section>
+
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+	
+	<!-- Katalogsausgabe-Parameter -->
+	<type name="Category2ProductExt">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="category" />
+				<condition attribute="catalogversion_desc" />
+			</search>
+			<result mode="replace">
+				<listview>
+					<itemlayout>
+						<attribute name="category" />
+						<attribute name="catalogversion_desc" />
+					</itemlayout>
+				</listview>
+				<editview mode="delete" />
+				<treeview>
+					<itemlayout>
+						<attribute name="category" />
+						<attribute name="catalogversion_desc" />
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="common" position="0">
+					<section name="category2productext.section.verwaltung">
+						<listlayout>
+							<attribute name="category" width="500" />
+							<attribute name="catalogversion_desc" width="500" />
+							<attribute name="priority"  width="500" />
+							<attribute name="pagenr_catalog"  width="500" />
+							<attribute name="featureicon_exclude_list" width="500"  editable="false" />
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+
+	<type name="PriceRow" icon="images/icons/e_pricerow.gif" mode="append">
+		<organizer>
+			<search mode="replace">
+				<condition attribute="product" operator="equal"/>
+				<condition attribute="pg" operator="equal"/>
+				<condition attribute="user" operator="equal"/>
+				<condition attribute="ug" operator="equal"/>
+			</search>
+			<result>
+				<listview mode="replace">
+					<itemlayout>
+						<attribute name="product" width="320"/>
+						<attribute name="ug" width="220"/>
+						<attribute name="price" width="70"/>
+						<attribute name="currency" width="70"/>
+						<attribute name="order" width="15"/>
+					</itemlayout>
+				</listview>
+				<editview mode="replace">
+					<itemlayout>
+						<attribute name="product" width="160"/>
+						<attribute name="pg" width="120"/>
+						<attribute name="user" width="120"/>
+						<attribute name="ug" width="120"/>
+						<attribute name="price"/>
+					</itemlayout>
+				</editview>
+				<treeview mode="replace">
+					<itemlayout>
+						<attribute name="product"/>
+						<attribute name="pg"/>
+						<attribute name="user"/>
+						<attribute name="ug"/>
+					</itemlayout>
+				</treeview>
+			</result>
+			<editor>
+				<tab name="properties" position="0" mode="append">
+					<section name="properties">
+						<listlayout>
+							<attribute name="order" labelwidth="100" width="100"/>
+							<attribute name="evk" />
+							<attribute name="aufanfrage" />
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+		<defaultreference>
+			<itemlayout mode="replace">
+				<attribute name="product"/>
+				<attribute name="pg"/>
+				<attribute name="user"/>
+				<attribute name="ug"/>
+			</itemlayout>
+		</defaultreference>
+	</type>
+
+	<type name="CatalogVersion" mode="append">
+		<organizer>
+			<editor>
+				<tab name="tab.catalog" mode="append" >
+					<section name="section.catalog" mode="append" >
+						<columnlayout>
+							<row>
+								<attribute name="is_webcatalog">
+									<advancedbooleaneditor truename="true" falsename="false"/>
+								</attribute>
+							</row>
+							<row>
+								<attribute name="archiviert"></attribute>
+								<attribute name="domain">
+									<advancedbooleaneditor truename="true" falsename="false"/>
+								</attribute>
+							</row>
+						</columnlayout>
+						<listlayout>
+							<attribute name="upg4csv"></attribute>
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+
+</configuration>

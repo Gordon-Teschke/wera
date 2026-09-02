@@ -1,0 +1,16 @@
+body {
+	background-color: goldenrod;
+	background-image:none;
+}
+.page-header {
+	background-color:darkgoldenrod;
+	background-image:none;
+}
+/* SJ 210401: hide date format string */
+.dateEditorChip td.formatString {
+    display:none;
+}
+/* SJ 210401: override width of hardcoded inline styles to maximize input field width */
+table.dateEditorChip, .dateEditorChip td.inputField, .dateEditorChip input.enabled {
+	width: 100% !important
+}
