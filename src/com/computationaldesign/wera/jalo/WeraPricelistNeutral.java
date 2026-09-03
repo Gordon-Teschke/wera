@@ -1316,7 +1316,7 @@ LOG.info("_InitializeProductLinkXML ---------------------------" );
 
 				//
 				LOG.info(">>>>>>>>SATZ aus SIS code=" + weraproductset.getCode() + " refID=" + oRefId.intValue() + ", colWeraProductSet.size()=" + colWeraProductSet.size() );
-				_initWeraProductVariante(colAllFootnotes, null, oRefId, intContentQuantitySiS, colWeraProductSet.size(), produktXML, m_articleOrg );
+				_initWeraProductVariante(colAllFootnotes, null, null, oRefId, intContentQuantitySiS, colWeraProductSet.size(), produktXML, m_articleOrg );
 
 			} // --- for (final Iterator iterPSet = colWeraProductSet.iterator(); iterPSet.hasNext();) {
 
@@ -1355,7 +1355,7 @@ LOG.info("_InitializeProductLinkXML ---------------------------" );
 				m_article = m_product;
 
 				// --- Gibt einen String mit Notizen zur�ck
-				strFootnote = _initWeraProductVariante(colAllFootnotes, null, oRefId, null, 1, produktXML, m_articleOrg);
+				strFootnote = _initWeraProductVariante(colAllFootnotes, null, null, oRefId, null, 1, produktXML, m_articleOrg);
 
 			} else {
 				// --- Setze Sprache, und Defaultsprache=de
@@ -1368,7 +1368,17 @@ LOG.info("_InitializeProductLinkXML ---------------------------" );
 				initLanguage(m_strExportLanguage);
 
 				// --- Hole Abmessung
-				final ArrayList aArticles = ((WeraProduct) m_product)._genCADataForVariantList(articles, null);
+				ArrayList aArticles = null;
+				HashMap localizedArticleData = null;
+				if ("PRODUCTLOCAL3".equalsIgnoreCase(m_strCurrentTemplateName)) {
+					localizedArticleData = _getLocalizedArticleData(articles);
+					aArticles = (ArrayList)localizedArticleData.get(m_strExportLanguage);
+					if (aArticles == null) {
+						aArticles = (ArrayList)localizedArticleData.get("de");
+					}
+				} else {
+					aArticles = ((WeraProduct) m_product)._genCADataForVariantList(articles, null);
+				}
 
 				// --- Schleife �ber alle Artikel
 				m_article = null;
@@ -1413,11 +1423,16 @@ LOG.info("_InitializeProductLinkXML ---------------------------" );
 					final Integer oRefId = new Integer(m_iOffsetIDEbene3++);
 
 					// --- Gibt einen String mit Notizen zur�ck
-					strFootnote = _initWeraProductVariante(colAllFootnotes, aArticles, oRefId, null, 1, produktXML, m_article);
+					strFootnote = _initWeraProductVariante(colAllFootnotes, aArticles, localizedArticleData, oRefId, null, 1, produktXML, m_article);
 				}
 
 				// --- Aufr�umen
-				aArticles.clear();
+				if (aArticles != null) {
+					aArticles.clear();
+				}
+				if (localizedArticleData != null) {
+					localizedArticleData.clear();
+				}
 
 			} // --- if ( m_product instanceof WeraProductSet ) {
 
@@ -1757,7 +1772,12 @@ LOG.info("Fussnoten (am Produkt) - footnotes.strFN=" + strFN );
 			if (m_product instanceof WeraProductSet) {
 				strTemplate = "PRODUCTSET" + cTemplateInfo;
 			} else {
-				strTemplate = "PRODUCT" + cTemplateInfo;
+				String strOutputtemplate = (String)m_wm.getAttribute(m_product, "outputtemplate");
+				if (strOutputtemplate != null && strOutputtemplate.equals("PRODUCT16")) {
+					strTemplate = "PRODUCTLOCAL" + cTemplateInfo;
+				} else {
+					strTemplate = "PRODUCT" + cTemplateInfo;
+				}
 			}
 		}
 
@@ -1923,7 +1943,143 @@ LOG.info("Fussnoten (am Produkt) - footnotes.strFN=" + strFN );
 	 * @param nCountProductSet
 	 * @return 
 	 */
-	private String _initWeraProductVariante(final ArrayList colAllFootnotes, final ArrayList articles, Integer oLocalRefId, Integer intContentQuantitySiS,
+	private HashMap _getLocalizedArticleData(final Collection articles) {
+		final HashMap localizedArticleData = new HashMap();
+		final ArrayList languages = new ArrayList();
+
+		try {
+			if (m_languages != null) {
+				for (final Iterator itLanguage = m_languages.iterator(); itLanguage.hasNext();) {
+					final Object oLanguage = itLanguage.next();
+					if (oLanguage != null) {
+						final String language = oLanguage.toString();
+						if (!languages.contains(language)) {
+							languages.add(language);
+						}
+					}
+				}
+			}
+			if (!languages.contains("de")) {
+				languages.add("de");
+			}
+			if (!languages.contains("en")) {
+				languages.add("en");
+			}
+
+			for (final Iterator itLanguage = languages.iterator(); itLanguage.hasNext();) {
+				final String language = (String)itLanguage.next();
+				initLanguage(language);
+				localizedArticleData.put(language, ((WeraProduct)m_product)._genCADataForVariantList(articles, null));
+			}
+			LOG.info("PRODUCTLOCAL3 localized article data: " + m_product.getCode() + ", languages=" + _joinLanguages(languages));
+		} catch (final Exception e) {
+			LOG.error("PRODUCTLOCAL3 localized article data failed: " + m_product.getCode(), e);
+		} finally {
+			initLanguage(m_strExportLanguage);
+		}
+
+		return localizedArticleData;
+	}
+
+	private String _joinLanguages(final ArrayList languages) {
+		String strResult = "";
+		if (languages == null) {
+			return strResult;
+		}
+		for (final Iterator itLanguage = languages.iterator(); itLanguage.hasNext();) {
+			if (strResult.length() > 0) {
+				strResult += ",";
+			}
+			strResult += itLanguage.next().toString();
+		}
+		return strResult;
+	}
+
+	private String _getLocalizedArticleValue(final ArrayList localizedArticles, final String articleCode) {
+		if (localizedArticles == null || articleCode == null) {
+			return "";
+		}
+		try {
+			for (final Iterator it1 = localizedArticles.iterator(); it1.hasNext();) {
+				final HashMap hashmap = (HashMap)it1.next();
+				if (hashmap == null) {
+					continue;
+				}
+				final ArrayList colHashArtikel = (ArrayList)hashmap.get("colHashArtikel");
+				if (colHashArtikel == null) {
+					continue;
+				}
+				for (final Iterator it2 = colHashArtikel.iterator(); it2.hasNext();) {
+					final HashMap oHashMapArtikel = (HashMap)it2.next();
+					if (oHashMapArtikel == null) {
+						continue;
+					}
+					final Product product = (Product)oHashMapArtikel.get("variant");
+					if (product != null && product.getCode().equals(articleCode)) {
+						final Object oValue = oHashMapArtikel.get("value_no_quant");
+						if (oValue != null) {
+							return oValue.toString();
+						}
+						return "";
+					}
+				}
+			}
+		} catch (final Exception e) {
+			LOG.error("PRODUCTLOCAL3 localized BLT_ARTICEL lookup failed: article=" + articleCode, e);
+		}
+		return "";
+	}
+
+	private String _cleanProductLocal3ArticleValue(String strValue) {
+		if (strValue == null) {
+			return "";
+		}
+		strValue = strValue.replace("--x", "");
+		strValue = strValue.replace("-x", "");
+		return strValue;
+	}
+
+	private Element _createProductLocal3ArticleTextElement(final HashMap localizedArticleData, final String articleCode, final Integer oOrder, final Integer oLocalRefId) {
+		String strDE = _cleanProductLocal3ArticleValue(_getLocalizedArticleValue((ArrayList)localizedArticleData.get("de"), articleCode));
+		String strEN = _cleanProductLocal3ArticleValue(_getLocalizedArticleValue((ArrayList)localizedArticleData.get("en"), articleCode));
+		String strDEmitEN = strDE;
+		if (strEN.length() > 0) {
+			if (strDEmitEN.length() > 0) {
+				strDEmitEN += "\n";
+			}
+			strDEmitEN += strEN;
+		}
+
+		Element oTextItem = createTextElementWithLanguage("", strDEmitEN, oOrder, oLocalRefId, "BLT_ARTICEL", false, "de");
+		if (strDE.length() == 0) {
+			LOG.info("PRODUCTLOCAL3 missing localized BLT_ARTICEL value: article=" + articleCode + ", language=de");
+		}
+
+		if (m_languages != null) {
+			for (final Iterator itLanguage = m_languages.iterator(); itLanguage.hasNext();) {
+				final Object oLanguage = itLanguage.next();
+				if (oLanguage == null) {
+					continue;
+				}
+				final String language = oLanguage.toString();
+				if (language.equals("de")) {
+					continue;
+				}
+				String strValue = _cleanProductLocal3ArticleValue(_getLocalizedArticleValue((ArrayList)localizedArticleData.get(language), articleCode));
+				if (strValue.length() == 0) {
+					LOG.info("PRODUCTLOCAL3 missing localized BLT_ARTICEL value: article=" + articleCode + ", language=" + language);
+				}
+				Element textElement = new Element("TextBlock");
+				textElement.setAttribute("Language", language);
+				textElement.addContent(strValue);
+				oTextItem.addContent(textElement);
+			}
+		}
+
+		return oTextItem;
+	}
+
+	private String _initWeraProductVariante(final ArrayList colAllFootnotes, final ArrayList articles, final HashMap localizedArticleData, Integer oLocalRefId, Integer intContentQuantitySiS,
 											int nCountProductSet, Element produktXML, final Item oArtikel ) {
 		// TODO Auto-generated method stub
 
@@ -2432,7 +2588,10 @@ LOG.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 					// PRODUCT
 					//////////////////////////////////////////////////////////////////////////////////
 					String strAbmessung = "";
-					if (articles != null && articles.size() > 0) {
+					final boolean bProductLocal3 = "PRODUCTLOCAL3".equalsIgnoreCase(m_strCurrentTemplateName);
+					if (bProductLocal3 && localizedArticleData != null) {
+						strAbmessung = _getLocalizedArticleValue((ArrayList)localizedArticleData.get("de"), strCode);
+					} else if (articles != null && articles.size() > 0) {
 						Product product = null;
 						HashMap hashmap = new HashMap();
 						HashMap oHashMapArtikel = new HashMap();
@@ -2461,10 +2620,12 @@ LOG.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 					}
 					if (strAbmessung.length() > 0 || m_strStringNew.length() > 0) {
 
-						if (m_strExportLanguage.equals("en") || m_strExportLanguage.equals("en-us")) {
-							strAbmessung = strAbmessung.replace(',', '.');
-						} else {
-							strAbmessung = strAbmessung.replace('.', ',');
+						if (!bProductLocal3) {
+							if (m_strExportLanguage.equals("en") || m_strExportLanguage.equals("en-us")) {
+								strAbmessung = strAbmessung.replace(',', '.');
+							} else {
+								strAbmessung = strAbmessung.replace('.', ',');
+							}
 						}
 // LOG.info("ABMESSUNG 2:" + m_product.getCode() + "=>" + strAbmessung);
 
@@ -2500,7 +2661,11 @@ LOG.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	// LOG.info("################ Abmessung=" + strAbmessung);
 //}
 
-					m_oTextItem = createTextElement("", strLineResult, oOrder, oLocalRefId, "BLT_ARTICEL", false);
+					if (bProductLocal3 && localizedArticleData != null) {
+						m_oTextItem = _createProductLocal3ArticleTextElement(localizedArticleData, strCode, oOrder, oLocalRefId);
+					} else {
+						m_oTextItem = createTextElement("", strLineResult, oOrder, oLocalRefId, "BLT_ARTICEL", false);
+					}
 
 					// --- Setze EAN
 					if (m_ExportFormatterPL.m_bIsIB_Exporter == false) {
