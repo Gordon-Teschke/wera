@@ -1183,6 +1183,15 @@ LOG.info("_InitializeProductLinkXML ---------------------------" );
 		// --- F�lle Produktdaten
 		String strTemplate = "";
 		strTemplate = _initWeraProductXML(produktXML, m_oProductList, strCatalogPages, bSBVariante, bLastSBVariante);
+		final boolean bProductLocal3 = "PRODUCTLOCAL3".equalsIgnoreCase(strTemplate);
+		if (bProductLocal3) {
+			LOG.info("PRODUCTLOCAL3 export: productCode=" + m_product.getCode()
+					+ ", selectedTemplate=" + strTemplate
+					+ ", m_strExportLanguage=" + m_strExportLanguage
+					+ ", m_strLanguage=" + m_strLanguage
+					+ ", languages=" + _joinLanguages(_getProductLocal3Languages())
+					+ ", bProductLocal3=" + bProductLocal3);
+		}
 
 		// --- Produkttitle hinzufügen
 		_setTitle( m_product );
@@ -1316,7 +1325,7 @@ LOG.info("_InitializeProductLinkXML ---------------------------" );
 
 				//
 				LOG.info(">>>>>>>>SATZ aus SIS code=" + weraproductset.getCode() + " refID=" + oRefId.intValue() + ", colWeraProductSet.size()=" + colWeraProductSet.size() );
-				_initWeraProductVariante(colAllFootnotes, null, null, oRefId, intContentQuantitySiS, colWeraProductSet.size(), produktXML, m_articleOrg );
+				_initWeraProductVariante(colAllFootnotes, null, null, false, oRefId, intContentQuantitySiS, colWeraProductSet.size(), produktXML, m_articleOrg );
 
 			} // --- for (final Iterator iterPSet = colWeraProductSet.iterator(); iterPSet.hasNext();) {
 
@@ -1355,7 +1364,7 @@ LOG.info("_InitializeProductLinkXML ---------------------------" );
 				m_article = m_product;
 
 				// --- Gibt einen String mit Notizen zur�ck
-				strFootnote = _initWeraProductVariante(colAllFootnotes, null, null, oRefId, null, 1, produktXML, m_articleOrg);
+				strFootnote = _initWeraProductVariante(colAllFootnotes, null, null, false, oRefId, null, 1, produktXML, m_articleOrg);
 
 			} else {
 				// --- Setze Sprache, und Defaultsprache=de
@@ -1370,7 +1379,7 @@ LOG.info("_InitializeProductLinkXML ---------------------------" );
 				// --- Hole Abmessung
 				ArrayList aArticles = null;
 				HashMap localizedArticleData = null;
-				if ("PRODUCTLOCAL3".equalsIgnoreCase(m_strCurrentTemplateName)) {
+				if (bProductLocal3) {
 					localizedArticleData = _getLocalizedArticleData(articles);
 					aArticles = (ArrayList)localizedArticleData.get(m_strExportLanguage);
 					if (aArticles == null) {
@@ -1423,7 +1432,7 @@ LOG.info("_InitializeProductLinkXML ---------------------------" );
 					final Integer oRefId = new Integer(m_iOffsetIDEbene3++);
 
 					// --- Gibt einen String mit Notizen zur�ck
-					strFootnote = _initWeraProductVariante(colAllFootnotes, aArticles, localizedArticleData, oRefId, null, 1, produktXML, m_article);
+					strFootnote = _initWeraProductVariante(colAllFootnotes, aArticles, localizedArticleData, bProductLocal3, oRefId, null, 1, produktXML, m_article);
 				}
 
 				// --- Aufr�umen
@@ -1773,8 +1782,14 @@ LOG.info("Fussnoten (am Produkt) - footnotes.strFN=" + strFN );
 				strTemplate = "PRODUCTSET" + cTemplateInfo;
 			} else {
 				String strOutputtemplate = (String)m_wm.getAttribute(m_product, "outputtemplate");
-				if (strOutputtemplate != null && strOutputtemplate.equals("PRODUCT16")) {
+				if (strOutputtemplate != null) {
+					strOutputtemplate = strOutputtemplate.trim();
+				}
+				if ("PRODUCT16".equalsIgnoreCase(strOutputtemplate)) {
 					strTemplate = "PRODUCTLOCAL" + cTemplateInfo;
+					LOG.info("PRODUCTLOCAL3 template selection: product=" + m_product.getCode()
+							+ ", outputtemplate=" + strOutputtemplate
+							+ ", selectedTemplate=" + strTemplate);
 				} else {
 					strTemplate = "PRODUCT" + cTemplateInfo;
 				}
@@ -1943,37 +1958,49 @@ LOG.info("Fussnoten (am Produkt) - footnotes.strFN=" + strFN );
 	 * @param nCountProductSet
 	 * @return 
 	 */
-	private HashMap _getLocalizedArticleData(final Collection articles) {
-		final HashMap localizedArticleData = new HashMap();
+	private ArrayList _getProductLocal3Languages() {
 		final ArrayList languages = new ArrayList();
+		_addProductLocal3Language(languages, "de");
+		_addProductLocal3Language(languages, "en");
 
-		try {
-			if (m_languages != null) {
-				for (final Iterator itLanguage = m_languages.iterator(); itLanguage.hasNext();) {
-					final Object oLanguage = itLanguage.next();
-					if (oLanguage != null) {
-						final String language = oLanguage.toString();
-						if (!languages.contains(language)) {
-							languages.add(language);
-						}
-					}
+		if (m_languages != null) {
+			for (final Iterator itLanguage = m_languages.iterator(); itLanguage.hasNext();) {
+				final Object oLanguage = itLanguage.next();
+				if (oLanguage != null) {
+					_addProductLocal3Language(languages, oLanguage.toString());
 				}
 			}
-			if (!languages.contains("de")) {
-				languages.add("de");
-			}
-			if (!languages.contains("en")) {
-				languages.add("en");
-			}
+		}
+		return languages;
+	}
 
+	private void _addProductLocal3Language(final ArrayList languages, String language) {
+		if (language == null) {
+			return;
+		}
+		language = language.trim().toLowerCase();
+		if (language.length() > 0 && !languages.contains(language)) {
+			languages.add(language);
+		}
+	}
+
+	private HashMap _getLocalizedArticleData(final Collection articles) {
+		final HashMap localizedArticleData = new HashMap();
+		final ArrayList languages = _getProductLocal3Languages();
+
+		try {
 			for (final Iterator itLanguage = languages.iterator(); itLanguage.hasNext();) {
 				final String language = (String)itLanguage.next();
-				initLanguage(language);
-				localizedArticleData.put(language, ((WeraProduct)m_product)._genCADataForVariantList(articles, null));
+				try {
+					initLanguage(language);
+					localizedArticleData.put(language, ((WeraProduct)m_product)._genCADataForVariantList(articles, null));
+				} catch (final Exception e) {
+					LOG.error("PRODUCTLOCAL3 localized article data failed: product=" + m_product.getCode()
+							+ ", language=" + language, e);
+				}
 			}
-			LOG.info("PRODUCTLOCAL3 localized article data: " + m_product.getCode() + ", languages=" + _joinLanguages(languages));
-		} catch (final Exception e) {
-			LOG.error("PRODUCTLOCAL3 localized article data failed: " + m_product.getCode(), e);
+			LOG.info("PRODUCTLOCAL3 localized article data: product=" + m_product.getCode()
+					+ ", languages=" + _joinLanguages(languages));
 		} finally {
 			initLanguage(m_strExportLanguage);
 		}
@@ -2055,31 +2082,29 @@ LOG.info("Fussnoten (am Produkt) - footnotes.strFN=" + strFN );
 			LOG.info("PRODUCTLOCAL3 missing localized BLT_ARTICEL value: article=" + articleCode + ", language=de");
 		}
 
-		if (m_languages != null) {
-			for (final Iterator itLanguage = m_languages.iterator(); itLanguage.hasNext();) {
-				final Object oLanguage = itLanguage.next();
-				if (oLanguage == null) {
-					continue;
-				}
-				final String language = oLanguage.toString();
-				if (language.equals("de")) {
-					continue;
-				}
-				String strValue = _cleanProductLocal3ArticleValue(_getLocalizedArticleValue((ArrayList)localizedArticleData.get(language), articleCode));
-				if (strValue.length() == 0) {
-					LOG.info("PRODUCTLOCAL3 missing localized BLT_ARTICEL value: article=" + articleCode + ", language=" + language);
-				}
-				Element textElement = new Element("TextBlock");
-				textElement.setAttribute("Language", language);
-				textElement.addContent(strValue);
-				oTextItem.addContent(textElement);
+		final ArrayList languages = _getProductLocal3Languages();
+		for (final Iterator itLanguage = languages.iterator(); itLanguage.hasNext();) {
+			final String language = (String)itLanguage.next();
+			if (language.equals("de")) {
+				continue;
 			}
+			String strValue = _cleanProductLocal3ArticleValue(_getLocalizedArticleValue((ArrayList)localizedArticleData.get(language), articleCode));
+			if (strValue.length() == 0) {
+				LOG.info("PRODUCTLOCAL3 missing localized BLT_ARTICEL value: article=" + articleCode + ", language=" + language);
+				if (!language.equals("en")) {
+					continue;
+				}
+			}
+			Element textElement = new Element("TextBlock");
+			textElement.setAttribute("Language", language);
+			textElement.addContent(strValue);
+			oTextItem.addContent(textElement);
 		}
 
 		return oTextItem;
 	}
 
-	private String _initWeraProductVariante(final ArrayList colAllFootnotes, final ArrayList articles, final HashMap localizedArticleData, Integer oLocalRefId, Integer intContentQuantitySiS,
+	private String _initWeraProductVariante(final ArrayList colAllFootnotes, final ArrayList articles, final HashMap localizedArticleData, final boolean bProductLocal3, Integer oLocalRefId, Integer intContentQuantitySiS,
 											int nCountProductSet, Element produktXML, final Item oArtikel ) {
 		// TODO Auto-generated method stub
 
@@ -2588,7 +2613,7 @@ LOG.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 					// PRODUCT
 					//////////////////////////////////////////////////////////////////////////////////
 					String strAbmessung = "";
-					final boolean bProductLocal3 = "PRODUCTLOCAL3".equalsIgnoreCase(m_strCurrentTemplateName);
+
 					if (bProductLocal3 && localizedArticleData != null) {
 						strAbmessung = _getLocalizedArticleValue((ArrayList)localizedArticleData.get("de"), strCode);
 					} else if (articles != null && articles.size() > 0) {
@@ -2662,6 +2687,18 @@ LOG.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 //}
 
 					if (bProductLocal3 && localizedArticleData != null) {
+						if ("05075671001".equals(strCode)) {
+							String strOutputtemplate = (String)m_wm.getAttribute(m_product, "outputtemplate");
+							LOG.info("PRODUCTLOCAL DEBUG productCode=" + m_product.getCode()
+									+ ", articleCode=" + strCode
+									+ ", outputtemplate=" + strOutputtemplate
+									+ ", selectedTemplate=PRODUCTLOCAL3"
+									+ ", m_strCurrentTemplateName=" + m_strCurrentTemplateName
+									+ ", m_strExportLanguage=" + m_strExportLanguage
+									+ ", m_strLanguage=" + m_strLanguage
+									+ ", m_languages=" + _joinLanguages(_getProductLocal3Languages())
+									+ ", bProductLocal3=" + bProductLocal3);
+						}
 						m_oTextItem = _createProductLocal3ArticleTextElement(localizedArticleData, strCode, oOrder, oLocalRefId);
 					} else {
 						m_oTextItem = createTextElement("", strLineResult, oOrder, oLocalRefId, "BLT_ARTICEL", false);
